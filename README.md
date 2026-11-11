@@ -142,7 +142,8 @@ the code alone in which every `data/...` and `assets/...` reference points at a 
 **Code.** Cloudflare Pages builds the site from this repository, which holds the code only (`home/data`, `home/assets`
 and `dist` are in `.gitignore`). In the Pages project: framework preset None, build command
 `python3 home/tools/deploy.py`, build output directory `dist`, root directory empty, and the variable `ASSET_BASE` set
-to the media's URL (below). Every push to `main` builds and publishes the site.
+to the media's URL (below). The code is on the `page` branch of github.com/Ropedia/Ropedia-Xperience-2 (the Pages project's production
+branch): every push to it builds and publishes the site.
 
 **Media.** The R2 bucket `ropedia-xperience-2` (account `3ece8696…`, location APAC) holds them under a version prefix
 (`v1/data/...`, `v1/assets/...`). For testing they are served at its development URL,

@@ -139,11 +139,12 @@ The page is about 4 MB of code and 1.1 GB of media (`home/data`, `home/assets`).
 it leaves `home/` as it is (local development still reads everything from disk) and writes `website/dist`, a copy of
 the code alone in which every `data/...` and `assets/...` reference points at a remote base URL.
 
-**Code.** Cloudflare Pages builds the site from this repository, which holds the code only (`home/data`, `home/assets`
-and `dist` are in `.gitignore`). In the Pages project: framework preset None, build command
-`python3 home/tools/deploy.py`, build output directory `dist`, root directory empty, and the variable `ASSET_BASE` set
-to the media's URL (below). The code is on the `page` branch of github.com/Ropedia/Ropedia-Xperience-2 (the Pages project's production
-branch): every push to it builds and publishes the site.
+**Code.** Cloudflare Workers Builds builds and serves the site from the `page` branch of
+github.com/Ropedia/Ropedia-Xperience-2, which holds the code only (`home/data`, `home/assets` and `dist` are in
+`.gitignore`). The Worker project `ropedia-xperience-2` has the build command
+`ASSET_BASE=<the media's URL, below> python3 home/tools/deploy.py` and the deploy command `npx wrangler deploy`;
+`wrangler.jsonc` makes it a Worker with no script that serves `dist` as static files. Every push to `page` builds and
+publishes the site. (`ASSET_BASE` can instead be a build variable: Settings → Build → Build Variables and Secrets.)
 
 **Media.** The R2 bucket `ropedia-xperience-2` (account `3ece8696…`, location APAC) holds them under a version prefix
 (`v1/data/...`, `v1/assets/...`). For testing they are served at its development URL,

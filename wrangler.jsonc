@@ -1,0 +1,9 @@
+// Cloudflare Workers Builds deploys the site from this file: a Worker with no script of its own that serves the
+// static files in dist/ (written by the build command, `python3 home/tools/deploy.py`; see README.md, "Deploying").
+{
+  "name": "ropedia-xperience-2",
+  "compatibility_date": "2026-11-10",
+  "assets": {
+    "directory": "./dist"
+  }
+}

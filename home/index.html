@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="dataset.css">
 <link rel="stylesheet" href="apps.css">
 <link rel="stylesheet" href="r2s3d.css">
+<link rel="stylesheet" href="release.css">
 <script type="importmap">
 { "imports": { "three": "./vendor/three.module.js", "three/addons/": "./vendor/addons/" } }
 </script>
@@ -23,7 +24,7 @@
     <a href="#hero">Scene</a>
     <a href="#data">Data</a>
     <a href="#apps">Applications</a>
-    <a class="lnav-cta" href="#hero">Get the data</a>
+    <a class="lnav-cta" href="#get">Get the data</a>
   </div>
 </nav>
 
@@ -443,6 +444,38 @@
     </figure>
     <button type="button" class="ds-nav next" aria-label="Next home"></button>
   </dialog>
+</section>
+
+<!-- 05 Release (release.css): the paper, the dataset and the code, a card each. A card whose link is not out yet is a
+     <div class="rl-card soon"> ending in "Coming soon"; to publish one, make it
+     <a class="rl-card" href="https://..." target="_blank" rel="noopener"> (closing </a>) and set its last line to
+     "Read on arXiv" / "Open on Hugging Face" / "Open on GitHub" -->
+<section class="rl" id="get" aria-label="Get the data">
+  <header class="rl-head">
+    <p class="eyebrow">Release</p>
+    <h2>Get Xperience 2.</h2>
+    <p class="lead">The paper, the dataset and the code to work with it.</p>
+  </header>
+  <div class="rl-cards">
+    <div class="rl-card soon">
+      <span class="rl-k">Paper</span>
+      <b>arXiv</b>
+      <p>How the scenes and recordings were captured, reviewed and put to use.</p>
+      <span class="rl-go">Coming soon</span>
+    </div>
+    <div class="rl-card soon">
+      <span class="rl-k">Dataset</span>
+      <b>Hugging Face</b>
+      <p>The scans and the egocentric recordings.</p>
+      <span class="rl-go">Coming soon</span>
+    </div>
+    <div class="rl-card soon">
+      <span class="rl-k">Code</span>
+      <b>GitHub</b>
+      <p>Tools to load the data.</p>
+      <span class="rl-go">Coming soon</span>
+    </div>
+  </div>
 </section>
 </main>
 

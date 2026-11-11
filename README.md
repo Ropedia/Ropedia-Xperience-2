@@ -154,6 +154,15 @@ shadows from the panels (the page's are sharp) and any light detail finer than t
 The earlier scan | simulator pictures and the gap heat map are no longer on the page; `data/r2s/real`, `data/r2s/sim`
 and `data/apps/gap` are now only used by the grounding sample (one frame of `real`).
 
+## Homepage: the 05 Release section
+
+The end of `home/index.html` (`#get`, styled by `home/release.css`; the nav's "Get the data" points at it) has a card
+each for the paper (arXiv), the dataset (Hugging Face) and the code (GitHub). A card whose link is not out yet is a
+`<div class="rl-card soon">` ending in "Coming soon". To publish one, turn it into
+`<a class="rl-card" href="https://..." target="_blank" rel="noopener">` and set its last line to "Read on arXiv",
+"Open on Hugging Face" or "Open on GitHub"; the card then gets the green label and the arrow. Code only, so a push is
+enough (no new media prefix).
+
 ## Deploying: code on Cloudflare Pages, media on Cloudflare R2
 
 The page is about 4 MB of code and 1.1 GB of media (`home/data`, `home/assets`). `home/tools/deploy.py` splits them:

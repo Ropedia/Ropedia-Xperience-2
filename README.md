@@ -133,48 +133,46 @@ shadows from the panels (the page's are sharp) and any light detail finer than t
 The earlier scan | simulator pictures and the gap heat map are no longer on the page; `data/r2s/real`, `data/r2s/sim`
 and `data/apps/gap` are now only used by the grounding sample (one frame of `real`).
 
-## Deploying: code on the web host, media on S3
+## Deploying: code on Cloudflare Pages, media on Cloudflare R2
 
 The page is about 4 MB of code and 1.1 GB of media (`home/data`, `home/assets`). `home/tools/deploy.py` splits them:
 it leaves `home/` as it is (local development still reads everything from disk) and writes `website/dist`, a copy of
-the code alone in which every `data/...` and `assets/...` reference points at a remote base URL. Only `dist` goes to
-the web host.
+the code alone in which every `data/...` and `assets/...` reference points at a remote base URL.
 
-The web host is Cloudflare Pages, built from this repository (which holds the code only: `home/data`, `home/assets`
+**Code.** Cloudflare Pages builds the site from this repository, which holds the code only (`home/data`, `home/assets`
 and `dist` are in `.gitignore`). In the Pages project: framework preset None, build command
 `python3 home/tools/deploy.py`, build output directory `dist`, root directory empty, and the variable `ASSET_BASE` set
-to where the media are served (an `https://` URL, or a path on the site such as `/media/v1`). Every push to `main`
-then builds and publishes the site.
+to the media's URL (below). Every push to `main` builds and publishes the site.
 
-The media are in `s3://kosmos-data-492661376500-ap-southeast-3-an/website-assets/v1/` (Jakarta, 6,898 files, uploaded
-2026-11-10 with a one-year immutable cache header). The bucket is private and stays so; the page reads the media
-through a CloudFront distribution in front of that folder. Until that distribution exists, `dist` loads no media.
+**Media.** An R2 bucket, `xperience-website-media`, holds them under a version prefix (`v1/data/...`, `v1/assets/...`),
+served by a custom domain connected to the bucket (R2 → the bucket → Settings → Custom Domains), for example
+`media.<site domain>`. `ASSET_BASE` is then `https://media.<site domain>/v1`. Not a Pages Function in front of the
+bucket: one visit makes about 3,000 media requests (the recordings are frame sequences), and each would be a Function
+call (100,000 a day on the free plan). Not the bucket's `r2.dev` address either: it is rate-limited and meant for
+development.
+
+The custom domain also needs:
+
+- a CORS rule on the bucket (the page fetches the scans and recordings and loads its font from the media domain):
+  allowed origins the site's domain and `https://*.<project>.pages.dev` for preview builds, methods GET and HEAD,
+  headers `*`, max age 86400
+- a Cache Rule on the zone: hostname equals the media domain → eligible for cache, edge TTL from the origin's
+  `Cache-Control`. Cloudflare caches `.jpg`, `.webp`, `.woff2` by default but not `.json`, `.spz`, `.f32`, `.bin`,
+  `.glb`, which are most of the bytes.
+
+The objects carry `Cache-Control: public, max-age=31536000, immutable`, so changed media go under a new prefix (`v2`,
+...), never over an old one, and `ASSET_BASE` moves to it. Upload from this machine (rclone remote `r2`, provider
+Cloudflare):
 
 ```
 cd website/home
-# after the media changed: upload under a new prefix (v2, ...), never over v1, which browsers keep for a year
-python3 tools/deploy.py --base https://<cloudfront domain>/v2 \
-  --upload "aws,region=ap-southeast-3,location_constraint=ap-southeast-3,no_check_bucket=true:kosmos-data-492661376500-ap-southeast-3-an/website-assets/v2"
-# code only (the media unchanged): rebuild dist
-python3 tools/deploy.py --base https://<cloudfront domain>/v1
+python3 tools/deploy.py --base https://media.<site domain>/v2 --upload r2:xperience-website-media/v2
 ```
 
-The CloudFront distribution (the `docker-cli` key in rclone's `aws` remote may not create it):
+(This also writes `website/dist`, which is only for checking locally; Pages builds its own.)
 
-- origin `kosmos-data-492661376500-ap-southeast-3-an.s3.ap-southeast-3.amazonaws.com`, origin path `/website-assets`,
-  with an origin access control (sign requests, S3); viewer protocol HTTPS only, GET and HEAD
-- cache policy `CachingOptimized`; response headers policy `SimpleCORS` (the page fetches the scans and recordings and
-  loads its font from another origin; without `Access-Control-Allow-Origin` they fail); compression on
-- this statement in the bucket's policy, which opens `website-assets/` to that one distribution and nothing else:
-
-```json
-{ "Version": "2012-10-17", "Statement": [{
-  "Sid": "CloudFrontReadsWebsiteAssets", "Effect": "Allow",
-  "Principal": { "Service": "cloudfront.amazonaws.com" },
-  "Action": "s3:GetObject",
-  "Resource": "arn:aws:s3:::kosmos-data-492661376500-ap-southeast-3-an/website-assets/*",
-  "Condition": { "StringEquals": { "AWS:SourceArn": "arn:aws:cloudfront::492661376500:distribution/<distribution id>" } } }] }
-```
+A copy of `v1` is also in `s3://kosmos-data-492661376500-ap-southeast-3-an/website-assets/v1/` (private, uploaded
+2026-11-10). The site does not use it.
 
 `dist` was checked on 2026-11-10 with the code and the media on two local origins (the media with a CORS header): all
-sections loaded, no cross-origin failure. It has not been checked against CloudFront.
+sections loaded, no cross-origin failure. It has not yet been checked against R2.

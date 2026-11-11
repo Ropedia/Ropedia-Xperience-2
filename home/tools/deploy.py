@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-"""Split the site into a light code bundle and remotely hosted media.
+"""Split the site into a light code bundle and remotely hosted media (Cloudflare R2; see README.md, "Deploying").
 
 The page refers to its heavy files by the relative paths data/... and assets/... (about 1.1 GB). This script leaves the
 sources as they are and writes a deployable copy of the code only (HTML, CSS, JS, vendor: about 4 MB) in which every
 such reference points at a remote base URL (an S3 bucket or a CDN in front of it). Local development is unchanged:
 serve website/home as before and everything is read from disk.
 
-  build the bundle:   python3 tools/deploy.py --base https://BUCKET.s3.REGION.amazonaws.com/xperience/v1
-  and upload media:   ... --upload aws:BUCKET/xperience/v1        (an rclone remote:path; data/ and assets/ go under it)
+  build the bundle:   python3 tools/deploy.py --base https://media.example.com/v1
+  and upload media:   ... --upload r2:xperience-website-media/v1  (an rclone remote:path; data/ and assets/ go under it)
   check only:         ... --dry-run                                (print what would be rewritten, write nothing)
   Cloudflare Pages:   build command `python3 home/tools/deploy.py`, output directory `dist`, ASSET_BASE set in the
                       project's variables (the repository holds the code only; data/ and assets/ are not in it)
 
 The media are uploaded with a one-year immutable cache header, so publish changed media under a new prefix (v2, ...)
 and rebuild the bundle with the new --base. The bucket must allow cross-origin GET from the site (fetch, fonts and
-WebGL textures need it); see README.md, "Deploying".
+WebGL textures need it).
 """
 import argparse
 import os

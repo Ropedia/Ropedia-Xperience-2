@@ -144,8 +144,10 @@ and `dist` are in `.gitignore`). In the Pages project: framework preset None, bu
 `python3 home/tools/deploy.py`, build output directory `dist`, root directory empty, and the variable `ASSET_BASE` set
 to the media's URL (below). Every push to `main` builds and publishes the site.
 
-**Media.** An R2 bucket, `xperience-website-media`, holds them under a version prefix (`v1/data/...`, `v1/assets/...`),
-served by a custom domain connected to the bucket (R2 → the bucket → Settings → Custom Domains), for example
+**Media.** The R2 bucket `ropedia-xperience-2` (account `3ece8696…`, location APAC) holds them under a version prefix
+(`v1/data/...`, `v1/assets/...`). For testing they are served at its development URL,
+`https://pub-a5d54d8bd1a5427c92ce334fabec455e.r2.dev` (rate-limited, no caching); for the public site, by a custom
+domain connected to the bucket (R2 → the bucket → Settings → Custom Domains), for example
 `media.<site domain>`. `ASSET_BASE` is then `https://media.<site domain>/v1`. Not a Pages Function in front of the
 bucket: one visit makes about 3,000 media requests (the recordings are frame sequences), and each would be a Function
 call (100,000 a day on the free plan). Not the bucket's `r2.dev` address either: it is rate-limited and meant for
@@ -153,9 +155,9 @@ development.
 
 The custom domain also needs:
 
-- a CORS rule on the bucket (the page fetches the scans and recordings and loads its font from the media domain):
-  allowed origins the site's domain and `https://*.<project>.pages.dev` for preview builds, methods GET and HEAD,
-  headers `*`, max age 86400
+- a CORS rule on the bucket (the page fetches the scans and recordings and loads its font from the media domain).
+  Set on 2026-11-11: allowed origins `*` (the media are public anyway, and the site's domain may change), methods GET
+  and HEAD, headers `*`, max age 86400
 - a Cache Rule on the zone: hostname equals the media domain → eligible for cache, edge TTL from the origin's
   `Cache-Control`. Cloudflare caches `.jpg`, `.webp`, `.woff2` by default but not `.json`, `.spz`, `.f32`, `.bin`,
   `.glb`, which are most of the bytes.
@@ -166,7 +168,7 @@ Cloudflare):
 
 ```
 cd website/home
-python3 tools/deploy.py --base https://media.<site domain>/v2 --upload r2:xperience-website-media/v2
+python3 tools/deploy.py --base https://media.<site domain>/v2 --upload r2:ropedia-xperience-2/v2
 ```
 
 (This also writes `website/dist`, which is only for checking locally; Pages builds its own.)

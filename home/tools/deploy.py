@@ -7,7 +7,7 @@ such reference points at a remote base URL (an S3 bucket or a CDN in front of it
 serve website/home as before and everything is read from disk.
 
   build the bundle:   python3 tools/deploy.py --base https://media.example.com/v1
-  and upload media:   ... --upload r2:xperience-website-media/v1  (an rclone remote:path; data/ and assets/ go under it)
+  and upload media:   ... --upload r2:ropedia-xperience-2/v1   (an rclone remote:path; data/ and assets/ go under it)
   check only:         ... --dry-run                                (print what would be rewritten, write nothing)
   Cloudflare Pages:   build command `python3 home/tools/deploy.py`, output directory `dist`, ASSET_BASE set in the
                       project's variables (the repository holds the code only; data/ and assets/ are not in it)

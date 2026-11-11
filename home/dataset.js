@@ -1,5 +1,5 @@
 // 03 Data: the release as its scene tiles, one per scan (the hero's atlas and data/scenes.json: a preview tile, a
-// category and a review grade for each of the 1,812 scans). The same tiles are used from top to bottom:
+// category and a review grade for each of the scans). The same tiles are used from top to bottom:
 //   1. the one scroll (#dsWall): the X of every scan spreads into a wall that fills the screen and dims under six figures;
 //   2. the tabs (#dsStage): three arrangements of the tiles, switched by a click. All of them as one grid (the wall again,
 //      which sorts itself into the grades once the card is on screen); the review grades as a flow
@@ -41,16 +41,17 @@ await document.fonts.load('600 12.5px "Inter Tight"').catch(() => {});
 
 // ---------------------------------------------------------------- the scenes
 const GRADES = D.outcomes, CATS = D.categories;
-const QCOL = ['#ccffa0', '#9cc3ff', '#ffb36b', '#ff6b9a'];
+const QCOL = ['#ccffa0', '#9cc3ff', '#ffb36b'];   // a colour per grade (perfect, usable, reuse candidate)
+const SCANS = '1,500+', RECS = '4,000+';         // the totals as the page states them: fixed, not counted (the user's call of 2026-11-11); no grade is given a number
 const [TW, TH] = D.tile, AC = D.atlasCols, AROWS = Math.round(atlas.height / TH);
 const rnd = rng(1812);
 const SC = D.t.map((t, i) => ({ t, cat: D.c[i], qc: D.q[i] }));
 for (let i = SC.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [SC[i], SC[j]] = [SC[j], SC[i]]; }   // one fixed shuffle: the X's tiles nearest its centre first
 const N = SC.length;
-const QN = [0, 1, 2, 3].map((q) => SC.filter((s) => s.qc === q).length);
+const QN = GRADES.map((_, q) => SC.filter((s) => s.qc === q).length);
 const CN = CATS.map((_, c) => SC.filter((s) => s.cat === c).length);
 const BLANK = SC.filter((s) => s.t < 0).length;
-const BYQ = [0, 1, 2, 3].map((q) => SC.map((s, i) => (s.qc === q ? i : -1)).filter((i) => i >= 0));
+const BYQ = GRADES.map((_, q) => SC.map((s, i) => (s.qc === q ? i : -1)).filter((i) => i >= 0));
 const RANK = new Float32Array(N), DEL = new Float32Array(N), DELA = new Float32Array(N);
 for (const ids of BYQ) ids.forEach((i, r) => { RANK[i] = (r + 0.5) / ids.length; });
 for (let i = 0; i < N; i++) DEL[i] = rnd();
@@ -149,9 +150,9 @@ function layQC(W, H) {
   let tw = 3, cols = Math.max(1, Math.floor((bw - 2 * inp) / tw)), rows = QN.map((n) => Math.ceil(n / cols));
   for (let t = 34; t >= 3; t -= 0.25) {
     const c = Math.floor((bw - 2 * inp) / t), r = QN.map((n) => Math.ceil(n / Math.max(1, c)));
-    if (c >= 3 && r.reduce((s, v) => s + head + v * t * 9 / 16 + inp, 0) + 3 * gap <= ah) { tw = t; cols = c; rows = r; break; }
+    if (c >= 3 && r.reduce((s, v) => s + head + v * t * 9 / 16 + inp, 0) + (QN.length - 1) * gap <= ah) { tw = t; cols = c; rows = r; break; }
   }
-  const th = tw * 9 / 16, total = rows.reduce((s, v) => s + head + v * th + inp, 0) + 3 * gap, P = new Float32Array(N * 4), bins = [];
+  const th = tw * 9 / 16, total = rows.reduce((s, v) => s + head + v * th + inp, 0) + (QN.length - 1) * gap, P = new Float32Array(N * 4), bins = [];
   let y = pad + (ah - total) / 2;
   QN.forEach((n, q) => {
     const h = head + rows[q] * th + inp;
@@ -161,7 +162,7 @@ function layQC(W, H) {
   });
   const sx = pad + (narrow ? 2 : 26), sw = narrow ? 7 : 10, sg = 3, sh = Math.min(ah * 0.58, total * 0.6), segs = [];
   let sy = H / 2 - sh / 2 + (narrow ? 14 : 18);
-  QN.forEach((n) => { const h = (sh - 3 * sg) * n / N; segs.push([sy, sy + h]); sy += h + sg; });
+  QN.forEach((n) => { const h = (sh - (QN.length - 1) * sg) * n / N; segs.push([sy, sy + h]); sy += h + sg; });
   return { P, bins, segs, sx, sw, x0: sx + sw + 5, x1: xb - 5, inp, head };
 }
 // scenes and tasks, side by side: the scans' half. A row per scene category under its group's name, the largest category
@@ -278,14 +279,14 @@ if (!R) tabs.pop().remove();                         // no third arrangement wit
 // W x H0: the stage as the grid and the grades see it; W x H: the canvas; lit, was, hk: the rows of scans that are lit (a bit each: now, last) and how far their light is up; ph: the tasks' panel as placed
 const S = { W: 0, H: 0, H0: 0, dpr: 1, L: null, view: 'all', cur: new Float32Array(N * 4), from: new Float32Array(N * 4), to: null, t0: 0, moving: false, band: false, aq: 0, lit: 0, was: 0, hk: 0, ph: 0, hover: -1, on: false, raf: 0, last: 0 };
 const SAY = {
-  all: ['1,812', 'scans in this release. <strong>One tile per scan,</strong> each a real space captured in 3D at metric scale.'],
-  qc: [fmt(QN[0] + QN[1]), `scans are rated <strong>usable or perfect,</strong> ${Math.round((100 * (QN[0] + QN[1])) / N)}% of the release. Another ${fmt(QN[2])} are kept as reuse candidates; ${fmt(QN[3])} are excluded.`],
-  mix: [fmt(R?.total ?? 0), `recordings of ${R?.tasks ?? 0} tasks, beside the ${fmt(N)} scans. <strong>Scene categories on the left, actions on the right.</strong> Point at one to see where it meets the other side.`],
+  all: [SCANS, 'scans in this release. <strong>One tile per scan,</strong> each a real space captured in 3D at metric scale.'],
+  qc: [SCANS, 'scans, each one reviewed and graded <strong>perfect, usable or reuse candidate.</strong>'],
+  mix: [RECS, `recordings of ${R?.tasks ?? 0} tasks, beside the ${SCANS} scans. <strong>Scene categories on the left, actions on the right.</strong> Point at one to see where it meets the other side.`],
 };
 const ALT = {
-  all: () => `${fmt(N)} scene tiles in one grid, one per scan`,
-  qc: () => `${fmt(N)} scene tiles sorted by review grade: ${GRADES.map((g, q) => `${g} ${fmt(QN[q])}`).join(', ')}`,
-  mix: () => `${fmt(N)} scene tiles in rows by scene category (${ROWS.map((r) => `${r.name} ${fmt(r.n)}`).join(', ')}), beside the recordings of each action`,
+  all: () => `${SCANS} scene tiles in one grid, one per scan`,
+  qc: () => `${SCANS} scene tiles sorted by review grade: ${GRADES.join(', ')}`,
+  mix: () => `${SCANS} scene tiles in rows by scene category (${ROWS.map((r) => `${r.name} ${fmt(r.n)}`).join(', ')}), beside the recordings of each action`,
 };
 function sizeB() {
   S.dpr = Math.min(devicePixelRatio || 1, 2); S.W = stage.clientWidth; S.H0 = $('.ds-h0', stage).offsetHeight;
@@ -329,10 +330,10 @@ function placeMix() {
 }
 function labels() {
   const q = S.L.qc, m = S.L.mix;
-  labs.innerHTML = q.bins.map((b, g) => `<p class="ds-lab ds-lab-q" data-v="qc" style="left:${(b.x + q.inp).toFixed(1)}px;top:${(b.y + q.head / 2 - 7).toFixed(1)}px;--c:${QCOL[g]}">${GRADES[g]}<b>${fmt(QN[g])}</b><i>${(100 * QN[g] / N).toFixed(1)}%</i></p>`).join('')
-    + `<p class="ds-lab ds-lab-src" data-v="qc" style="left:${q.sx}px;${S.W < 620 ? 'top:14px' : `bottom:${(S.H - q.segs[0][0] + 12).toFixed(1)}px`}"><b>${fmt(N)}</b>scans reviewed</p>`   // (clear of the bands on a narrow stage)
+  labs.innerHTML = q.bins.map((b, g) => `<p class="ds-lab ds-lab-q" data-v="qc" style="left:${(b.x + q.inp).toFixed(1)}px;top:${(b.y + q.head / 2 - 7).toFixed(1)}px;--c:${QCOL[g]}">${GRADES[g]}</p>`).join('')
+    + `<p class="ds-lab ds-lab-src" data-v="qc" style="left:${q.sx}px;${S.W < 620 ? 'top:14px' : `bottom:${(S.H - q.segs[0][0] + 12).toFixed(1)}px`}"><b>${SCANS}</b>scans reviewed</p>`   // (clear of the bands on a narrow stage)
     // the scans' half of the third arrangement: its heading, each group's name over its rows, each row's name and count (a button: it opens that category)
-    + (m ? `<p class="ds-lab ds-lab-h" data-v="mix" style="left:${m.pad}px;top:${m.top}px;width:${m.x1 - m.pad}px"><span>Scans by scene category</span><span>${fmt(N)}</span></p>`
+    + (m ? `<p class="ds-lab ds-lab-h" data-v="mix" style="left:${m.pad}px;top:${m.top}px;width:${m.x1 - m.pad}px"><span>Scans by scene category</span><span>${SCANS}</span></p>`
       + m.heads.map((h) => `<p class="ds-lab ds-lab-g" data-v="mix" style="left:${m.pad}px;top:${h.y.toFixed(1)}px;width:${m.x1 - m.pad}px">${h.name}</p>`).join('')
       + m.rows.map((w, k) => `<button type="button" class="ds-row" data-k="${k}" style="left:${m.pad}px;top:${w.y.toFixed(1)}px;width:${m.NL}px;height:${w.h.toFixed(1)}px" title="See the ${fmt(ROWS[k].n)} ${ROWS[k].name} scans"><b>${ROWS[k].name}</b><i>${fmt(ROWS[k].n)}</i></button>`).join('') : '');
   T.rows = $$('.ds-row', labs);
@@ -394,7 +395,7 @@ function drawB() {
   ctx.clearRect(0, 0, W, S.H);
   if (S.aq > 0.004) {   // the bar of the whole set, a band and a bin per grade
     const q = S.L.qc, mx = (q.x0 + q.x1) / 2;
-    for (let g = 0; g < 4; g++) {
+    for (let g = 0; g < QN.length; g++) {
       const [s0, s1] = q.segs[g], b = q.bins[g], b0 = b.y + 8, b1 = b.y + b.h - 8;
       ctx.beginPath(); ctx.moveTo(q.x0, s0); ctx.bezierCurveTo(mx, s0, mx, b0, q.x1, b0); ctx.lineTo(q.x1, b1); ctx.bezierCurveTo(mx, b1, mx, s1, q.x0, s1); ctx.closePath();
       ctx.fillStyle = ctx.strokeStyle = QCOL[g]; ctx.lineWidth = 1;
@@ -408,10 +409,6 @@ function drawB() {
     ctx.globalAlpha = 1;
   }
   paint(ctx, P, W, S.H, dpr);
-  if (S.aq > 0.004) {   // the excluded scans, stepped back
-    ctx.fillStyle = `rgba(11,11,12,${(0.52 * S.aq).toFixed(3)})`;
-    for (const i of BYQ[3]) { const o = i * 4; ctx.fillRect(P[o] - 0.5, P[o + 1] - 0.5, P[o + 2] + 1, P[o + 3] + 1); }
-  }
   if (mix && S.hk > 0.004 && !S.moving) {   // some rows of scans are lit: the other rows step back
     const m = S.L.mix;
     ctx.fillStyle = `rgba(11,11,12,${(0.7 * S.hk).toFixed(3)})`;
@@ -487,8 +484,8 @@ const zoomEl = $('#dsZoom'), zImg = $('img', zoomEl), zName = $('figcaption b', 
 const F = { q: -1, c: -1, at: -1, cells: null };
 function build() {
   if (F.cells) return;
-  chipsQ.innerHTML = `<button type="button" data-q="-1">All grades <b>${fmt(N)}</b></button>`
-    + GRADES.map((g, q) => `<button type="button" data-q="${q}" style="--c:${QCOL[q]}"><i></i>${g} <b>${fmt(QN[q])}</b></button>`).join('');
+  chipsQ.innerHTML = '<button type="button" data-q="-1">All grades</button>'
+    + GRADES.map((g, q) => `<button type="button" data-q="${q}" style="--c:${QCOL[q]}"><i></i>${g}</button>`).join('');
   chipsC.innerHTML = '<button type="button" data-c="-1">All categories</button>'
     + ORDER.map((c) => `<button type="button" data-c="${c}">${CATS[c]} <b>${fmt(CN[c])}</b></button>`).join('');
   grid.innerHTML = SC.map((s, i) => (s.t < 0
@@ -507,7 +504,8 @@ function build() {
 function apply() {
   let n = 0;
   F.cells.forEach((el, i) => { const s = SC[i], ok = (F.q < 0 || s.qc === F.q) && (F.c < 0 || s.cat === F.c); el.hidden = !ok; if (ok) n++; });
-  count.textContent = n === N ? `${fmt(N)} scenes` : `${fmt(n)} of ${fmt(N)} scenes`;
+  count.textContent = F.q >= 0 ? [GRADES[F.q], ...(F.c >= 0 ? [CATS[F.c]] : [])].join(' · ')   // (a grade gets no count)
+    : n === N ? `${SCANS} scenes` : `${fmt(n)} of ${SCANS} scenes`;
   none.hidden = n > 0;
   for (const b of chipsQ.children) b.setAttribute('aria-pressed', String(+b.dataset.q === F.q));
   for (const b of chipsC.children) b.setAttribute('aria-pressed', String(+b.dataset.c === F.c));

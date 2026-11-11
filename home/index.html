@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ropedia Xperience 2</title>
-<meta name="description" content="Ropedia Xperience 2: 1,812 scanned scenes and 4,230 egocentric recordings, registered in one metric frame.">
+<meta name="description" content="Ropedia Xperience 2: 1,500+ scanned scenes and 4,000+ egocentric recordings, registered in one metric frame.">
 <link rel="preload" href="assets/atlas_small.jpg" as="image">
 <link rel="stylesheet" href="home.css">
 <link rel="stylesheet" href="dataset.css">
@@ -28,11 +28,11 @@
 </nav>
 
 <main id="top">
-<!-- the X of 1,812 scanned scenes; scrolling dives into the one at its centre -->
+<!-- the X of the scanned scenes; scrolling dives into the one at its centre -->
 <section class="hero" id="hero">
   <div class="hero-stick">
     <canvas class="hero-bg" id="heroBg" aria-hidden="true"></canvas>
-    <canvas class="hero-x" id="heroX" aria-label="A wall of 1,812 scanned scenes, an X of it lit"></canvas>
+    <canvas class="hero-x" id="heroX" aria-label="A wall of 1,500+ scanned scenes, an X of it lit"></canvas>
     <div class="hero-glow" id="heroGlow" aria-hidden="true"><canvas></canvas></div>
     <img class="lk-brand" id="lkBrand" src="assets/ropedia_brand.png" alt="Ropedia">
     <span class="lk-word" id="lkWord">perience <em class="lk-2">2</em></span>
@@ -41,7 +41,7 @@
     <div class="hero-hint" id="heroHint"><span>Scroll</span><i></i></div>
     <div class="hero-cap" id="heroCap">
       <p class="eyebrow">LH_17761 · multi-room home</p>
-      <h2>One of 1,812 scenes.</h2>
+      <h2>One of 1,500+ scenes.</h2>
       <p>Each one scanned in 3D, at metric scale.</p>
     </div>
   </div>
@@ -80,7 +80,7 @@
     </aside>
     <div class="hero-cap story-carry" id="storyCarry">
       <p class="eyebrow">LH_17761 · multi-room home</p>
-      <h2>One of 1,812 scenes.</h2>
+      <h2>One of 1,500+ scenes.</h2>
       <p>Each one scanned in 3D, at metric scale.</p>
     </div>
     <div class="story-copy">
@@ -149,26 +149,26 @@
   </div>
 </section>
 
-<!-- 03 Data (dataset.js): the release as its 1,812 scene tiles. A text opening; one pinned scroll, the X spreading into
+<!-- 03 Data (dataset.js): the release as its scene tiles. A text opening; one pinned scroll, the X spreading into
      a wall of scenes that dims under six figures; three tabs that re-arrange the same tiles (the X; the review grades as
      a flow; the scans in rows by scene category beside the recordings by action); every scene in a full-screen browser
      behind one button -->
 <section class="ds" id="data" aria-label="Data">
   <header class="ds-intro">
     <p class="eyebrow">Data</p>
-    <h2>1,812 scenes.<br>Every one reviewed.</h2>
-    <p class="lead">Scans of 596 locations: homes, stores, restaurants, car parks and streets. Each reconstruction is reviewed in four stages, and <strong>1,121 are rated usable or perfect.</strong></p>
+    <h2>1,500+ scenes.<br>Every one reviewed.</h2>
+    <p class="lead">Scans of 596 locations: homes, stores, restaurants, car parks and streets. Each reconstruction is reviewed and graded: <strong>perfect, usable or reuse candidate.</strong></p>
   </header>
 
   <div class="ds-wall" id="dsWall">
     <div class="ds-stick">
-      <canvas id="dsWallCv" role="img" aria-label="An X made of 1,812 scene tiles spreads into a wall of scenes that fills the screen"></canvas>
-      <p class="ds-xcap" id="dsXcap"><b>1,812</b><span>scenes · one tile per scan</span></p>
+      <canvas id="dsWallCv" role="img" aria-label="An X made of 1,500+ scene tiles spreads into a wall of scenes that fills the screen"></canvas>
+      <p class="ds-xcap" id="dsXcap"><b>1,500+</b><span>scenes · one tile per scan</span></p>
       <dl class="ds-nums" aria-label="The release in numbers">
-        <div class="ds-num"><dt data-n="1812">1,812</dt><dd>scenes scanned in 3D</dd></div>
+        <div class="ds-num"><dt data-n="1500">1,500<small>+</small></dt><dd>scenes scanned in 3D</dd></div>
         <div class="ds-num"><dt data-n="596">596</dt><dd>locations</dd></div>
         <div class="ds-num"><dt data-n="12">12</dt><dd>scene categories</dd></div>
-        <div class="ds-num"><dt data-n="4230">4,230</dt><dd>egocentric recordings</dd></div>
+        <div class="ds-num"><dt data-n="4000">4,000<small>+</small></dt><dd>egocentric recordings</dd></div>
         <div class="ds-num"><dt data-n="74">74</dt><dd>tasks</dd></div>
         <div class="ds-num"><dt data-n="131">131<small>h</small></dt><dd>of first-person video</dd></div>
       </dl>
@@ -194,7 +194,7 @@
     </div>
     <footer class="ds-sort-foot">
       <div class="ds-say" id="dsSay" aria-live="polite"></div>
-      <button type="button" class="ds-more" id="dsMore" aria-haspopup="dialog">Explore all 1,812 scenes<i aria-hidden="true"></i></button>
+      <button type="button" class="ds-more" id="dsMore" aria-haspopup="dialog">Explore all 1,500+ scenes<i aria-hidden="true"></i></button>
     </footer>
   </div>
 
@@ -204,7 +204,7 @@
     <div class="ds-b-in">
       <div class="ds-b-top">
         <div class="ds-b-head">
-          <div><h3>All 1,812 scenes</h3><p id="dsCount" aria-live="polite"></p></div>
+          <div><h3>All 1,500+ scenes</h3><p id="dsCount" aria-live="polite"></p></div>
           <button type="button" class="ds-x" aria-label="Close"></button>
         </div>
         <div class="ds-chips" id="dsChipsQ" role="group" aria-label="Review grade"></div>

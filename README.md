@@ -32,27 +32,41 @@ It writes `draft/assets/` (posters, scene thumbnails, head-camera frames, teaser
 
 ## Homepage: the 03 Data section
 
-`home/dataset.js` and `home/dataset.css` draw the Data section of `home/index.html` (the X of 1,812 scene tiles, its
+`home/dataset.js` and `home/dataset.css` draw the Data section of `home/index.html` (the X of the scene tiles, its
 three arrangements and the scene browser). The third arrangement, "By scene and task", sets the scenes and the tasks
 side by side, each on its own axis: on the left the scans in rows by scene category, on the right the recordings as a
-block per action with a chip for each scene type the action was recorded in. Its two data files come from the film's
-act-3 sources in `video/metrics/data` (`records.json`, `tasks.json`); rebuild them after those change (standard library
-only):
+block per action with a chip for each scene type the action was recorded in. Its two data files come from the release
+manifest (`MANIFEST` in `build_data.py`:
+`/mnt/local/lihao/kosmos_data_upload/reports/2026-11-11/release/release_manifest.json`) and the film's act-3 sources in
+`video/metrics/data` (`records.json`, `tasks.json`); rebuild them after any of those change (standard library only):
 
 ```bash
 python3 -I website/home/build_data.py
 ```
 
-It writes `home/data/scenes.json` (preview tile, category and review grade of every scan; no scene names, which are
-upload labels and can carry an operator's name) and `home/data/recordings.json` (recordings per action × scene type,
+It writes `home/data/scenes.json` (preview tile, category and review grade of every scan; no names, ids or paths,
+which can carry an operator's name) and `home/data/recordings.json` (recordings per action × scene type,
 with the tasks behind each row and column).
 
-The page's review grades are the audit's with one rule on top (`REUSE_NOT_EXCLUDED` in `build_data.py`): in Restaurant,
-Store, Office, Meeting room, Outdoor corridor and Urban street an excluded scan counts as a reuse candidate, which makes
-the totals 150 perfect / 971 usable / 601 reuse candidates / 90 excluded (the audit and the film: 579 and 112).
-`build_data.py` also writes the rule into the grades of `data/hero.json` (the hero's tooltip), so run it after
-`build.py`. The Data section's grade numbers are counted from `scenes.json`; the lead in `index.html` (1,121 usable or
-perfect) is the one written out.
+The scans are the release manifest's works, one each, with the manifest's category and grade (Perfect / Usable /
+Reuse, which the page calls a reuse candidate). Which scans are in, and their grades, are settled upstream by the
+rules in the manifest's folder (its README and `rules.py`: repeat reviews, conflicts, Delete left out); the page applies
+none of its own. 2026-11-11: 1,589 scans, 148 perfect / 934 usable / 507 reuse candidates. `build_data.py` reads only
+each work's `work_id`, `category`, `grade` and `paper_record_ids`, never its name, account or root.
+
+A scan's preview tile is the one its paper records (`paper_record_ids`, into `video/metrics/data/records.json`) have in
+the mosaic atlas. 106 scans have none: 105 are newer than the paper's 2026-10-07 snapshot, and LH_17761 (the hero's
+centre scene) has no atlas tile. They count everywhere and show as blank tiles in the Data section (the X, the three
+arrangements, the scene browser, where they read "no preview yet"); the hero's wall has only the scans with a tile.
+`build_data.py` writes the scans with a tile into `data/hero.json` too (the hero's wall and tooltip, in `build.py`'s
+shuffled order, which it rebuilds from `records.json`), so run it after `build.py`.
+
+The page does not print these counts (the user's call of 2026-11-11). It states the totals as fixed floors, "1,500+"
+scenes and "4,000+" recordings (written out in `index.html`, and `SCANS` / `RECS` in `dataset.js`), and the grades by
+name only: no count or share for perfect, usable or reuse candidate anywhere (the "By review grade" bins are sized by
+their scans but labelled by name; a grade filter in the scene browser shows no count). `build_data.py` prints a note if
+the data fall below either floor. Other figures are still printed as they are: the per-category counts, 596 locations,
+12 categories, 74 tasks, 131 h, and the recordings per action and scene type.
 
 The scans carry 12 categories and the tasks 8 scene types, and the sources hold no link between a recording and a scan.
 `build_data.py` matches the two lists by name (`COLS`, which also sets the categories' groups, and fails if a name is

@@ -1,10 +1,10 @@
-/* 03 Data (dataset.js). The release as its 1,812 scene tiles: a text opening; one pinned scroll (the X spreads into a
+/* 03 Data (dataset.js). The release as its scene tiles: a text opening; one pinned scroll (the X spreads into a
    wall of scenes that dims under six figures); a card whose three tabs re-arrange the same tiles (one grid of them all, the review
    grades as a flow, the scenes and the tasks side by side: the scans in rows by scene category, the recordings by
    action); a full-screen browser behind one button.
-   Tokens and type come from home.css. The four review grades keep one colour each everywhere. */
+   Tokens and type come from home.css. The three review grades keep one colour each everywhere. */
 
-.ds { position: relative; background: #000; --q0: #ccffa0; --q1: #9cc3ff; --q2: #ffb36b; --q3: #ff6b9a; --card: #0b0b0c; --edge: max(20px, calc((100vw - 1180px) / 2)); }
+.ds { position: relative; background: #000; --q0: #ccffa0; --q1: #9cc3ff; --q2: #ffb36b; --card: #0b0b0c; --edge: max(20px, calc((100vw - 1180px) / 2)); }
 .ds .eyebrow { color: var(--g); }
 
 /* ------------------------------------------------------------ opening: type only */

@@ -5,7 +5,7 @@
 
 Writes website/home/{vendor,assets,data}/. Scene: LH_17761 (lite 3DGS), recording 7659f6d6's dining-table window
 (frames 1265-1504) with its SMPL-H mesh, MANO hands, head-camera frames and both retargeted robots, the other PASS
-recordings' head paths, KOSMO's scan path; the hero's X of 1,812 scene tiles; the Real-to-Sim frames and boxes; the
+recordings' head paths, KOSMO's scan path; the hero's X of scene tiles; the Real-to-Sim frames and boxes; the
 long-horizon run 203; the benchmark table.
 """
 import json
@@ -83,7 +83,8 @@ for f in range(mj['f0'], mj['f1']):
     if src.exists():
         jpg(src, to / 'frames' / f'{f:05d}.jpg', width=720, q=76)
 
-# ---------------------------------------------------------------- hero: X of 1,812 scene tiles from the mosaic atlas
+# ---------------------------------------------------------------- hero: X of scene tiles from the mosaic atlas
+# (a cell per QC record with a preview; build_data.py then keeps one per scan and sets the page's grades)
 meta = json.loads((V / 'mosaic/data/atlas.json').read_text())
 atlas = Image.open(V / 'mosaic/data/atlas.png').convert('RGB')
 recs = json.loads((MET / 'data/records.json').read_text())

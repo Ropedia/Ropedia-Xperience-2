@@ -28,15 +28,27 @@ hero = json.loads((D / 'hero.json').read_text())
 R = recs['records']
 t = [r['tile'] if isinstance(r.get('tile'), int) and r['tile'] >= 0 else -1 for r in R]
 c = [r['cat'] for r in R]
-q = [r['qc'] for r in R]
-assert [Counter(q)[k] for k in range(len(recs['outcomes']))] == recs['quality_totals'], 'grade totals differ from the audit'
+q0 = [r['qc'] for r in R]                          # the audit's grades
+assert [Counter(q0)[k] for k in range(len(recs['outcomes']))] == recs['quality_totals'], 'grade totals differ from the audit'
 assert all(0 <= x < len(recs['rows']) for x in c)
+# The page's grades differ from the audit's (and the film's) in one rule, the user's call of 2026-11-11: in these
+# categories a scan graded Excluded is a Reuse candidate. records.json under video/ keeps the audit's grades; scenes.json
+# and the grade in hero.json's cells (the hero's tooltip) take the rule, so rerun this after build.py.
+REUSE_NOT_EXCLUDED = ['Restaurant', 'Store', 'Urban street', 'Outdoor corridor', 'Meeting room', 'Office']
+EXC, REU = recs['outcomes'].index('Excluded'), recs['outcomes'].index('Reuse candidate')
+UP = {recs['rows'].index(n) for n in REUSE_NOT_EXCLUDED}   # (fails on a name that is not a category)
+regrade = lambda cat, g: REU if g == EXC and cat in UP else g
+q = [regrade(x, g) for x, g in zip(c, q0)]
+cells = [[*cell[:4], regrade(cell[3], cell[4])] for cell in hero['cells']]   # (the same whether hero.json has the rule yet or not)
+if cells != hero['cells']:
+    hero['cells'] = cells
+    (D / 'hero.json').write_text(json.dumps(hero, separators=(',', ':')))
 # every scene with a preview is one of the hero's tiles, with the same category and grade
 assert Counter(zip(t, c, q)) - Counter({k: v for k, v in Counter(zip(t, c, q)).items() if k[0] < 0}) == Counter((x[2], x[3], x[4]) for x in hero['cells']), \
     'records.json and hero.json disagree: rerun build.py'
 (D / 'scenes.json').write_text(json.dumps({'categories': recs['rows'], 'outcomes': recs['outcomes'], 'tile': hero['tile'], 'atlasCols': hero['atlasCols'],
                                            't': t, 'c': c, 'q': q}, separators=(',', ':')))
-print(f"scenes.json: {len(R)} scans, grades {recs['quality_totals']}, {sum(x < 0 for x in t)} without a preview, "
+print(f"scenes.json: {len(R)} scans, grades {[Counter(q)[k] for k in range(len(recs['outcomes']))]} (audit {recs['quality_totals']}), {sum(x < 0 for x in t)} without a preview, "
       f"categories {[Counter(c)[k] for k in range(len(recs['rows']))]}")
 
 # ---------------------------------------------------------------- recordings

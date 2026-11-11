@@ -25,6 +25,9 @@ import sys
 from pathlib import Path
 
 HOME = Path(__file__).resolve().parent.parent
+# where the published site reads its media (the R2 bucket ropedia-xperience-2, prefix v1). The Cloudflare build uses
+# this unless ASSET_BASE is set; to move the site to other media (a custom domain, a new prefix), change it and push.
+MEDIA_URL = 'https://pub-a5d54d8bd1a5427c92ce334fabec455e.r2.dev/v1'
 MEDIA = ('data', 'assets')                       # the folders that move to the bucket
 CODE = ('*.html', '*.css', '*.js')               # top-level files that make the page
 SKIP = {'engine_v0.js', 'full.html'}             # earlier versions, not part of the page
@@ -40,9 +43,9 @@ def rewrite(text, base):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('--base', default=os.environ.get('ASSET_BASE'),
+    ap.add_argument('--base', default=os.environ.get('ASSET_BASE') or MEDIA_URL,
                     help='URL under which data/ and assets/ are served: https://... or a path on the site itself '
-                         '(/media/v1); default: the ASSET_BASE environment variable (set it in the Cloudflare Pages project)')
+                         '(/media/v1); default: the ASSET_BASE environment variable, else MEDIA_URL in this file')
     ap.add_argument('--out', default=str(HOME.parent / 'dist'), help='where to write the bundle (default: website/dist)')
     ap.add_argument('--upload', metavar='REMOTE:PATH', help='also sync data/ and assets/ there with rclone')
     ap.add_argument('--dry-run', action='store_true', help='report only; write and upload nothing')

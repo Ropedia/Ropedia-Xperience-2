@@ -142,9 +142,10 @@ the code alone in which every `data/...` and `assets/...` reference points at a 
 **Code.** Cloudflare Workers Builds builds and serves the site from the `page` branch of
 github.com/Ropedia/Ropedia-Xperience-2, which holds the code only (`home/data`, `home/assets` and `dist` are in
 `.gitignore`). The Worker project `ropedia-xperience-2` has the build command
-`ASSET_BASE=<the media's URL, below> python3 home/tools/deploy.py` and the deploy command `npx wrangler deploy`;
+`python3 home/tools/deploy.py` and the deploy command `npx wrangler deploy`;
 `wrangler.jsonc` makes it a Worker with no script that serves `dist` as static files. Every push to `page` builds and
-publishes the site. (`ASSET_BASE` can instead be a build variable: Settings → Build → Build Variables and Secrets.)
+publishes the site. The media's URL is `MEDIA_URL` in `home/tools/deploy.py` (an `ASSET_BASE` environment variable or build
+variable overrides it); to point the site at other media, change that line and push.
 
 **Media.** The R2 bucket `ropedia-xperience-2` (account `3ece8696…`, location APAC) holds them under a version prefix
 (`v1/data/...`, `v1/assets/...`). For testing they are served at its development URL,

@@ -1,6 +1,7 @@
 // 04 Applications. An overview that links the nine modalities to the seven uses, the three benchmarks, and the four
 // demonstrations in the film's order. Everything drawn here comes from the film's own sources (build.py and
-// build_apps.py): data/bench.json (the paper's geometry table), data/r2s (the Real-to-Sim camera path rendered as scan
+// build_apps.py): data/bench.json (the paper's geometry table; its detection and spatial-intelligence tables are written
+// out below as DET and SQA_ROWS), data/r2s (the Real-to-Sim camera path rendered as scan
 // and as simulator, the simulator's object boxes, seven interaction clips), data/apps/gap (the gap heat maps),
 // data/traj (run 203 and the 30 held-out runs), the two retargeted robots of recording 7659f6d6 (drawn by engine.js
 // in its 'retarget' mode) and data/apps/wall (Robot A | Robot B in eight homes; each opens in 3D from data/<scene>/<take>).
@@ -94,7 +95,7 @@ const GROUPS = [
 ];
 const ICON = {   // the film's (video/metrics/uses.js)
   geo: '<path d="M24 7l15 8.5v17L24 41 9 32.5v-17z"/><path d="M9 15.5l15 8.5 15-8.5M24 24v17"/>',
-  vg: '<path d="M7 15V7h8M33 7h8v8M41 33v8h-8M15 41H7v-8"/><path d="M24 15l9 5v10l-9 5-9-5V20z"/><path d="M15 20l9 5 9-5M24 25v10"/>',
+  det: '<path d="M7 15V7h8M33 7h8v8M41 33v8h-8M15 41H7v-8"/><path d="M24 15l9 5v10l-9 5-9-5V20z"/><path d="M15 20l9 5 9-5M24 25v10"/>',
   sqa: '<path d="M11 10h26a5 5 0 0 1 5 5v14a5 5 0 0 1-5 5H24l-9 7v-7h-4a5 5 0 0 1-5-5V15a5 5 0 0 1 5-5z"/><path d="M20 18.5a4.2 4.2 0 1 1 6.1 3.8c-1.4.7-2.1 1.5-2.1 3.1"/><path d="M24 29.4v.2"/>',
   r2s: '<rect x="5" y="16" width="15" height="15" rx="2" stroke-dasharray="3 2.6"/><path d="M22.5 23.5h5m-2.6-2.8 2.8 2.8-2.8 2.8"/><path d="M36 12l8 4.5v10L36 31l-8-4.5v-10z"/><path d="M28 16.5l8 4.5 8-4.5M36 21v10"/>',
   ret: '<circle cx="12" cy="11" r="3.6"/><path d="M12 15v12M12 27l-5 11M12 27l5 11M5 19.5l7-2 7 2"/><path d="M22 23.5h5m-2.6-2.8 2.8 2.8-2.8 2.8"/><rect x="31" y="8" width="13" height="9" rx="2.5"/><path d="M37.5 17v4M31 21h13v11H31zM34 32v6M41 32v6"/>',
@@ -104,14 +105,14 @@ const ICON = {   // the film's (video/metrics/uses.js)
 // what each use takes: the applications as in the paper's motivation figure, the benchmarks the scan's references
 const USES = [
   { card: 0, id: 'geo', name: 'Depth & Geometry', io: 'Depth, camera pose and surface reconstruction', cost: '11 models', col: '#CCFFA0', uses: ['posed', 'mesh'], to: 'ap-bench', tab: 'geo' },
-  { card: 0, id: 'vg', name: '3D Visual Grounding', io: 'Referring expressions and 3D boxes', cost: '7 models', sub: 'scores pending', col: '#B79CF2', uses: ['posed', 'mesh'], to: 'ap-bench', tab: 'vg' },
-  { card: 0, id: 'sqa', name: 'Spatial Intelligence', io: '500 spatial questions of six kinds', cost: '11 models', sub: 'scores pending', col: '#F2D16B', uses: ['posed', 'mesh'], to: 'ap-bench', tab: 'sqa' },
+  { card: 0, id: 'det', name: '3D Object Detection', io: 'Object categories in, metric 3D boxes out', cost: '7 methods', col: '#B79CF2', uses: ['posed', 'mesh'], to: 'ap-bench', tab: 'det' },
+  { card: 0, id: 'sqa', name: 'Spatial Intelligence', io: '500 spatial questions of six kinds', cost: '12 models', col: '#F2D16B', uses: ['posed', 'mesh'], to: 'ap-bench', tab: 'sqa' },
   { card: 1, id: 'r2s', name: 'Real-to-Sim', io: '<em>One scanned scene</em> → an interactive digital twin', cost: 'One scan per scene', col: '#6FD39A', uses: ['mesh', 'gs'], to: 'ap-r2s' },
   { card: 1, id: 'lh', name: 'Long-Horizon Trajectory Generation', io: '<em>The simulator scene</em> → new multi-subtask robot trajectories', cost: 'Compute only', col: '#F29A5E', uses: ['mesh', 'gs'], to: 'ap-lh' },
   { card: 1, id: 'tel', name: 'Virtual Teleoperation', io: '<em>The simulator scene and an operator</em> → teleoperated robot episodes', cost: 'Operator only', sub: 'reset is a reload', col: '#FF8FD0', uses: ['mesh', 'gs'], to: 'ap-tel' },
   { card: 1, id: 'ret', name: 'Human → Robot Retargeting', io: '<em>One registered recording</em> → robot body and hand trajectories', cost: 'One recording', sub: 'no robot', col: '#7AC4D8', uses: ['mesh', 'gs', 'pose', 'mano', 'smplh'], to: 'ap-ret' },
 ];
-const CARDS = [{ tag: 'Understand · Benchmarks', meta: '10 scenes' }, { tag: 'Act · Demonstrations', meta: 'Cost per collection' }];
+const CARDS = [{ tag: 'Understand · Benchmarks', meta: '20 scenes' }, { tag: 'Act · Demonstrations', meta: 'Cost per collection' }];
 
 function overview() {
   const map = $('apMap'), links = $('apLinks');
@@ -171,11 +172,16 @@ const METS = [   // up: higher is better
   { k: 'auc30', name: 'AUC@30°', up: true, grp: 'Pose' }, { k: 'ate', name: 'ATE', up: false, grp: 'Pose' },
   { k: 'cd', name: 'CD', up: false, grp: 'Surface' }, { k: 'f5', name: 'F@5cm', up: true, grp: 'Surface' },
 ];
-const VG_MODELS = [['ScanRefer', 'Point-cloud specialist'], ['BUTD-DETR', 'Point-cloud specialist'], ['3D-VisTA', 'Point-cloud specialist'], ['Chat-Scene', '3D LLM'], ['Video-3D LLM', '3D LLM'], ['VLM-Grounder', 'Zero-shot VLM agent'], ['SeeGround', 'Zero-shot VLM agent']];
-const VG_EX = [   // written for this page on the Real-to-Sim scene's own objects: the form of the task, not benchmark items
-  { box: 'sofa_cushion_orange', text: '“the round orange cushion on the grey sofa”', split: 'Multiple · other cushions in the scene' },
-  { box: 'coffee_table', text: '“the low round table in front of the sofa”', split: 'Unique · the only one of its kind' },
-  { box: 'coffee_bottle', text: '“the bottle standing on the round table”', split: 'Multiple · other bottles in the scene' },
+// 3D object detection on the 20 scenes (the paper's table): AP25, AP50 and mIoU@0.25, in %, by kind of method
+const DET = { cols: ['AP25', 'AP50', '<span class="lc">mIoU@0.25</span>'], groups: [
+  ['End-to-end models', [['SpatialLM', 4.23, 1.07, 43.66], ['LLaVA-3D*', 0, 0, 0], ['SceneScript', 0, 0, 0], ['Map-Det3D', 6.45, 0.13, 36.16]]],
+  ['3DGS fields', [['M3', 5.72, 0.64, 37.01], ['LangSplat', 3.43, 0.34, 37.96]]],
+  ['Lifting', [['Boxer', 24.69, 6.09, 49.48]]],
+] };
+const DET_EX = [   // the Real-to-Sim scene's own objects on frame 151, a category each: the form of the task, not benchmark items
+  { cat: 'cushion', ids: ['sofa_cushion_grey', 'sofa_cushion_grey_2', 'sofa_cushion_orange', 'sofa_cushion_pink'] },
+  { cat: 'table', ids: ['coffee_table', 'sofa_side_table', 'bedroom_side_table'] },
+  { cat: 'remote control', ids: ['remote_1', 'remote_2'] },
 ];
 const SQA = [
   ['Translation', 'Between these two views, did the camera move to the left or to the right?', 'How the camera moved'],
@@ -185,6 +191,27 @@ const SQA = [
   ['Height', 'Which is higher above the floor, the television or the curtain rail?', 'Heights in a gravity-aligned scene'],
   ['Relative position', 'Standing at the sofa and facing the television, is the kitchen on your left or your right?', 'Where one thing is from another'],
 ];
+// spatial intelligence on the 500 questions (the paper's table): accuracy in %, the six kinds in SQA's order, then overall;
+// the models of MMSI-Bench, then the one below the paper's rule
+const SQA_COLS = ['Trans.', 'Rot.', 'Dist.', 'Depth', 'Height', 'Rel. pos.'];
+const SQA_ROWS = [
+  ['Open-weight models', [
+    ['Qwen2.5-VL-7B', 20.24, 36.14, 17.86, 65.06, 79.52, 78.31, 49.40], ['Qwen2.5-VL-72B', 21.43, 48.19, 28.57, 81.93, 92.77, 90.36, 60.40],
+    ['InternVL3-8B', 25.00, 30.12, 19.05, 68.67, 95.18, 80.72, 53.00], ['InternVL3-78B', 36.90, 46.99, 14.29, 80.72, 93.98, 84.34, 59.40],
+    ['LLaVA-OneVision-7B', 15.48, 24.10, 13.10, 56.63, 85.54, 74.70, 44.80], ['LLaVA-OneVision-72B', 28.57, 38.55, 20.24, 67.47, 89.16, 80.72, 54.00]]],
+  ['API models', [
+    ['GPT-4o', 41.67, 27.71, 17.86, 69.88, 87.95, 77.11, 53.60], ['GPT-5 High', 42.86, 56.63, 17.86, 92.77, 95.18, 90.36, 65.80],
+    ['o3 High', 38.10, 62.65, 11.90, 85.54, 93.98, 93.98, 64.20], ['Gemini-2.5-Pro', 54.76, 69.88, 33.33, 97.59, 98.80, 91.57, 74.20],
+    ['GPT-6 Astra High', 50.00, 72.29, 27.38, 91.57, 97.59, 92.77, 71.80]]],
+  [null, [['HoliWorld-VL-4B', 51.19, 62.65, 19.05, 87.95, 96.39, 90.36, 67.80]]],
+];
+// a score table in the paper's order: a row per group heading (none for a group after a rule), the best of each column bold
+function scoreTable(head, cols, groups, title = '') {
+  const rows = groups.flatMap(([, r]) => r), best = cols.map((_, j) => Math.max(...rows.map((r) => r[j + 1])));
+  return `<thead><tr><th scope="col" class="nm">${head}</th>${cols.map((c, j) => `<th scope="col"${title ? ` title="${title[j]}"` : ''}>${c}</th>`).join('')}</tr></thead>${
+    groups.map(([g, r]) => `<tbody>${g ? `<tr class="sec"><th scope="rowgroup" colspan="${cols.length + 1}">${g}</th></tr>` : ''}${
+      r.map((row, i) => `<tr${!g && !i ? ' class="rule"' : ''}><td class="nm"><b>${row[0]}</b></td>${cols.map((_, j) => `<td${row[j + 1] === best[j] ? ' class="top"' : ''}>${row[j + 1].toFixed(2)}</td>`).join('')}</tr>`).join('')}</tbody>`).join('')}`;
+}
 let pickBench = () => {};
 
 async function bench() {
@@ -193,7 +220,7 @@ async function bench() {
   const tabs = [...$('apBenchTabs').querySelectorAll('button')];
   pickBench = (id) => {
     for (const t of tabs) { const on = t.dataset.b === id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; $(`apB-${t.dataset.b}`).hidden = !on; }
-    if (id === 'vg') vg();
+    if (id === 'det') det();
   };
   tabs.forEach((t, i) => {
     t.addEventListener('click', () => pickBench(t.dataset.b));
@@ -250,13 +277,10 @@ async function bench() {
   });
   render();
 
-  // the two tracks without scores: the table as it will be, every cell empty
-  $('apVgTbl').innerHTML = `<thead><tr><th></th><th></th><th class="grp" colspan="2">Unique</th><th class="grp" colspan="2">Multiple</th><th class="grp" colspan="2">Overall</th></tr>
-    <tr><th scope="col">#</th><th scope="col" class="nm">Model</th>${'<th scope="col">Acc@0.25</th><th scope="col">Acc@0.5</th>'.repeat(3)}</tr></thead>
-    <tbody>${VG_MODELS.map(([n, g]) => `<tr><td></td><td class="nm"><b>${n}</b><span>${g}</span></td>${'<td>–</td>'.repeat(6)}</tr>`).join('')}</tbody>`;
+  // detection and spatial intelligence: the paper's tables as they are
+  $('apDetTbl').innerHTML = scoreTable('Method', DET.cols, DET.groups);
   $('apQs').innerHTML = SQA.map(([k, q, d]) => `<div class="ap-q"><b>${k}</b><p>${q}</p><span>${d}</span></div>`).join('');
-  $('apSqaTbl').innerHTML = `<thead><tr><th scope="col">#</th><th scope="col" class="nm">Model</th>${SQA.map(([k]) => `<th scope="col">${k}</th>`).join('')}<th scope="col">Overall</th></tr></thead>
-    <tbody><tr><td></td><td class="nm"><b>11 models</b><span>to be listed with their scores</span></td>${'<td>–</td>'.repeat(7)}</tr></tbody>`;
+  $('apSqaTbl').innerHTML = scoreTable('Model', [...SQA_COLS, 'Overall'], SQA_ROWS, [...SQA.map(([k]) => k), 'All 500 questions']);
 }
 
 // ---------------------------------------------------------------- the simulator scene's boxes on a camera of its path
@@ -286,15 +310,15 @@ function hull(q) {   // outline of the projected box (monotone chain)
 }
 const pretty = (id) => { const s = id.replace(/^Tour_/, '').replace(/_(\d+)$/, ' $1').replace(/_/g, ' '); return s[0].toUpperCase() + s.slice(1); };
 
-let vgDone = false;
-async function vg() {
-  if (vgDone) return; vgDone = true;
-  const D = await r2sData(), F = 151, cam = camAt(D, F - D.f0), svg = $('apVgSvg'), ex = $('apExprs');
-  $('apVgImg').src = `data/r2s/real/${pad(F, 5)}.jpg`;
-  ex.innerHTML = VG_EX.map((x, i) => `<button type="button" data-i="${i}" aria-pressed="${i === 0}">${x.text}<small>${x.split}</small></button>`).join('');
+let detDone = false;
+async function det() {
+  if (detDone) return; detDone = true;
+  const D = await r2sData(), F = 151, cam = camAt(D, F - D.f0), svg = $('apDetSvg'), ex = $('apCats');
+  $('apDetImg').src = `data/r2s/real/${pad(F, 5)}.jpg`;
+  ex.innerHTML = DET_EX.map((x, i) => `<button type="button" data-i="${i}" aria-pressed="${i === 0}">${x.cat}<small>${x.ids.length} boxes in this view</small></button>`).join('');
   const show = (i) => {
-    const q = project(D, cam, D.boxes.find((b) => b.id === VG_EX[i].box));
-    svg.innerHTML = q ? `<path class="face" d="${hull(q)}"/><path d="${edgePath(q)}"/>` : '';
+    const qs = DET_EX[i].ids.map((id) => project(D, cam, D.boxes.find((b) => b.id === id))).filter(Boolean);
+    svg.innerHTML = qs.map((q) => `<path class="face" d="${hull(q)}"/><path d="${edgePath(q)}"/>`).join('');
     for (const b of ex.children) b.setAttribute('aria-pressed', Number(b.dataset.i) === i);
   };
   ex.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) show(Number(b.dataset.i)); });

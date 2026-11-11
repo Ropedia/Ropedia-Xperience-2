@@ -240,7 +240,8 @@
 
 <!-- 04 Applications (apps.js, apps.css). An overview (nine modalities on the left, the three benchmarks and the four
      demonstrations on the right; a use lights the modalities it takes and a click goes to its part), the benchmarks
-     (a sortable table of the depth and geometry scores; samples and empty tables for the two tracks without scores),
+     (a sortable table of the depth and geometry scores; the 3D object detection scores beside an illustration of the
+     task; the spatial-intelligence scores under an example of each kind of question),
      then the demonstrations in the film's order: Real-to-Sim (reconstruction, then interaction), long-horizon
      trajectory generation, virtual teleoperation (no data yet) and human-to-robot retargeting with the eight-home wall -->
 <section class="ap" id="apps" aria-label="Applications">
@@ -262,13 +263,13 @@
   <div class="ap-part" id="ap-bench">
     <header class="ap-head" data-rv>
       <p class="eyebrow">Understand · Benchmarks</p>
-      <h2>Three benchmarks.<br>Ten scenes.</h2>
-      <p class="lead">Existing models, evaluated on the same 10 scanned scenes. <strong>No single model leads on every metric,</strong> and more input views do not consistently help.</p>
+      <h2>Three benchmarks.<br>Twenty scenes.</h2>
+      <p class="lead">Existing models, evaluated on the same 20 scanned scenes. <strong>No single model leads on every metric,</strong> more input views do not consistently help, and precise 3D boxes and metric distances are still out of reach.</p>
     </header>
     <div class="ap-tabs" role="tablist" aria-label="Benchmarks" id="apBenchTabs" data-rv>
       <button type="button" role="tab" id="tab-geo" data-b="geo" aria-selected="true" aria-controls="apB-geo">Depth &amp; Geometry<span>11 models</span></button>
-      <button type="button" role="tab" id="tab-vg" data-b="vg" aria-selected="false" aria-controls="apB-vg" tabindex="-1">3D Visual Grounding<span>7 models</span></button>
-      <button type="button" role="tab" id="tab-sqa" data-b="sqa" aria-selected="false" aria-controls="apB-sqa" tabindex="-1">Spatial Intelligence<span>11 models · 500 questions</span></button>
+      <button type="button" role="tab" id="tab-det" data-b="det" aria-selected="false" aria-controls="apB-det" tabindex="-1">3D Object Detection<span>7 methods</span></button>
+      <button type="button" role="tab" id="tab-sqa" data-b="sqa" aria-selected="false" aria-controls="apB-sqa" tabindex="-1">Spatial Intelligence<span>12 models · 500 questions</span></button>
     </div>
 
     <div class="ap-card ap-bpanel" id="apB-geo" role="tabpanel" aria-labelledby="tab-geo" data-rv>
@@ -280,28 +281,30 @@
       <p class="ap-say" id="apBenchSay" aria-live="polite"></p>
     </div>
 
-    <div class="ap-card ap-bpanel" id="apB-vg" role="tabpanel" aria-labelledby="tab-vg" hidden>
+    <div class="ap-card ap-bpanel" id="apB-det" role="tabpanel" aria-labelledby="tab-det" hidden>
       <div class="ap-two">
-        <figure class="ap-vg">
-          <div class="ap-stage"><img id="apVgImg" alt="A scanned living room; the object a phrase refers to is outlined by its 3D box"><svg id="apVgSvg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg></div>
-          <figcaption>An illustration of the task in the Real-to-Sim scene. The benchmark’s own annotations will replace it.</figcaption>
+        <figure class="ap-det">
+          <div class="ap-stage"><img id="apDetImg" alt="A scanned living room; every object of the picked category is outlined by its 3D box"><svg id="apDetSvg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg></div>
+          <figcaption>The task, illustrated in the Real-to-Sim scene: a category in, the 3D box of every object of it out.</figcaption>
         </figure>
-        <div class="ap-vg-side">
-          <h3>A phrase in, a 3D box out.</h3>
-          <p class="ap-p">Annotators write referring expressions for objects in each scene and mark the 3D box of each target in the scene’s frame. A model is given the phrase and has to return the box.</p>
-          <div class="ap-exprs" id="apExprs" role="group" aria-label="Referring expressions"></div>
+        <div class="ap-det-side">
+          <h3>Categories in, 3D boxes out.</h3>
+          <p class="ap-p">Annotators labelled the category and 3D box of every object in the 20 scenes. A method is given the categories that occur in a scene and returns their 3D boxes, metric and in the scene’s gravity-aligned frame.</p>
+          <div class="ap-cats" id="apCats" role="group" aria-label="Categories"></div>
         </div>
       </div>
-      <div class="ap-tbl-wrap"><table class="ap-tbl pending" id="apVgTbl"></table></div>
-      <p class="ap-say"><b class="ap-pend">Scores pending</b>Acc@0.25 and Acc@0.5 on the Unique and Multiple splits.</p>
+      <div class="ap-tbl-wrap"><table class="ap-tbl ap-sc" id="apDetTbl"></table></div>
+      <p class="ap-say"><span>Best on all three metrics: <b>Boxer</b>, which lifts open-vocabulary 2D detections to 3D boxes. Every other method stays under 7 AP25, and LLaVA-3D and SceneScript place no box at IoU 0.25.</span><span>No method reaches 7 AP50: precise 3D boxes in real, cluttered scenes are still beyond current models.</span></p>
+      <p class="ap-tnote">AP25 and AP50: average precision at a 3D IoU of 0.25 and 0.5. mIoU@0.25: the mean 3D IoU of the predictions matched to a reference box at IoU 0.25 (0 where none match). All in %. *LLaVA-3D: the public checkpoint, its boxes read from its text output.</p>
     </div>
 
     <div class="ap-card ap-bpanel" id="apB-sqa" role="tabpanel" aria-labelledby="tab-sqa" hidden>
       <h3>500 questions, six kinds.</h3>
-      <p class="ap-p">Question–answer pairs written on the 10 scenes, scored by answer accuracy for each kind and overall.</p>
+      <p class="ap-p">Question–answer pairs written on the 20 scenes, scored by answer accuracy for each kind and overall. One example of each kind, written for this page:</p>
       <div class="ap-qs" id="apQs"></div>
-      <div class="ap-tbl-wrap"><table class="ap-tbl pending" id="apSqaTbl"></table></div>
-      <p class="ap-say"><b class="ap-pend">Scores pending</b>Example questions show the form of each kind; the benchmark’s own questions will replace them.</p>
+      <div class="ap-tbl-wrap"><table class="ap-tbl ap-sc" id="apSqaTbl"></table></div>
+      <p class="ap-say"><span>Best overall: <b>Gemini-2.5-Pro</b>, 74.2%. HoliWorld-VL-4B reaches 67.8%, above every open-weight model (at most 60.4%) and GPT-5 High (65.8%).</span><span>Every model answers at least 74% of the height and relative-position questions; none passes 34% on distance or 55% on translation.</span></p>
+      <p class="ap-tnote">Answer accuracy in %; Overall is over all 500 questions. 23 are multiple choice and 84 take a number. Object names and equivalent directions are normalised; a distance counts as correct within max(0.1 m, 10% of the true value).</p>
     </div>
   </div>
 

@@ -80,8 +80,9 @@ Laundry is a scene type of the tasks only.
 
 `home/apps.js` and `home/apps.css` draw the Applications section of `home/index.html`: the overview (nine modalities,
 three benchmarks, four demonstrations; a use lights the modalities it takes and a click goes to its part), the
-benchmarks (a sortable table of the depth and geometry scores from `data/bench.json`; 3D visual grounding and spatial
-intelligence have no scores yet, so they show samples and empty tables) and the demonstrations in the film's order:
+benchmarks, all on the same 20 scenes (a sortable table of the depth and geometry scores from `data/bench.json`; the
+3D object detection and spatial-intelligence tables, written out in `apps.js` as `DET` and `SQA_ROWS` from the
+paper, with an illustration of each task) and the demonstrations in the film's order:
 Real-to-Sim (`home/r2s3d.js`: the simulator scene in free-view 3D playing the film's physics run, see below),
 long-horizon trajectory generation (run 203 with the plan in step, the 30 held-out starts), virtual teleoperation
 (a placeholder, no data yet) and retargeting (Human / Robot A / Robot B in 3D, drawn by `engine.js` in its `retarget`
@@ -105,8 +106,10 @@ It needs `cv2` (the system Python here has neither it nor PIL) and writes `home/
 view, each home's scan, recording window and robot motion under `home/data/<scene>/<take>/` (about 430 MB in all; the
 robots' meshes are the hero recording's files, not copied).
 
-Written for the page and to be replaced when the benchmark data arrives: the three referring expressions (`VG_EX` in
-`apps.js`, on the Real-to-Sim scene's own object boxes) and the six example questions (`SQA`).
+Written for the page, not benchmark items: the three detection categories (`DET_EX` in `apps.js`, each outlining
+that category's boxes from the Real-to-Sim scene on one frame) and the six example questions (`SQA`). The
+`data/bench.json` here is a copy of the film's (`video/metrics/data/bench.json`, by `build.py`); its `tracks` give
+each benchmark's model count and best score, which the page does not read.
 
 ### Real-to-Sim in 3D
 
@@ -152,7 +155,7 @@ leaves it out (the page then lights the scene by eye, with an ambient light of i
 shadows from the panels (the page's are sharp) and any light detail finer than the grid.
 
 The earlier scan | simulator pictures and the gap heat map are no longer on the page; `data/r2s/real`, `data/r2s/sim`
-and `data/apps/gap` are now only used by the grounding sample (one frame of `real`).
+and `data/apps/gap` are now only used by the detection illustration (one frame of `real`).
 
 ## Homepage: the release links
 

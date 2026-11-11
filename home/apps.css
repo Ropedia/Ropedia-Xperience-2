@@ -1,5 +1,5 @@
 /* 04 Applications (apps.js). Tokens and type come from home.css; the close and arrow buttons of the dialog from
-   dataset.css. One accent per use, the film's (--c on the element): depth #CCFFA0, grounding #B79CF2, spatial #F2D16B,
+   dataset.css. One accent per use, the film's (--c on the element): depth #CCFFA0, detection #B79CF2, spatial #F2D16B,
    Real-to-Sim #6FD39A, long-horizon #F29A5E, teleoperation #FF8FD0, retargeting #7AC4D8. */
 
 .ap { position: relative; background: #000; --card: #0b0b0c; --card2: #151516; --edge: max(20px, calc((100vw - 1180px) / 2)); padding-bottom: clamp(90px, 16vh, 170px); }
@@ -79,7 +79,6 @@
 .ap-play.paused i { left: 15px; top: 12px; width: 0; height: 0; border: 8px solid transparent; border-left: 13px solid var(--w); border-right: 0; }
 .ap-say { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 12px; margin: 18px 4px 0; font: 500 14.5px/1.45 var(--sans); color: var(--gray); min-height: 1.45em; }
 .ap-say b { color: var(--w); font-weight: 600; }
-.ap-pend { padding: 5px 10px; border-radius: 980px; background: rgba(242, 209, 107, 0.14); color: #f2d16b !important; font: 600 10.5px/1 var(--mono) !important; letter-spacing: 0.1em; text-transform: uppercase; }
 
 /* a picture with things laid over it */
 .ap-stage { position: relative; aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden; background: var(--card2); }
@@ -145,21 +144,27 @@ button.ap-lab:focus-visible { outline: 2px solid var(--g); outline-offset: 2px; 
 .ap-tbl td.nm { color: var(--w); }
 .ap-tbl tr.oom td { color: var(--gray2); }
 .ap-tbl td.oomc { text-align: center; font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: #ff9aa8 !important; }
-.ap-tbl.pending { min-width: 620px; margin-top: 26px; }
-.ap-tbl.pending td { color: var(--gray2); }
-.ap-tbl.pending td.nm { color: var(--w); }
-.ap-tbl.pending th.grp { text-align: center; border-bottom: 0; padding-bottom: 4px; color: var(--gray2); }
+/* the detection and spatial-intelligence tables (scoreTable in apps.js): the paper's order, the name column first, a
+   heading row per group of models, a rule above a group without one */
+.ap-tbl.ap-sc { min-width: 0; margin-top: 26px; }
+#apSqaTbl { min-width: 800px; }
+.ap-sc th.nm:first-child, .ap-sc td.nm:first-child { width: auto; }
+.ap-sc td.nm:first-child { color: var(--w); }
+.ap-sc tr.sec th { width: auto; padding: 20px 4px 8px; text-align: left; color: var(--gray2); }
+.ap-sc tbody:first-of-type tr.sec th { padding-top: 14px; }
+.ap-sc tr.rule td { border-top: 2px solid rgba(245, 245, 247, 0.3); }   /* wider than the row line above, so it wins */
+.ap-tnote { margin: 10px 4px 0; font: 500 12.5px/1.45 var(--sans); color: var(--gray2); text-wrap: pretty; }
 .ap-two { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: clamp(18px, 3vw, 40px); align-items: start; }
-.ap-vg { margin: 0; }
-.ap-vg figcaption { margin-top: 10px; font: 500 12.5px/1.4 var(--sans); color: var(--gray2); }
-.ap-vg svg path { fill: none; stroke: #b79cf2; stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; filter: drop-shadow(0 0 10px rgba(183, 156, 242, 0.7)); }
-.ap-vg svg path.face { fill: rgba(183, 156, 242, 0.16); stroke: none; filter: none; }
-.ap-exprs { display: grid; gap: 8px; margin-top: 20px; }
-.ap-exprs button { all: unset; box-sizing: border-box; width: 100%; padding: 13px 16px; border-radius: 14px; cursor: pointer; background: var(--card2); font: 500 16px/1.3 var(--sans); color: rgba(245, 245, 247, 0.8); transition: background 0.2s, color 0.2s, box-shadow 0.2s; }
-.ap-exprs button small { display: block; margin-top: 4px; font: 600 10.5px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray2); }
-.ap-exprs button:hover { color: var(--w); }
-.ap-exprs button[aria-pressed="true"] { color: var(--w); box-shadow: inset 0 0 0 1.5px #b79cf2; background: rgba(183, 156, 242, 0.1); }
-.ap-exprs button:focus-visible { outline: 2px solid var(--g); outline-offset: 2px; }
+.ap-det { margin: 0; }
+.ap-det figcaption { margin-top: 10px; font: 500 12.5px/1.4 var(--sans); color: var(--gray2); }
+.ap-det svg path { fill: none; stroke: #b79cf2; stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; filter: drop-shadow(0 0 10px rgba(183, 156, 242, 0.7)); }
+.ap-det svg path.face { fill: rgba(183, 156, 242, 0.16); stroke: none; filter: none; }
+.ap-cats { display: grid; gap: 8px; margin-top: 20px; }
+.ap-cats button { all: unset; box-sizing: border-box; width: 100%; padding: 13px 16px; border-radius: 14px; cursor: pointer; background: var(--card2); font: 500 16px/1.3 var(--sans); color: rgba(245, 245, 247, 0.8); transition: background 0.2s, color 0.2s, box-shadow 0.2s; }
+.ap-cats button small { display: block; margin-top: 4px; font: 600 10.5px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray2); }
+.ap-cats button:hover { color: var(--w); }
+.ap-cats button[aria-pressed="true"] { color: var(--w); box-shadow: inset 0 0 0 1.5px #b79cf2; background: rgba(183, 156, 242, 0.1); }
+.ap-cats button:focus-visible { outline: 2px solid var(--g); outline-offset: 2px; }
 .ap-qs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 22px; }
 .ap-q { padding: 16px 18px 18px; border-radius: 16px; background: var(--card2); }
 .ap-q b { display: block; font: 600 11px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: #f2d16b; }
@@ -320,6 +325,7 @@ button.ap-lab:focus-visible { outline: 2px solid var(--g); outline-offset: 2px; 
   .ap-use svg.ic { width: 36px; height: 36px; }
   .ap-use .cost { grid-column: 2; justify-self: start; text-align: left; max-width: none; }
   .ap-qs, .ap-int-list { grid-template-columns: 1fr; }
+  .ap-sc th, .ap-sc td { padding-left: 6px; padding-right: 6px; }
   .ap-wall { grid-template-columns: 1fr 1fr; }
   .ap-stage, .ap-int-play, .ap-ret .gl-slot.box { border-radius: 16px; }
   .ap-err-key { margin-left: 2px; }

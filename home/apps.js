@@ -2,7 +2,7 @@
 // demonstrations in the film's order. Everything drawn here comes from the film's own sources (build.py and
 // build_apps.py): data/bench.json (the paper's geometry table; its detection and spatial-intelligence tables are written
 // out below as DET and SQA_ROWS), data/r2s (the Real-to-Sim camera path rendered as scan
-// and as simulator, the simulator's object boxes, seven interaction clips), data/apps/gap (the gap heat maps),
+// and as simulator, seven interaction clips), data/apps/gap (the gap heat maps),
 // data/traj (run 203 and the 30 held-out runs), the two retargeted robots of recording 7659f6d6 (drawn by engine.js
 // in its 'retarget' mode) and data/apps/wall (Robot A | Robot B in eight homes; each opens in 3D from data/<scene>/<take>).
 // Each part sets itself up when it comes near the screen, and plays only while it is on it.
@@ -178,11 +178,6 @@ const DET = { cols: ['AP25', 'AP50', '<span class="lc">mIoU@0.25</span>'], group
   ['3DGS fields', [['M3', 5.72, 0.64, 37.01], ['LangSplat', 3.43, 0.34, 37.96]]],
   ['Lifting', [['Boxer', 24.69, 6.09, 49.48]]],
 ] };
-const DET_EX = [   // the Real-to-Sim scene's own objects on frame 151, a category each: the form of the task, not benchmark items
-  { cat: 'cushion', ids: ['sofa_cushion_grey', 'sofa_cushion_grey_2', 'sofa_cushion_orange', 'sofa_cushion_pink'] },
-  { cat: 'table', ids: ['coffee_table', 'sofa_side_table', 'bedroom_side_table'] },
-  { cat: 'remote control', ids: ['remote_1', 'remote_2'] },
-];
 const SQA = [
   ['Translation', 'Between these two views, did the camera move to the left or to the right?', 'How the camera moved'],
   ['Rotation', 'From the first view to the second, which way did the camera turn?', 'How the camera turned'],
@@ -220,7 +215,6 @@ async function bench() {
   const tabs = [...$('apBenchTabs').querySelectorAll('button')];
   pickBench = (id) => {
     for (const t of tabs) { const on = t.dataset.b === id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; $(`apB-${t.dataset.b}`).hidden = !on; }
-    if (id === 'det') det();
   };
   tabs.forEach((t, i) => {
     t.addEventListener('click', () => pickBench(t.dataset.b));
@@ -281,48 +275,6 @@ async function bench() {
   $('apDetTbl').innerHTML = scoreTable('Method', DET.cols, DET.groups);
   $('apQs').innerHTML = SQA.map(([k, q, d]) => `<div class="ap-q"><b>${k}</b><p>${q}</p><span>${d}</span></div>`).join('');
   $('apSqaTbl').innerHTML = scoreTable('Model', [...SQA_COLS, 'Overall'], SQA_ROWS, [...SQA.map(([k]) => k), 'All 500 questions']);
-}
-
-// ---------------------------------------------------------------- the simulator scene's boxes on a camera of its path
-let R2S = null;
-const r2sData = () => (R2S ??= json('data/r2s/r2s.json'));
-const sub = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
-const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
-const norm = (a) => { const n = Math.hypot(...a); return [a[0] / n, a[1] / n, a[2] / n]; };
-const EDGES = [[0, 1], [2, 3], [4, 5], [6, 7], [0, 2], [1, 3], [4, 6], [5, 7], [0, 4], [1, 5], [2, 6], [3, 7]];
-function camAt(D, i) {
-  const c = D.cams[clamp(i, 0, D.cams.length - 1)], p = c.slice(0, 3), fw = norm(sub(c.slice(3, 6), p)), r = norm(cross(fw, [0, 1, 0]));
-  return { p, fw, r, u: cross(r, fw), k: (D.H / 2) / Math.tan(c[6] * Math.PI / 360) };
-}
-function project(D, cam, b) {   // the box's eight corners on the 1920 x 1080 frame, or null when any is behind the camera
-  const q = [];
-  for (const v of b.v) { const d = sub(v, cam.p), z = dot(d, cam.fw); if (z < 0.08) return null; q.push([D.W / 2 + cam.k * dot(d, cam.r) / z, D.H / 2 - cam.k * dot(d, cam.u) / z]); }
-  return q;
-}
-const edgePath = (q) => EDGES.map(([a, c]) => `M${q[a][0].toFixed(1)},${q[a][1].toFixed(1)}L${q[c][0].toFixed(1)},${q[c][1].toFixed(1)}`).join('');
-function hull(q) {   // outline of the projected box (monotone chain)
-  const P = [...q].sort((a, b) => a[0] - b[0] || a[1] - b[1]), cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
-  const lo = [], up = [];
-  for (const p of P) { while (lo.length > 1 && cr(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop(); lo.push(p); }
-  for (const p of P.reverse()) { while (up.length > 1 && cr(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop(); up.push(p); }
-  return `M${[...lo.slice(0, -1), ...up.slice(0, -1)].map((p) => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join('L')}Z`;
-}
-const pretty = (id) => { const s = id.replace(/^Tour_/, '').replace(/_(\d+)$/, ' $1').replace(/_/g, ' '); return s[0].toUpperCase() + s.slice(1); };
-
-let detDone = false;
-async function det() {
-  if (detDone) return; detDone = true;
-  const D = await r2sData(), F = 151, cam = camAt(D, F - D.f0), svg = $('apDetSvg'), ex = $('apCats');
-  $('apDetImg').src = `data/r2s/real/${pad(F, 5)}.jpg`;
-  ex.innerHTML = DET_EX.map((x, i) => `<button type="button" data-i="${i}" aria-pressed="${i === 0}">${x.cat}<small>${x.ids.length} boxes in this view</small></button>`).join('');
-  const show = (i) => {
-    const qs = DET_EX[i].ids.map((id) => project(D, cam, D.boxes.find((b) => b.id === id))).filter(Boolean);
-    svg.innerHTML = qs.map((q) => `<path class="face" d="${hull(q)}"/><path d="${edgePath(q)}"/>`).join('');
-    for (const b of ex.children) b.setAttribute('aria-pressed', Number(b.dataset.i) === i);
-  };
-  ex.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) show(Number(b.dataset.i)); });
-  show(0);
 }
 
 // ================================================================ long-horizon trajectory generation

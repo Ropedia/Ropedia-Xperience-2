@@ -282,17 +282,8 @@
     </div>
 
     <div class="ap-card ap-bpanel" id="apB-det" role="tabpanel" aria-labelledby="tab-det" hidden>
-      <div class="ap-two">
-        <figure class="ap-det">
-          <div class="ap-stage"><img id="apDetImg" alt="A scanned living room; every object of the picked category is outlined by its 3D box"><svg id="apDetSvg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg></div>
-          <figcaption>The task, illustrated in the Real-to-Sim scene: a category in, the 3D box of every object of it out.</figcaption>
-        </figure>
-        <div class="ap-det-side">
-          <h3>Categories in, 3D boxes out.</h3>
-          <p class="ap-p">Annotators labelled the category and 3D box of every object in the 20 scenes. A method is given the categories that occur in a scene and returns their 3D boxes, metric and in the scene’s gravity-aligned frame.</p>
-          <div class="ap-cats" id="apCats" role="group" aria-label="Categories"></div>
-        </div>
-      </div>
+      <h3>Categories in, 3D boxes out.</h3>
+      <p class="ap-p">Annotators labelled the category and 3D box of every object in the 20 scenes. A method is given the categories that occur in a scene and returns their 3D boxes, metric and in the scene’s gravity-aligned frame.</p>
       <div class="ap-tbl-wrap"><table class="ap-tbl ap-sc" id="apDetTbl"></table></div>
       <p class="ap-say"><span>Best on all three metrics: <b>Boxer</b>, which lifts open-vocabulary 2D detections to 3D boxes. Every other method stays under 7 AP25, and LLaVA-3D and SceneScript place no box at IoU 0.25.</span><span>No method reaches 7 AP50: precise 3D boxes in real, cluttered scenes are still beyond current models.</span></p>
       <p class="ap-tnote">AP25 and AP50: average precision at a 3D IoU of 0.25 and 0.5. mIoU@0.25: the mean 3D IoU of the predictions matched to a reference box at IoU 0.25 (0 where none match). All in %. *LLaVA-3D: the public checkpoint, its boxes read from its text output.</p>

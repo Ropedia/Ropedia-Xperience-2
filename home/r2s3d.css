@@ -1,0 +1,37 @@
+/* Real-to-Sim in free-view 3D (r2s3d.js). Tokens from home.css, controls from apps.css. */
+.r3 { margin: 0 var(--edge); }
+.r3-stage { position: relative; aspect-ratio: 16 / 9; border-radius: 28px; overflow: hidden; background: #0b0b0c; }
+.r3-stage > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; opacity: 0; transition: opacity 0.6s; }
+.r3-stage > canvas:active { cursor: grabbing; }
+.r3-stage.ready > canvas { opacity: 1; }
+.r3-stage .gl-load { z-index: 2; }
+.r3-stage.failed .gl-load span::after { content: ' failed'; }
+.r3-stage .ap-hint { left: 18px; bottom: 18px; padding: 7px 11px; border-radius: 980px; background: rgba(0, 0, 0, 0.5); color: rgba(245, 245, 247, 0.82); }
+.r3-stage.moved .ap-hint { opacity: 0; }
+.r3-clip { position: absolute; right: 16px; bottom: 16px; z-index: 4; width: min(34%, 380px); margin: 0; border-radius: 16px; overflow: hidden; background: #151516; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.14); animation: r3-in 0.45s var(--ease); pointer-events: none; }
+.r3-clip[hidden] { display: none; }
+@keyframes r3-in { from { opacity: 0; transform: translateY(14px) scale(0.97); } }
+.r3-clip canvas { display: block; width: 100%; aspect-ratio: 16 / 9; }
+.r3-clip figcaption { display: flex; align-items: baseline; flex-wrap: wrap; gap: 3px 10px; padding: 10px 12px 11px; }
+.r3-clip figcaption b { font: 600 14px/1.1 var(--sans); }
+.r3-clip figcaption span { font: 500 11.5px/1.1 var(--mono); color: rgba(245, 245, 247, 0.72); }
+.r3-clip figcaption em { flex-basis: 100%; font: 500 11.5px/1.2 var(--sans); font-style: normal; color: var(--gray); }
+.r3-scrub { height: 46px; border-radius: 10px; background: var(--card); overflow: hidden; }
+.r3-lanes { position: absolute; inset: 0; }
+.r3-lanes i { position: absolute; height: 3px; border-radius: 2px; background: var(--c); opacity: 0.28; cursor: pointer; transition: opacity 0.25s; }
+.r3-lanes i::before { content: ''; position: absolute; inset: -2px 0; }
+.r3-lanes i.on { opacity: 0.95; }
+.r3-scrub .ap-headm { top: 0; bottom: 0; }
+.r3-clock { flex: none; min-width: 52px; font: 500 13px/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--gray); }
+.r3-list { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 14px; }
+.r3-list button { padding: 12px 14px; }
+.r3-list button b { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 980px) { .r3-list { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) {
+  .r3-stage { border-radius: 16px; aspect-ratio: 4 / 3; }
+  .r3-clip { width: 46%; right: 8px; bottom: 8px; border-radius: 10px; }
+  .r3-clip figcaption em, .r3-clip figcaption span { display: none; }
+  .r3-stage .ap-hint { display: none; }
+  .r3-list button { grid-template-columns: 10px minmax(0, 1fr); }
+  .r3-list button span { display: none; }
+}

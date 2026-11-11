@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ropedia Xperience · Site Draft</title>
+<meta name="description" content="Draft layout of the Ropedia Xperience project website, built from the launch video's own pages.">
+<link rel="stylesheet" href="draft.css">
+</head>
+<body>
+
+<div class="draftbar" role="note">
+  <span class="db-tag">DRAFT v0.2</span>
+  <span class="db-text">网站草稿：英文是正式文案，黄色便签和编号是说明。带 <b>LIVE</b> 标记的画面是直接嵌进来的片子源页面（<code>video/</code> 里的 HTML），滚到才加载，离开就卸载。</span>
+  <button class="db-toggle" id="notesToggle" type="button" aria-pressed="true">隐藏标注 <kbd>N</kbd></button>
+</div>
+
+<nav class="nav" aria-label="Sections">
+  <a class="nav-brand" href="#overview"><img src="assets/ropedia_brand.png" alt="Ropedia"><span>Xperience</span></a>
+  <div class="nav-links">
+    <a href="#overview"><b>01</b> Overview</a>
+    <a href="#pipeline"><b>02</b> Pipeline</a>
+    <a href="#explore">Explore</a>
+    <a href="#data"><b>03</b> Data</a>
+    <a href="#applications"><b>04</b> Applications</a>
+    <a href="#release">Release</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn ghost" href="#release">Paper</a>
+    <a class="btn ghost" href="#release">Dataset</a>
+    <button class="btn primary" type="button" data-film>&#9654; Film</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============================================================ 01 OVERVIEW -->
+<section id="overview" class="hero">
+  <div class="embed hero-embed" id="heroEmbed" data-src="../../video/mosaic/index.html?grid=1" data-css="top count endsub"
+       data-drive='{"from":0,"to":23.9,"loop":false}' data-path="video/mosaic · ?grid=1">
+    <img class="poster" src="assets/hero_lockup.jpg" alt="Scenes of the dataset forming the Xperience lockup">
+    <span class="live-badge"></span>
+    <button class="replay" type="button" data-replay="heroEmbed">&#8635; Replay</button>
+    <span class="pin" style="left:18px;top:18px">1</span>
+  </div>
+  <div class="hero-text">
+    <p class="hero-sub"><span class="pin" style="left:-34px;top:2px">2</span>A Gold Standard for Next-Generation Embodied Data Foundations</p>
+    <div class="hero-stats">
+      <span class="pin" style="left:-14px;top:-12px">3</span>
+      <div><b>1,812</b><span>scenes</span></div>
+      <div><b>596</b><span>locations</span></div>
+      <div><b>4,230</b><span>recordings</span></div>
+      <div><b>74</b><span>tasks</span></div>
+      <div><b>131&thinsp;h</b><span>egocentric video</span></div>
+    </div>
+    <div class="hero-cta">
+      <span class="pin" style="left:-14px;top:-12px">4</span>
+      <a class="btn" href="#release">Paper &#8599;</a>
+      <a class="btn" href="#release">Dataset &#8599;</a>
+      <a class="btn" href="#release">Code &#8599;</a>
+      <button class="btn primary" type="button" data-film>&#9654; Watch the film</button>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <aside class="note">
+    <h4>01 Overview · 首屏</h4>
+    <ol>
+      <li><i>1</i>片子开场原样搬过来：一个场景带卡片 → 2×2 → 3×3 → 1,812 个场景拼成的 X，停在 lockup 上（<code>video/mosaic/index.html?grid=1</code>，隐藏了角标、计数和片子里的副标题）。正式版再加 hover 看类别和 QC 等级、点击进 Explore。<span class="st ok">片子源页面</span></li>
+      <li><i>2</i>副标题用论文副标题；网站名用 Ropedia Xperience 还是 Xperience 2，待定。<span class="st tbd">待定</span></li>
+      <li><i>3</i>数字条：论文 Table release_summary。<span class="st ok">现成</span></li>
+      <li><i>4</i>Paper / Dataset / Code 链接论文里还是 placeholder；Watch the film 弹窗播放 v32 成片预览。<span class="st tbd">待定</span></li>
+    </ol>
+  </aside>
+</div>
+
+<!-- ============================================================ PAPER -->
+<section id="paper" class="sec">
+  <div class="wrap">
+    <header class="sec-head">
+      <div class="chap"><span class="num">01</span><span>PAPER</span></div>
+      <h2>Ropedia Xperience</h2>
+      <p class="authors">Authors and affiliations · to be announced</p>
+    </header>
+
+    <aside class="note">
+      <h4>论文介绍</h4>
+      <ol>
+        <li><i>1</i>摘要原文，加作者、单位（论文里还是占位）。<span class="st tbd">待定</span></li>
+        <li><i>2</i>Teaser：论文 <code>figs/teaser.pdf</code>，点开看大图。<span class="st ok">现成</span></li>
+        <li><i>3</i>三张卡用论文引言第一段的 System 2 / 1 / 0，说明为什么需要"环境 + 人的经验"，点卡片跳到对应应用。可选。<span class="st tbd">可选</span></li>
+      </ol>
+    </aside>
+
+    <div class="paper-grid">
+      <div class="abstract">
+        <span class="pin" style="left:-36px;top:-6px">1</span>
+        <h3 class="kicker">Abstract</h3>
+        <p>Scaling embodied intelligence requires 3D environments for spatial reasoning and simulation, and human experience for learning how to act. Collecting both at scale and converting them into reusable robot training resources remains challenging.</p>
+        <p>We introduce <strong>Ropedia Xperience</strong>, a dataset pairing 1,812 scene scans across 596 locations with 4,230 egocentric recordings covering 74 tasks and 131 hours. Using data captured with a handheld LiDAR scanner and an egocentric headset, our automated pipeline produces scene meshes and 3D Gaussian representations, spatially registered camera trajectories and estimated hand and body motion, and hierarchical language annotations.</p>
+        <p>We show that these spatially aligned assets provide a basis for scaling robot training data through applications such as real-to-sim conversion and human-to-robot retargeting. Together, these contributions position Ropedia Xperience as a unified embodied data foundation for spatial reasoning, policy learning, and low-level control.</p>
+      </div>
+      <figure class="teaser">
+        <span class="pin" style="right:-12px;top:-12px">2</span>
+        <a href="assets/teaser.jpg" target="_blank" rel="noopener"><img src="assets/teaser.jpg" alt="Teaser: 3D environments, human experience, the composite scene, applications and benchmarks"></a>
+        <figcaption>KOSMO-scanned 3D environments and egocentric HOMIE recordings (left) are registered into one scene with body motion, camera poses, and language (center), which supports downstream applications and benchmarks (right).</figcaption>
+      </figure>
+    </div>
+
+    <div class="needs">
+      <span class="pin" style="left:-14px;top:-12px">3</span>
+      <a class="need" href="#benchmarks">
+        <span class="need-tag">System 2 · Reason</span>
+        <p>Foundation models need visual observations and 3D spatial data to understand the physical world and reason about tasks.</p>
+        <span class="need-go">Benchmarks &rarr;</span>
+      </a>
+      <a class="need" href="#demo-rt">
+        <span class="need-tag">System 1 · Act</span>
+        <p>Learning how to act in this world requires diverse demonstrations for policy training.</p>
+        <span class="need-go">Retargeting · Long-horizon generation &rarr;</span>
+      </a>
+      <a class="need" href="#demo-r2s">
+        <span class="need-tag">System 0 · Execute</span>
+        <p>Executing these actions reliably requires interactive playgrounds where control models can learn through trial and error.</p>
+        <span class="need-go">Real-to-Sim · Teleoperation &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 02 PIPELINE -->
+<section id="pipeline" class="sec">
+  <div class="wrap">
+    <header class="sec-head">
+      <div class="chap"><span class="num">02</span><span>PIPELINE</span></div>
+      <h2>Scan the space once.<br>Record every task in it.</h2>
+      <p class="lede">For each scene, the operator first performs a KOSMO scan and then wears HOMIE to complete the assigned tasks one by one. Each recording is registered to the scan of its scene.</p>
+    </header>
+
+    <aside class="note">
+      <h4>02 Pipeline · 滚动驱动片子 act 2</h4>
+      <ol>
+        <li><i>1</i>画面固定在屏幕上，往下滚就是在拖片子的时间轴：<code>act2_tree</code>（第 1、2 步）→ <code>act2_register</code>（第 3 步）→ <code>act2_layers</code>（第 4 步），都是 <code>video/flythrough</code> 的实时页面，用 <code>dev.setTime(t)</code> 按滚动位置设时间。<span class="st ok">片子源页面</span></li>
+        <li><i>2</i>下面的文字跟着当前这一步换；四个按钮可以直接跳到某一步。<span class="st mod">要改</span></li>
+        <li><i>3</i>设备卡：参数来自论文 Table（capture devices）。KOSMO 这个名字露不露待定（论文里有，机器之心稿里换成了 LiDAR scanner）。<span class="st tbd">待定</span></li>
+        <li><i>4</i>不出现 HOMIE scene scan 阶段；pipeline 只提 EgoXperience、EgoAllo、Gemini 3.6 Flash。<span class="st warn">注意</span></li>
+      </ol>
+    </aside>
+  </div>
+
+  <div class="scrolly" id="scrolly">
+    <div class="sticky">
+      <div class="wrap">
+        <div class="embed stage" id="stage" data-css="top" data-path="video/flythrough · act 2">
+          <img class="poster" id="stagePoster" src="assets/pipe_capture_scan.jpg" alt="">
+          <span class="live-badge"></span>
+          <span class="pin" style="left:18px;top:18px">1</span>
+        </div>
+        <div class="caption" id="caption">
+          <span class="pin" style="left:-14px;top:-10px">2</span>
+          <div class="cap-steps" id="capSteps"></div>
+          <div class="cap-text"><span class="step-n" id="capN"></span><h3 id="capH"></h3><p id="capP"></p></div>
+          <div class="cap-bar"><i id="capBar"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="devices">
+      <span class="pin" style="left:-14px;top:-12px">3</span>
+      <div class="device">
+        <img src="assets/device_kosmo.jpg" alt="KOSMO handheld scanner">
+        <div><h5>KOSMO</h5><p>Handheld LiDAR scanner for the static scene.</p>
+        <dl><dt>Cameras</dt><dd>2 fisheye, 2 wide-angle</dd><dt>Shutter</dt><dd>Rolling</dd><dt>LiDAR</dt><dd>Yes</dd><dt>Yields</dt><dd>Posed images · mesh · 3DGS, one metric scene frame</dd></dl></div>
+      </div>
+      <div class="device">
+        <img src="assets/device_homie.jpg" alt="HOMIE head-mounted recorder">
+        <div><h5>HOMIE</h5><p>Head-mounted egocentric recorder; both hands stay free.</p>
+        <dl><dt>Cameras</dt><dd>4 fisheye (2 front, 2 rear)</dd><dt>Shutter</dt><dd>Global</dd><dt>IMU · Audio</dt><dd>Yes · 4 channels</dd><dt>Yields</dt><dd>Video · trajectory · depth · MANO hands · SMPL-H body · captions</dd></dl></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ EXPLORE -->
+<section id="explore" class="sec">
+  <div class="wrap">
+    <header class="sec-head">
+      <div class="chap"><span class="num">&#9678;</span><span>EXPLORE</span></div>
+      <h2>Explore a scene</h2>
+      <p class="lede">Four scanned scenes and their registered recordings. Follow the operator through the scan, look through the head camera, and step through the captions of a whole recording.</p>
+    </header>
+
+    <aside class="note">
+      <h4>Explore · 网站的核心</h4>
+      <ol>
+        <li><i>1</i>四个场景：推荐组，等你确认。点 tab 会换成那个场景的实时镜头（<code>lh17761</code> 是三个停靠点的 flythrough，其余是 <code>act1_grid</code> 的镜头），caption 和时间轴是真实数据。<span class="st tbd">待定</span></li>
+        <li><i>2</i>视角：Follow 跟随操作员 / Orbit 限高限俯仰的自由视角 / Ego 从头部相机渲染 3DGS，和真实画面用滑块混合 / Plan 俯视、切天花板。<span class="st mod">viewer 已有，要移植</span></li>
+        <li><i>3</i>图层开关，加 mesh | 3DGS 分割线（片子 act2_layers）。<span class="st mod">要改</span></li>
+        <li><i>4</i>同一场景的所有录制：列表加扫描里的头部轨迹，点击切换，体现一次扫描、多条录制。只放 PASS。<span class="st mod">viewer 已有，要移植</span></li>
+        <li><i>5</i>头部相机画面 + 三级 caption（任务 / 子任务和动作 / 逐帧手部状态），跟着时间走。<span class="st ok">现成</span></li>
+        <li><i>6</i>时间轴：子任务色块 + 动作刻度，拖动定位；链接定位到某一帧（<code>#scene=&amp;take=&amp;f=</code>）。草稿里的 3D 画面是片子镜头，还没和这条时间轴同步。<span class="st mod">要改</span></li>
+        <li><i>7</i>全屏模式；手机上默认放预渲染视频。<span class="st mod">要改</span></li>
+        <li><i>8</i>下面一排是片子 act 1 的 12 个场景镜头，补足广度。<span class="st ok">现成</span></li>
+      </ol>
+      <p class="note-foot">正式版底层用 h200 上的 mocap viewer（已有 Orbit/Follow/Ego、时间轴、caption 卡、其它录制轨迹、切天花板、URL 定位），画面细节用片子 <code>director.js</code> 的（身体 mesh、MANO 吸附手腕、视锥贴图）。LH_ 场景的长时程录制不在 74 个 task 里，不标 Level 2；配准只标 PASS，不放 cm 数字。</p>
+    </aside>
+
+    <div class="scene-tabs" id="sceneTabs" role="tablist" aria-label="Scenes">
+      <span class="pin" style="left:-14px;top:-12px">1</span>
+    </div>
+
+    <div class="viewer" id="viewer">
+      <div class="embed vw-3d" id="vw3d" data-css="nohud" data-path="video/flythrough">
+        <img class="poster" id="vwPoster" src="assets/view_lh17761.jpg" alt="Registered recording in the 3D scan">
+        <span class="live-badge"></span>
+      </div>
+      <div class="vw-grad"></div>
+
+      <div class="vw-modes" role="group" aria-label="Camera mode">
+        <span class="pin" style="left:-12px;top:-12px">2</span>
+        <button class="on" type="button">Follow</button><button type="button">Orbit</button><button type="button">Ego</button><button type="button">Plan</button>
+      </div>
+
+      <div class="vw-layers" role="group" aria-label="Layers">
+        <span class="pin" style="left:-12px;top:-12px">3</span>
+        <button class="on" type="button">Body</button><button class="on" type="button">Hands</button><button class="on" type="button">Head camera</button><button class="on" type="button">Trajectory</button><button class="on" type="button">Captions</button><button type="button">Mesh | 3DGS</button>
+        <button class="vw-full" type="button" aria-label="Full screen" id="vwFull">&#x26F6;</button>
+        <span class="pin" style="right:-10px;top:30px">7</span>
+      </div>
+
+      <div class="vw-takes panel">
+        <span class="pin" style="left:-12px;top:-12px">4</span>
+        <div class="p-tag">RECORDINGS IN THIS SCENE <b id="takeCount"></b></div>
+        <ol id="takeList"></ol>
+      </div>
+
+      <div class="vw-cards">
+        <span class="pin" style="left:-12px;top:-12px">5</span>
+        <div class="panel ego">
+          <div class="p-tag">HEAD CAMERA <span>stereo-left</span></div>
+          <img id="egoImg" src="assets/ego_lh17761.jpg" alt="Head-camera frame">
+        </div>
+        <div class="panel caps">
+          <div class="p-tag">CAPTIONS <span class="reg">REGISTERED · PASS</span></div>
+          <dl id="caps"></dl>
+        </div>
+      </div>
+
+      <div class="vw-tl" id="timeline">
+        <span class="pin" style="left:-12px;top:-12px">6</span>
+        <button class="tl-play" type="button" aria-label="Play">&#9654;</button>
+        <div class="tl-time" id="tlTime"></div>
+        <div class="tl-track" id="tlTrack">
+          <div class="tl-blocks" id="tlBlocks"></div>
+          <div class="tl-acts" id="tlActs"></div>
+          <div class="tl-head" id="tlHead"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="more">
+      <div class="more-head"><h3 class="kicker">More scenes</h3><span>Real places, each scanned once in 3D, each with a registered recording.</span><span class="pin inline">8</span></div>
+      <div class="more-strip" id="moreStrip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 03 DATA -->
+<section id="data" class="sec">
+  <div class="wrap">
+    <header class="sec-head">
+      <div class="chap"><span class="num">03</span><span>DATA</span></div>
+      <h2>Scale and quality</h2>
+      <p class="lede">1,812 scene scans across 596 locations, with 4,230 recordings of 74 tasks. Every reconstruction is reviewed in four stages; 1,121 scenes (62%) are rated usable or perfect.</p>
+    </header>
+
+    <aside class="note">
+      <h4>03 Data · 片子 act 3</h4>
+      <ol>
+        <li><i>1</i>片子 act 3 原样嵌进来（<code>video/metrics/index.html</code>，25 s 循环）：发布规模 → QC 四级流程 → 12 个类别 → 动作 × 场景类型的录制 heatmap。X 里每个 tile 是一个真实场景。<span class="st ok">片子源页面</span></li>
+        <li><i>2</i>正式版改成交互：按 QC 结果或类别筛选、重排，hover 看场景缩略图和数字（数据 <code>records.json</code> / <code>tasks.json</code>，和论文的图逐格对得上）。<span class="st mod">要改</span></li>
+      </ol>
+    </aside>
+
+    <div class="filters" role="group" aria-label="Filter scenes">
+      <span class="pin" style="left:-14px;top:-12px">2</span>
+      <button class="on" type="button">All <b>1,812</b></button>
+      <button type="button"><i style="--c:#CCFFA0"></i>Perfect <b>150</b></button>
+      <button type="button"><i style="--c:#9CC3FF"></i>Usable <b>971</b></button>
+      <button type="button"><i style="--c:#FFB36B"></i>Reuse candidate <b>579</b></button>
+      <button type="button"><i style="--c:#FF6B9A"></i>Excluded <b>112</b></button>
+      <span class="filters-sep"></span>
+      <button type="button">By category &#9662;</button>
+    </div>
+
+    <div class="embed" data-src="../../video/metrics/index.html" data-css="top" data-path="video/metrics/index.html">
+      <img class="poster" src="assets/data_metrics.jpg" alt="QC flow of the 1,812 scenes">
+      <span class="live-badge"></span>
+      <span class="pin" style="left:18px;top:18px">1</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 04 APPLICATIONS -->
+<section id="applications" class="sec">
+  <div class="wrap">
+    <header class="sec-head">
+      <div class="chap"><span class="num">04</span><span>APPLICATIONS</span></div>
+      <h2>From captured data to training data</h2>
+      <p class="lede">Three benchmarks evaluate existing models on the scans. Four demonstrations turn scenes and recordings into simulation scenes and robot data.</p>
+    </header>
+
+    <aside class="note">
+      <h4>04 Applications · 总览</h4>
+      <ol>
+        <li><i>1</i>片子 bridge 原样嵌进来（<code>video/metrics/uses.html</code>）：左边模态，右边 UNDERSTAND · 3 个 benchmark 和 ACT · demo。正式版：hover 某个应用高亮它用到的模态，点击滚到对应小节；补上 Virtual Teleoperation；每个 demo 卡片带每次采集的成本说明（论文 application_value 图）。<span class="st mod">要改</span></li>
+      </ol>
+    </aside>
+
+    <div class="embed" data-src="../../video/metrics/uses.html" data-css="top" data-path="video/metrics/uses.html">
+      <img class="poster" src="assets/app_hub.jpg" alt="Modalities linked to benchmarks and demonstrations">
+      <span class="live-badge"></span>
+      <span class="pin" style="left:18px;top:18px">1</span>
+    </div>
+
+    <!-- -------------------------------------------- benchmarks -->
+    <div class="sub" id="benchmarks">
+      <div class="chap sm"><span class="num">04</span><span>APPLICATIONS · BENCHMARK</span></div>
+      <h3 class="h3">Three benchmarks on 10 KOSMO scenes</h3>
+
+      <aside class="note">
+        <h4>Benchmarks</h4>
+        <ol>
+          <li><i>1</i>三个 tab。Depth &amp; Geometry 先嵌片子的 <code>video/metrics/bench.html</code>；正式版改成可切 Sparse / Medium / Dense 和指标的图表，加可排序的表（数据 <code>bench.json</code> ← <code>tabs/application_geometry.tex</code>）。<span class="st mod">要改</span></li>
+          <li><i>2</i>3D Visual Grounding 和 Spatial Intelligence 的分数还没出，先放样例：指代表达加场景里的 3D 框、六类空间问答。<span class="st miss">缺数据</span></li>
+        </ol>
+      </aside>
+
+      <div class="tabs" role="tablist" aria-label="Benchmarks">
+        <span class="pin" style="left:-14px;top:-12px">1</span>
+        <button class="on" type="button" role="tab" aria-selected="true" data-tab="b-geo">Depth &amp; Geometry <span>11 models</span></button>
+        <button type="button" role="tab" aria-selected="false" data-tab="b-grd">3D Visual Grounding <span>7 models</span></button>
+        <button type="button" role="tab" aria-selected="false" data-tab="b-si">Spatial Intelligence <span>11 models · 500 QA</span></button>
+      </div>
+
+      <div class="tab-panel on" id="b-geo" role="tabpanel">
+        <div class="embed" data-src="../../video/metrics/bench.html" data-css="top" data-path="video/metrics/bench.html">
+          <img class="poster" src="assets/bench_depth.jpg" alt="Depth accuracy of 11 models across input densities">
+          <span class="live-badge"></span>
+        </div>
+        <div class="bench-side">
+          <div class="ctl"><span>Input</span><button class="on" type="button">Sparse · 5</button><button type="button">Medium · 11–100</button><button type="button">Dense · 335–500</button></div>
+          <div class="ctl"><span>Metric</span><button class="on" type="button">&delta;<sub>1.03</sub></button><button type="button">AbsRel</button><button type="button">RMSE</button><button type="button">AUC@30&deg;</button><button type="button">ATE</button><button type="button">CD</button><button type="button">F@5cm</button></div>
+          <p>No single model leads across all metrics. &pi;&sup3; achieves the lowest trajectory ATE and the highest surface F-score across all three input settings, while DA3-Giant achieves the highest pose AUC in the Medium and Dense settings. More input views do not consistently improve performance, and dense inputs expose memory limits.</p>
+        </div>
+      </div>
+      <div class="tab-panel" id="b-grd" role="tabpanel">
+        <div class="pending"><span class="pin" style="left:-12px;top:-12px">2</span><b>Scores pending</b>
+          <p>Annotators write referring expressions for objects in each scene and mark the 3D box of each target in the scene frame. Acc@0.25 and Acc@0.5 on the Unique and Multiple splits.</p>
+          <p class="models">Point-cloud specialists: ScanRefer, BUTD-DETR, 3D-VisTA · 3D LLMs: Chat-Scene, Video-3D LLM · Zero-shot VLM agents: VLM-Grounder, SeeGround</p>
+          <div class="mock-q">&ldquo;the round cushion on the grey sofa&rdquo; &rarr; [ 3D box in the scan ]</div>
+        </div>
+      </div>
+      <div class="tab-panel" id="b-si" role="tabpanel">
+        <div class="pending"><b>Scores pending</b>
+          <p>500 question–answer pairs from the 10 scenes in six types, with answer accuracy per type and overall.</p>
+          <div class="chips"><span>Translation</span><span>Rotation</span><span>Distance</span><span>Depth</span><span>Height</span><span>Relative position</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- -------------------------------------------- demonstrations -->
+    <div class="sub" id="demos">
+      <div class="chap sm"><span class="num">04</span><span>APPLICATIONS · DEMONSTRATIONS</span></div>
+      <h3 class="h3">Four demonstrations</h3>
+      <p class="lede">The demonstrations use two properties that the benchmarks do not exercise: every KOSMO scene is metric and gravity-aligned, and every HOMIE recording is registered to its scene.</p>
+
+      <!-- A. Real-to-Sim -->
+      <article class="demo" id="demo-r2s">
+        <header class="demo-head">
+          <span class="demo-tag">A · REAL &rarr; SIM</span>
+          <h4>Real-to-Sim</h4>
+          <p>A single scan of a real home becomes an interactive digital twin, built in the scan's own metric frame.</p>
+        </header>
+        <div class="embed" data-src="../../video/metrics/r2s.html" data-css="top" data-path="video/metrics/r2s.html">
+          <img class="poster" src="assets/r2s_gap.jpg" alt="Real, gap and simulator views of the scanned living room">
+          <span class="live-badge"></span>
+          <span class="pin" style="left:18px;top:18px">1</span>
+        </div>
+        <div class="demo-body">
+          <div class="seam" id="seam" style="--x:52%">
+            <img class="s-real" src="assets/r2s_real.jpg" alt="3DGS render of the scanned living room">
+            <img class="s-sim" src="assets/r2s_sim.jpg" alt="Simulator render from the same camera">
+            <div class="s-line"><span class="s-knob">&#8596;</span></div>
+            <span class="s-lab l">3DGS · real</span><span class="s-lab r">Simulator</span>
+            <span class="pin" style="left:calc(var(--x) - 12px);top:14px">2</span>
+          </div>
+          <div class="demo-info">
+            <dl class="io"><dt>Input</dt><dd>A captured scene with metric geometry and appearance</dd><dt>Output</dt><dd>A simulator scene of 107 objects, 73 of them interactive</dd><dt>Checks</dt><dd>Scale, gravity alignment, collision geometry, visual correspondence</dd></dl>
+            <div class="stats"><div><b>2.5&thinsp;cm</b><span>median gap to the scan</span></div><div><b>79%</b><span>of pixels within 5&thinsp;cm</span></div></div>
+            <div class="chips"><span class="pin inline">3</span><span>TV cover · cloth</span><span>Round cushion · soft body</span><span>Remote &rarr; TV · button</span><span>Kitchen lights · button</span><span>Faucet · fluid</span><span>Towel, cabinet door · hinge</span><span>Fridge doors · articulated</span></div>
+          </div>
+        </div>
+        <aside class="note">
+          <h4>A · Real-to-Sim（LIVING_ROOM_14939，和 B 同一个场景）</h4>
+          <ol>
+            <li><i>1</i>片子的 R2S 镜头原样嵌进来（<code>video/metrics/r2s.html</code>，18 s）：real | gap | sim、按物理类型着色的物体框、物体交互卡片。<span class="st ok">片子源页面</span></li>
+            <li><i>2</i>正式版加交互：real | sim 分割线（草稿里这张已经能拖，是同一机位的 3DGS 和仿真渲染），可以自由转视角（仿真场景要导出成 GLB）。<span class="st mod">要改</span></li>
+            <li><i>3</i>点物体播放它的物理片段：片子里已有 7 个。物理没法在浏览器里跑，片段用渲染好的帧。<span class="st warn">注意</span></li>
+          </ol>
+          <p class="note-foot">数字是 14939 的；论文 §6.2 的图还是 LH_17766（217 个物体）。</p>
+        </aside>
+      </article>
+
+      <!-- B. Long-horizon -->
+      <article class="demo" id="demo-lh">
+        <header class="demo-head">
+          <span class="demo-tag">B · LONG-HORIZON</span>
+          <h4>Long-Horizon Trajectory Generation</h4>
+          <p>In the converted scene, a wheeled dual-arm robot runs a new task of eight subtasks: heat a drink and carry it to the bedroom.</p>
+        </header>
+        <div class="embed" data-src="../../video/metrics/traj.html" data-css="top" data-path="video/metrics/traj.html">
+          <img class="poster" src="assets/lh_run.jpg" alt="One rollout with its plan and subtask list">
+          <span class="live-badge"></span>
+          <span class="pin" style="left:18px;top:18px">1</span>
+        </div>
+        <div class="demo-body">
+          <ol class="subtasks"><li>Pick up the mug from the kitchen counter</li><li>Open the microwave</li><li>Put the mug inside</li><li>Close the door to heat it</li><li>Take it out</li><li>Close the microwave again</li><li>Push the bedroom door open</li><li>Set the mug on the bedside table</li></ol>
+          <div class="demo-info">
+            <div class="stats"><div><b>30 / 30</b><span>held-out starts complete all 8 subtasks</span></div><div><b>2.2&thinsp;min</b><span>average trajectory, 30&thinsp;Hz control</span></div><div><b>10–16&thinsp;min</b><span>compute per trajectory</span></div></div>
+            <p class="small">From 30 held-out start states, each with its own robot and mug pose, all 30 rollouts complete every subtask without breaking a task rule. Further trajectories cost only compute.</p>
+          </div>
+        </div>
+        <aside class="note">
+          <h4>B · Long-Horizon</h4>
+          <ol>
+            <li><i>1</i>片子的轨迹生成镜头原样嵌进来（<code>video/metrics/traj.html</code>）。正式版加交互：平面图上 30 个 held-out 起点，点一个看 8 个子任务各自的耗时；run 203 的视频和平面图上的底盘路径、杯子位置同步拖动。<span class="st mod">要改</span></li>
+          </ol>
+          <p class="note-foot">30 条 test run 没有逐帧状态，只能做到视频 + 平面图；要在 3D 里实时回放，得重跑并记录关节状态。不出现机器人型号和策略模型名。</p>
+        </aside>
+      </article>
+
+      <!-- C. Teleoperation -->
+      <article class="demo" id="demo-teleop">
+        <header class="demo-head">
+          <span class="demo-tag">C · TELEOPERATION</span>
+          <h4>Virtual Teleoperation</h4>
+          <p>An operator teleoperates a simulated robot live in the simulator scene from Real-to-Sim. Every rollout starts from the same captured scene state, so a reset is a simulator reload.</p>
+        </header>
+        <div class="placeholder">
+          <b>Virtual teleoperation</b>
+          <span>Operator motion &rarr; simulated robot, live, in the converted scene</span>
+          <em>Data pending</em>
+        </div>
+        <aside class="note">
+          <h4>C · Virtual Teleoperation</h4>
+          <ol><li><i>!</i>论文里还是占位，片子里没放，目前没有数据。先上三个 demo、把位置留好，还是等数据？<span class="st miss">缺数据</span></li></ol>
+        </aside>
+      </article>
+
+      <!-- D. Retargeting -->
+      <article class="demo" id="demo-rt">
+        <header class="demo-head">
+          <span class="demo-tag">D · HUMAN &rarr; ROBOT</span>
+          <h4>Human-Robot Retargeting</h4>
+          <p>A recording's body and hand motion, registered to its scan, drives a wheeled humanoid through the same scene.</p>
+        </header>
+        <div class="embed" data-src="../../video/flythrough/index.html?shot=retarget_lh17761&amp;lite=1" data-css="top"
+             data-drive='{"from":0,"to":8.9,"loop":true}' data-path="video/flythrough · retarget_lh17761">
+          <img class="poster" src="assets/rt_match.jpg" alt="The operator handing over to the robot at the dining table">
+          <span class="live-badge"></span>
+          <span class="pin" style="left:18px;top:18px">1</span>
+        </div>
+        <div class="demo-row">
+          <div class="embed" data-src="../../video/flythrough/index.html?shot=retarget_cuts&amp;n=3&amp;lite=1" data-css="top"
+               data-drive='{"from":0,"to":4.5,"loop":true}' data-path="video/flythrough · retarget_cuts n=3">
+            <img class="poster" src="assets/rt_triptych.jpg" alt="Human, Robot A and Robot B from the same camera and frame">
+            <span class="live-badge"></span>
+            <span class="pin" style="left:18px;top:18px">2</span>
+          </div>
+          <figure class="frame"><img src="assets/rt_wall.jpg" alt="Robot A and Robot B in eight homes"><span class="pin" style="left:18px;top:18px">3</span><figcaption>Still from the film: Robot A | Robot B in eight homes.</figcaption></figure>
+        </div>
+        <div class="demo-body one">
+          <div class="stats"><div><b>0.40–0.55&thinsp;cm</b><span>median fingertip error</span></div><div><b>96&thinsp;m</b><span>base travel over 10.3&thinsp;min</span></div><div><b>0</b><span>frames failing a check</span></div></div>
+          <p class="small">Four full recordings in LH_17761, slowed down 2&times; before retargeting. Every frame passes the joint-speed, torque, ZMP and collision checks.</p>
+        </div>
+        <aside class="note">
+          <h4>D · Retargeting（LH_17761，和 Explore 是同一场景）</h4>
+          <ol>
+            <li><i>1</i>片子的 match cut 实时页面（<code>retarget_lh17761</code>：人 → Robot A → 分割线 → Robot B）。正式版放进 Explore 的 viewer：切换 Human / Robot A / Robot B、拖分割线，时间轴叠指尖误差。数据现成（<code>robot_mesh.bin</code> + <code>robot_motion.f32</code>）。<span class="st mod">要改</span></li>
+            <li><i>2</i>三联画实时页面（<code>retarget_cuts?n=3</code>：同一机位、同一帧的 Human | Robot A | Robot B）。<span class="st ok">片子源页面</span></li>
+            <li><i>3</i>八个家的录制墙是离线合成的，草稿里放静帧；正式版做成可点开的格子（Robot B：8 homes · 16 recordings · 52.6 min · 0 violations）。Robot B 片子里有、论文里没有。<span class="st warn">注意</span></li>
+          </ol>
+        </aside>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ RELEASE -->
+<section id="release" class="sec">
+  <div class="wrap">
+    <header class="sec-head">
+      <div class="chap"><span class="num">&#8615;</span><span>RELEASE</span></div>
+      <h2>Release</h2>
+    </header>
+
+    <aside class="note">
+      <h4>Release</h4>
+      <ol>
+        <li><i>1</i>论文 §7 还是 TODO：目录结构、格式、读取工具、license、获取方式都待定；链接全是 placeholder。<span class="st tbd">待定</span></li>
+        <li><i>2</i>内容清单来自论文 Table（asset provenance），以 release manifest 为准（depth 是否发布还没确认）。<span class="st warn">注意</span></li>
+      </ol>
+    </aside>
+
+    <div class="release-cards">
+      <span class="pin" style="left:-14px;top:-12px">1</span>
+      <a class="rc" href="#release"><span>Paper</span><b>arXiv</b><em>link to be announced</em></a>
+      <a class="rc" href="#release"><span>Dataset</span><b>Hugging Face</b><em>link to be announced</em></a>
+      <a class="rc" href="#release"><span>Code</span><b>GitHub</b><em>loaders and viewer</em></a>
+    </div>
+
+    <div class="release-grid">
+      <div class="contents">
+        <span class="pin" style="left:-14px;top:-12px">2</span>
+        <h3 class="kicker">What each scene and recording contains</h3>
+        <table>
+          <thead><tr><th>Asset</th><th>Device</th><th>Frame</th><th>Rate</th></tr></thead>
+          <tbody>
+            <tr><td>Fisheye images</td><td>KOSMO</td><td>Scene</td><td>Per scan</td></tr>
+            <tr><td>Camera poses, mesh, 3DGS</td><td>KOSMO</td><td>Scene</td><td>Per scan</td></tr>
+            <tr><td>Fisheye video &times;4, audio, IMU</td><td>HOMIE</td><td>Device</td><td>30 fps / 200 Hz</td></tr>
+            <tr><td>Device pose, sparse map</td><td>HOMIE</td><td>Recording world</td><td>30 Hz</td></tr>
+            <tr><td>Stereo depth, confidence</td><td>HOMIE</td><td>Stereo-left camera</td><td>30 Hz</td></tr>
+            <tr><td>Scene registration</td><td>Both</td><td>Recording &rarr; scene</td><td>Per recording</td></tr>
+            <tr><td>Hand pose (MANO)</td><td>HOMIE</td><td>Stereo-left camera</td><td>30 Hz</td></tr>
+            <tr><td>Body pose (SMPL-H)</td><td>HOMIE</td><td>Recording world</td><td>30 Hz</td></tr>
+            <tr><td>Task, sub-task and action captions</td><td>HOMIE</td><td>&mdash;</td><td>Segments</td></tr>
+            <tr><td>Objects, hand states, narration</td><td>HOMIE</td><td>&mdash;</td><td>2 fps</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cite">
+        <h3 class="kicker">Citation</h3>
+        <pre><code>@article{ropedia2026xperience,
+  title  = {Ropedia Xperience: A Gold Standard
+            for Next-Generation Embodied
+            Data Foundations},
+  author = {Ropedia},
+  year   = {2026}
+}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <img src="assets/ropedia_brand.png" alt="Ropedia">
+    <span>&copy; 2026 Ropedia</span>
+  </div>
+</footer>
+
+<dialog class="film" id="film">
+  <button class="film-close" type="button" aria-label="Close">&times;</button>
+  <video id="filmVideo" controls preload="none" src="../../video/out/preview_v32_fullx.mp4"></video>
+  <p class="film-note">播放的是 <code>video/out/preview_v32_fullx.mp4</code>。</p>
+</dialog>
+
+<script src="data.js"></script>
+<script src="draft.js"></script>
+</body>
+</html>

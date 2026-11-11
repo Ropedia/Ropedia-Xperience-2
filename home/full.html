@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ropedia Xperience</title>
+<meta name="description" content="Ropedia Xperience: 1,812 scanned scenes and 4,230 egocentric recordings, registered in one metric frame.">
+<link rel="stylesheet" href="home.css">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.js", "three/addons/": "./vendor/addons/" } }
+</script>
+</head>
+<body>
+
+<nav class="lnav" aria-label="Xperience">
+  <a class="lnav-brand" href="#top"><img src="assets/ropedia_brand.png" alt="Ropedia"><span>Xperience</span></a>
+  <div class="lnav-links">
+    <a href="#scene">Scene</a>
+    <a href="#highlights">Data</a>
+    <a href="#apps">Applications</a>
+    <a href="#paper">Paper</a>
+    <a class="lnav-cta" href="#paper">Get the data</a>
+  </div>
+</nav>
+
+<main id="top">
+
+<!-- ============================================================ hero: the X of 1,812 scenes, then a dive into one -->
+<section class="hero" id="hero">
+  <div class="hero-stick">
+    <canvas class="hero-x" id="heroX" aria-label="1,812 scanned scenes arranged as an X"></canvas>
+    <div class="hero-head" id="heroHead">
+      <p class="eyebrow">Ropedia Xperience</p>
+      <h1>A gold standard<br>for embodied data.</h1>
+    </div>
+    <img class="lk-brand" id="lkBrand" src="assets/ropedia_brand.png" alt="Ropedia">
+    <span class="lk-word" id="lkWord">perience</span>
+    <div class="hero-tip" id="heroTip" hidden></div>
+    <div class="hero-hint" id="heroHint"><span>1,812 scenes · scroll</span><i></i></div>
+    <div class="hero-fade" id="heroFade"></div>
+  </div>
+</section>
+
+<!-- ============================================================ story: scanned once, recorded many times, one frame -->
+<section class="story" id="story">
+  <div class="story-stick">
+    <div class="gl-slot full" data-mode="story" id="slotStory">
+      <div class="gl-host"></div>
+      <div class="gl-load"><i></i><span>Loading the scan</span></div>
+    </div>
+    <div class="story-copy">
+      <article class="sc" data-in="0.02" data-out="0.29">
+        <p class="eyebrow">Capture</p>
+        <h2>Scanned once.</h2>
+        <p>KOSMO, a handheld LiDAR scanner, captures the whole space in one pass: <strong>posed images, a mesh and a 3D Gaussian scene, at metric scale.</strong></p>
+      </article>
+      <article class="sc" data-in="0.31" data-out="0.57">
+        <h2>Recorded many times.</h2>
+        <p>The operator then wears HOMIE and records <strong>every task assigned to the scene.</strong> Each line is one recording’s head path.</p>
+        <ol class="story-list" id="storyList"></ol>
+      </article>
+      <article class="sc" data-in="0.82" data-out="1.01">
+        <h2>In one metric frame.</h2>
+        <p>Every recording is registered to the scan. <strong>Body, hands, head camera and captions land where they happened.</strong></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ composite scene: interactive viewer -->
+<section class="sec" id="scene">
+  <div class="sec-intro reveal">
+    <p class="eyebrow">Composite scene</p>
+    <h2>Everything in one scene.</h2>
+    <p class="lead">Scene geometry, the operator’s body and hands, the head camera and three levels of captions, <strong>all registered to one metric frame.</strong> Drag to look around.</p>
+  </div>
+  <div class="viewer reveal">
+    <div class="pills" id="pills" role="tablist" aria-label="Layers">
+      <button data-f="scene" type="button"><i>+</i><b>Scene</b><span>3D Gaussian scan of the apartment, metric and gravity-aligned.</span></button>
+      <button data-f="body" type="button" class="on"><i>+</i><b>Body</b><span>SMPL-H body motion, 52 joints, estimated with EgoAllo.</span></button>
+      <button data-f="hands" type="button"><i>+</i><b>Hands</b><span>MANO hands from EgoXperience, 21 joints each.</span></button>
+      <button data-f="head" type="button"><i>+</i><b>Head camera</b><span>The head camera’s pose and its recorded frame.</span></button>
+      <button data-f="ego" type="button"><i>+</i><b>Ego view</b><span>The scan rendered from the recorded camera. Slide to compare with the real frame.</span></button>
+      <button data-f="trail" type="button"><i>+</i><b>Head paths</b><span>Where the operator’s head went, and every other recording in the scan.</span></button>
+      <button data-f="captions" type="button"><i>+</i><b>Captions</b><span>Task, sub-task and action, with hand states, on the recording’s timeline.</span></button>
+    </div>
+    <div class="gl-slot box" data-mode="viewer" id="slotViewer">
+      <div class="gl-host"></div>
+      <canvas class="ego-real" id="egoReal"></canvas>
+      <div class="gl-load"><i></i><span>Loading the scan</span></div>
+      <div class="ego-blend" id="egoBlend" hidden><span>Render</span><input type="range" min="0" max="1" step="0.01" value="0.5" id="egoAmt" aria-label="Real frame opacity"><span>Real frame</span></div>
+      <div class="caps" id="caps" hidden></div>
+      <div class="drag-hint">Drag to look around</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ highlights -->
+<section class="sec" id="highlights">
+  <div class="sec-row reveal">
+    <h2 class="h-left">Get the highlights.</h2>
+    <div class="hl-nav"><button type="button" class="hl-prev" aria-label="Previous">&#8249;</button><button type="button" class="hl-next" aria-label="Next">&#8250;</button></div>
+  </div>
+  <div class="hl-track" id="hlTrack">
+    <article class="hl"><img src="assets/hl_scenes.jpg" alt="Nine scanned scenes" loading="lazy"><p><strong>1,812 scenes.</strong> Homes, stores, restaurants, offices and streets, each scanned in 3D across 596 locations.</p></article>
+    <article class="hl"><img src="assets/hl_ego.jpg" alt="Head-camera frames from four recordings" loading="lazy"><p><strong>4,230 recordings.</strong> 131 hours of everyday tasks, seen through the operator’s eyes.</p></article>
+    <article class="hl"><img src="assets/hl_layers.jpg" alt="Body, hands, trajectory and captions in a scan" loading="lazy"><p><strong>Body, hands, camera, language.</strong> SMPL-H body motion, MANO hands, the head camera and three levels of captions.</p></article>
+    <article class="hl"><img src="assets/hl_register.jpg" alt="A recording registered into its scan" loading="lazy"><p><strong>Registered.</strong> Each recording is aligned to the scan of the scene it was made in.</p></article>
+    <article class="hl"><img src="assets/hl_sim.jpg" alt="Simulator scene converted from a scan" loading="lazy"><p><strong>From scan to simulator.</strong> One scan becomes an interactive digital twin of 107 objects.</p></article>
+    <article class="hl"><img src="assets/hl_robots.jpg" alt="Two robots replaying recordings in eight homes" loading="lazy"><p><strong>From people to robots.</strong> Recorded motion drives a humanoid through the same rooms.</p></article>
+  </div>
+  <div class="hl-dots" id="hlDots"></div>
+</section>
+
+<!-- ============================================================ numbers -->
+<section class="sec nums" id="numbers">
+  <div class="sec-intro reveal">
+    <p class="eyebrow">Xperience</p>
+    <h2>Built at scale.</h2>
+  </div>
+  <div class="num-grid">
+    <div class="num reveal"><b data-n="1812">0</b><span>scenes, each one KOSMO scan</span></div>
+    <div class="num reveal"><b data-n="596">0</b><span>locations, from homes to streets</span></div>
+    <div class="num reveal"><b data-n="4230">0</b><span>egocentric recordings</span></div>
+    <div class="num reveal"><b data-n="74">0</b><span>tasks</span></div>
+    <div class="num reveal"><b data-n="131" data-suffix=" h">0</b><span>of recording</span></div>
+    <div class="num reveal"><b data-n="62" data-suffix="%">0</b><span>of scenes rated usable or perfect</span></div>
+  </div>
+</section>
+
+<!-- ============================================================ applications -->
+<section class="sec" id="apps">
+  <div class="sec-intro reveal">
+    <p class="eyebrow">Applications</p>
+    <h2>Put it to work.</h2>
+    <p class="lead">Benchmarks for spatial understanding, and <strong>routes from captured data to robot training data.</strong></p>
+  </div>
+  <div class="tabs reveal" role="tablist" aria-label="Applications">
+    <button type="button" class="on" data-tab="r2s" role="tab">Real-to-Sim</button>
+    <button type="button" data-tab="lh" role="tab">Long-horizon</button>
+    <button type="button" data-tab="robot" role="tab">Human → Robot</button>
+    <button type="button" data-tab="bench" role="tab">Benchmarks</button>
+  </div>
+
+  <div class="panel on" id="p-r2s" role="tabpanel">
+    <div class="r2s" id="r2s">
+      <img class="r2s-real" alt="3DGS render of the scanned living room">
+      <img class="r2s-sim" alt="Simulator render from the same camera">
+      <svg class="r2s-boxes" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"><defs><clipPath id="simClip"><rect id="simClipR" x="960" y="0" width="960" height="1080"/></clipPath></defs><g id="r2sBoxes" clip-path="url(#simClip)"></g></svg>
+      <div class="r2s-seam" id="r2sSeam"><span>&#8596;</span></div>
+      <span class="r2s-lab l">3D Gaussian scan</span><span class="r2s-lab r">Simulator</span>
+      <div class="r2s-tip" id="r2sTip" hidden></div>
+    </div>
+    <div class="ctl-row"><span>Camera</span><input type="range" id="r2sCam" min="0" max="67" value="20" aria-label="Camera position along the path"><span class="ctl-hint">Drag the seam. Hover an object.</span></div>
+    <div class="panel-info">
+      <div>
+        <h3>One scan. A digital twin.</h3>
+        <p>The scan is converted into a simulator scene in its own metric frame, so <strong>any camera renders both</strong> and the two can be compared view by view.</p>
+        <div class="stat-row"><div><b id="r2sN">107</b><span>objects</span></div><div><b id="r2sI">73</b><span>interactive</span></div><div><b id="r2sG">2.5 cm</b><span>median gap to the scan</span></div></div>
+      </div>
+      <div class="r2s-phys">
+        <h4>Physics in the scene</h4>
+        <div class="chips" id="r2sChips"></div>
+        <div class="clip" id="r2sClip"><img alt="Simulated interaction" id="r2sClipImg"><span id="r2sClipCap"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="p-lh" role="tabpanel">
+    <div class="lh" id="lh">
+      <img class="lh-frame" id="lhFrame" alt="The robot running the task in the converted scene">
+      <div class="lh-plan"><img src="data/traj/plan.png" alt="Plan of the converted scene"><svg id="lhPlan"></svg></div>
+      <ol class="lh-tasks" id="lhTasks"></ol>
+      <div class="lh-clock" id="lhClock"></div>
+    </div>
+    <div class="ctl-row"><button type="button" class="play" id="lhPlay" aria-label="Pause">❚❚</button><input type="range" id="lhT" min="0" max="242" value="0" aria-label="Time in the rollout"><span class="ctl-hint">One continuous rollout, time-lapsed.</span></div>
+    <div class="panel-info">
+      <div>
+        <h3>New tasks, beyond the recordings.</h3>
+        <p>In the converted scene, a wheeled dual-arm robot heats a drink and carries it to the bedroom: <strong>eight subtasks in one rollout, without resets.</strong> More trajectories cost only compute.</p>
+      </div>
+      <div class="stat-row"><div><b>30 / 30</b><span>held-out starts complete all eight subtasks</span></div><div><b>2.2 min</b><span>average trajectory</span></div><div><b>10–16 min</b><span>compute per trajectory</span></div></div>
+    </div>
+  </div>
+
+  <div class="panel" id="p-robot" role="tabpanel">
+    <div class="gl-slot box" data-mode="retarget" id="slotRobot">
+      <div class="gl-host"></div>
+      <div class="gl-load"><i></i><span>Loading the robots</span></div>
+      <div class="emb" id="emb" role="group" aria-label="Embodiment">
+        <button type="button" class="on" data-e="human">Human</button><button type="button" data-e="A">Robot A</button><button type="button" data-e="B">Robot B</button>
+      </div>
+      <div class="drag-hint">Drag to look around</div>
+    </div>
+    <div class="panel-info">
+      <div>
+        <h3>The same recording, a different body.</h3>
+        <p>The operator’s body and hand motion, registered to the scan, is retargeted to wheeled humanoids. <strong>No robot was in the room.</strong></p>
+      </div>
+      <div class="stat-row"><div><b>0.40–0.55 cm</b><span>median fingertip error</span></div><div><b>96 m</b><span>base travel in 10.3 min</span></div><div><b>0</b><span>frames failing a check</span></div></div>
+    </div>
+  </div>
+
+  <div class="panel" id="p-bench" role="tabpanel">
+    <div class="bench">
+      <div class="bench-ctl">
+        <div class="seg" id="benchDens"><button type="button" class="on" data-d="sparse">Sparse · 5 views</button><button type="button" data-d="medium">Medium</button><button type="button" data-d="dense">Dense</button></div>
+        <div class="seg" id="benchMet"></div>
+      </div>
+      <div class="bench-chart" id="benchChart"></div>
+      <p class="bench-note" id="benchNote"></p>
+    </div>
+    <div class="panel-info">
+      <div>
+        <h3>Three benchmarks.</h3>
+        <p>Depth and geometry, 3D visual grounding and spatial intelligence, on 10 KOSMO scenes. <strong>No single model leads across all metrics,</strong> and more views do not consistently help.</p>
+      </div>
+      <div class="stat-row"><div><b>11</b><span>geometry models</span></div><div><b>7</b><span>grounding models</span></div><div><b>500</b><span>spatial questions</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ film -->
+<section class="sec" id="film">
+  <button class="film-card reveal" type="button" id="filmOpen">
+    <img src="assets/film_poster.jpg" alt="">
+    <span class="film-play"><i></i>Watch the film</span>
+  </button>
+</section>
+
+<!-- ============================================================ end -->
+<section class="sec end" id="paper">
+  <div class="sec-intro reveal">
+    <img class="end-brand" src="assets/ropedia_brand.png" alt="Ropedia">
+    <h2>Xperience</h2>
+    <p class="lead">A gold standard for next-generation embodied data foundations.</p>
+    <div class="end-cta"><a class="btn primary" href="#paper">Read the paper</a><a class="btn" href="#paper">Get the dataset</a><button class="btn" type="button" data-film>Watch the film</button></div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">© 2026 Ropedia</footer>
+
+<dialog class="film-dlg" id="filmDlg">
+  <button class="film-x" type="button" aria-label="Close">&times;</button>
+  <video id="filmVideo" controls preload="none" src="../../video/out/preview_v32_fullx.mp4"></video>
+</dialog>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>

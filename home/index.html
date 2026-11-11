@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ropedia Xperience 2</title>
+<meta name="description" content="Ropedia Xperience 2: 1,812 scanned scenes and 4,230 egocentric recordings, registered in one metric frame.">
+<link rel="preload" href="assets/atlas_small.jpg" as="image">
+<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="dataset.css">
+<link rel="stylesheet" href="apps.css">
+<link rel="stylesheet" href="r2s3d.css">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.js", "three/addons/": "./vendor/addons/" } }
+</script>
+</head>
+<body>
+
+<nav class="lnav away" aria-label="Xperience">
+  <a class="lnav-brand" href="#top"><img src="assets/ropedia_brand.png" alt="Ropedia"><span>Xperience 2</span></a>
+  <div class="lnav-links">
+    <a href="#hero">Overview</a>
+    <a href="#hero">Scene</a>
+    <a href="#data">Data</a>
+    <a href="#apps">Applications</a>
+    <a class="lnav-cta" href="#hero">Get the data</a>
+  </div>
+</nav>
+
+<main id="top">
+<!-- the X of 1,812 scanned scenes; scrolling dives into the one at its centre -->
+<section class="hero" id="hero">
+  <div class="hero-stick">
+    <canvas class="hero-bg" id="heroBg" aria-hidden="true"></canvas>
+    <canvas class="hero-x" id="heroX" aria-label="A wall of 1,812 scanned scenes, an X of it lit"></canvas>
+    <div class="hero-glow" id="heroGlow" aria-hidden="true"><canvas></canvas></div>
+    <img class="lk-brand" id="lkBrand" src="assets/ropedia_brand.png" alt="Ropedia">
+    <span class="lk-word" id="lkWord">perience <em class="lk-2">2</em></span>
+    <p class="lk-sub" id="lkSub">A Golden Standard for Scaling Physical AI Environments and Behaviors</p>
+    <div class="hero-tip" id="heroTip" hidden></div>
+    <div class="hero-hint" id="heroHint"><span>Scroll</span><i></i></div>
+    <div class="hero-cap" id="heroCap">
+      <p class="eyebrow">LH_17761 · multi-room home</p>
+      <h2>One of 1,812 scenes.</h2>
+      <p>Each one scanned in 3D, at metric scale.</p>
+    </div>
+  </div>
+</section>
+
+<!-- capture: the screen held, the scroll drives the live scan. Scanned once → recorded many times → one metric frame -->
+<section class="story" id="story">
+  <div class="story-stick">
+    <div class="gl-slot full" data-mode="story" id="slotStory">
+      <div class="gl-host"></div>
+      <div class="gl-load"><i></i><span>Loading the scan</span></div>
+    </div>
+    <img class="story-still" id="storyStill" src="assets/centre_full.jpg" alt="">
+    <div class="story-shade" aria-hidden="true"></div>
+    <div class="scan-head" id="scanHead" aria-hidden="true"><i></i><span>Reconstruction trajectory</span></div>
+    <svg class="rec-links" id="recLinks" aria-hidden="true"></svg>
+    <svg class="co-lines" id="calloutLines" aria-hidden="true"></svg>
+    <div class="callouts" id="callouts" aria-hidden="true"></div>
+    <aside class="story-panel" id="storyPanel" aria-label="The recording at this moment">
+      <figure class="story-ego" id="storyEgo"><canvas width="720" height="409"></canvas><figcaption>HOMIE Gen 2 head camera, as recorded</figcaption></figure>
+      <section class="pc pc-cap" aria-label="Captions">
+        <header><b>Captions</b><span>three temporal scales</span></header>
+        <div class="lv"><span class="k">Recording</span><p id="capTask"></p><div class="tl"><i id="capTaskHead"></i></div></div>
+        <div class="lv"><span class="k">Sub-task · action</span><p id="capAct"></p><div class="tl"><b id="capActSpan"></b><i id="capActHead"></i></div></div>
+        <div class="lv"><span class="k">Frame</span><p id="capNow"></p><p class="hs" id="capHands"></p></div>
+      </section>
+      <section class="pc pc-imu" aria-label="HOMIE Gen 2 sensors">
+        <header><b>IMU</b><span><span id="imuRate">200 Hz</span> · <span class="xyz"><i style="--c:#FF6B9A">x</i><i style="--c:#CCFFA0">y</i><i style="--c:#7AC4D8">z</i></span></span></header>
+        <div class="tr"><span class="k">Gyro <em>rad/s</em></span><span class="v" id="imuGv"></span></div>
+        <canvas id="imuGyro" width="640" height="84"></canvas>
+        <div class="tr"><span class="k">Accel <em>m/s²</em></span><span class="v" id="imuAv"></span></div>
+        <canvas id="imuAcc" width="640" height="84"></canvas>
+        <div class="tr"><span class="k">Audio <em>4 microphones</em></span><span class="v" id="audV"></span></div>
+        <canvas id="audio" width="640" height="64"></canvas>
+      </section>
+    </aside>
+    <div class="hero-cap story-carry" id="storyCarry">
+      <p class="eyebrow">LH_17761 · multi-room home</p>
+      <h2>One of 1,812 scenes.</h2>
+      <p>Each one scanned in 3D, at metric scale.</p>
+    </div>
+    <div class="story-copy">
+      <article class="sc sc-side" data-in="0.1" data-out="0.41">
+        <p class="eyebrow">Capture</p>
+        <h2>Scanned once.</h2>
+        <p>A handheld LiDAR scanner captures the whole space in one pass, <strong>in 3D and at metric scale.</strong></p>
+        <p class="legend"><i></i>Reconstruction trajectory</p>
+      </article>
+      <article class="sc sc-side sc-rec" data-in="0.42" data-out="0.72">
+        <h2>Recorded many times.</h2>
+        <p class="rec-lead">Then the operator wears HOMIE Gen 2 and records <strong>every task assigned to the scene.</strong></p>
+        <figure class="dev-big"><img src="assets/homie_gen2.jpg" alt="HOMIE Gen 2, the head-mounted recording rig"><figcaption><b>HOMIE Gen 2</b><span>Head-mounted · 4 fisheye cameras · IMU · 4-channel audio</span></figcaption></figure>
+        <div class="dev-chip"><img src="assets/homie_gen2.jpg" alt=""><div><b>HOMIE Gen 2</b><span>8 recordings in this scene · 19 min</span></div></div>
+        <ol class="recs" id="storyList" aria-label="Recordings in this scene"></ol>
+        <p class="rec-hint">Pick one to follow it.</p>
+      </article>
+      <article class="sc sc-low" data-in="0.88" data-out="1.01">
+        <h2>In one metric frame.</h2>
+        <p>Each recording is registered to the scan: <strong>the operator’s body, hands and head camera, in the scene’s own coordinates.</strong></p>
+        <div class="cases" id="cases" role="group" aria-label="Recordings shown in 3D"></div>
+      </article>
+    </div>
+  </div>
+</section>
+<!-- the highlights (apple.com's "Get the highlights"): three more LH homes, a card each. The card in front plays live:
+     its scan and one PASS recording, the camera moving slowly round the operator; drag to look around, Ego view lays
+     the recorded frame over the scan rendered from the head camera, captions on the recording's clock (viewer.js) -->
+<section class="viewer" id="viewer" aria-label="Three homes">
+  <header class="hl-head">
+    <h2>Everything in one scene.</h2>
+    <p>Three more homes, one recording in each. Drag to look around.</p>
+  </header>
+  <div class="hl-track" id="hlTrack">
+    <article class="hlc" data-i="0" aria-label="Dining area, LH_17763">
+      <div class="gl-slot" data-mode="viewer" data-card="0" data-poster><div class="gl-host"></div><img class="hlc-poster" src="assets/hl_LH_17763.jpg" alt=""><div class="gl-load"><i></i><span>Loading the scan</span></div></div>
+      <p class="hlc-cap"><span>LH_17763</span><b>Dining area.</b> Wiping the table, then tidying up.</p>
+    </article>
+    <article class="hlc" data-i="1" aria-label="Kitchen, LH_17764">
+      <div class="gl-slot" data-mode="viewer" data-card="1" data-poster><div class="gl-host"></div><img class="hlc-poster" src="assets/hl_LH_17764.jpg" alt=""><div class="gl-load"><i></i><span>Loading the scan</span></div></div>
+      <p class="hlc-cap"><span>LH_17764</span><b>Kitchen.</b> Putting a food container in the microwave.</p>
+    </article>
+    <article class="hlc" data-i="2" aria-label="Living room, LH_17766">
+      <div class="gl-slot" data-mode="viewer" data-card="2" data-poster><div class="gl-host"></div><img class="hlc-poster" src="assets/hl_LH_17766.jpg" alt=""><div class="gl-load"><i></i><span>Loading the scan</span></div></div>
+      <p class="hlc-cap"><span>LH_17766</span><b>Living room.</b> Moving a small device, then reaching for the AC remote.</p>
+    </article>
+  </div>
+  <!-- what the card in front adds over its scan; moved into that card -->
+  <div class="hl-live" id="hlLive">
+    <div class="ego-frame" id="egoFrame" aria-hidden="true"><b>HOMIE Gen 2 head camera</b></div>
+    <svg class="vw-lines" id="vwLines" aria-hidden="true"></svg>
+    <div class="vw-tags" id="vwTags" aria-hidden="true"></div>
+    <div class="ego-blend" id="egoBlend"><span>3DGS render</span><input type="range" id="egoAmt" min="0" max="1" step="0.01" value="0.5" aria-label="Blend from the 3DGS render to the recorded frame"><span>Recorded frame</span></div>
+    <aside class="vw-caps" id="vwCaps" aria-label="Captions">
+      <div class="lv"><span class="k">Sub-task</span><p data-c="sub"></p></div>
+      <div class="lv"><span class="k">Action</span><p data-c="act"></p></div>
+      <div class="lv"><span class="k">Frame <em id="vcClock"></em></span><p data-c="now"></p>
+        <dl class="hs"><dt>L</dt><dd data-c="left"></dd><dt>R</dt><dd data-c="right"></dd></dl></div>
+      <canvas class="vc-tl" id="vcTl" width="680" height="168" aria-label="Sub-task, action and hand states over the window"></canvas>
+    </aside>
+    <div class="hl-mode" id="hlMode" role="group" aria-label="View"><button type="button" data-m="3d" aria-pressed="true">3D</button><button type="button" data-m="ego" aria-pressed="false">Ego view</button></div>
+  </div>
+  <div class="hl-ctl">
+    <div class="hl-dots" id="hlDots" role="group" aria-label="Homes"></div>
+    <button type="button" class="hl-play" id="hlPlay" aria-label="Pause"><i></i></button>
+  </div>
+</section>
+
+<!-- 03 Data (dataset.js): the release as its 1,812 scene tiles. A text opening; one pinned scroll, the X spreading into
+     a wall of scenes that dims under six figures; three tabs that re-arrange the same tiles (the X; the review grades as
+     a flow; the scans in rows by scene category beside the recordings by action); every scene in a full-screen browser
+     behind one button -->
+<section class="ds" id="data" aria-label="Data">
+  <header class="ds-intro">
+    <p class="eyebrow">Data</p>
+    <h2>1,812 scenes.<br>Every one reviewed.</h2>
+    <p class="lead">Scans of 596 locations: homes, stores, restaurants, car parks and streets. Each reconstruction is reviewed in four stages, and <strong>1,121 are rated usable or perfect.</strong></p>
+  </header>
+
+  <div class="ds-wall" id="dsWall">
+    <div class="ds-stick">
+      <canvas id="dsWallCv" role="img" aria-label="An X made of 1,812 scene tiles spreads into a wall of scenes that fills the screen"></canvas>
+      <p class="ds-xcap" id="dsXcap"><b>1,812</b><span>scenes · one tile per scan</span></p>
+      <dl class="ds-nums" aria-label="The release in numbers">
+        <div class="ds-num"><dt data-n="1812">1,812</dt><dd>scenes scanned in 3D</dd></div>
+        <div class="ds-num"><dt data-n="596">596</dt><dd>locations</dd></div>
+        <div class="ds-num"><dt data-n="12">12</dt><dd>scene categories</dd></div>
+        <div class="ds-num"><dt data-n="4230">4,230</dt><dd>egocentric recordings</dd></div>
+        <div class="ds-num"><dt data-n="74">74</dt><dd>tasks</dd></div>
+        <div class="ds-num"><dt data-n="131">131<small>h</small></dt><dd>of first-person video</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="ds-sort" id="dsSort">
+    <header class="ds-sort-head">
+      <h2>Every tile is a scene.</h2>
+      <div class="ds-tabs" role="tablist" aria-label="Arrange the scenes">
+        <button type="button" role="tab" data-v="all" aria-selected="true" aria-controls="dsStage" tabindex="0">All scenes</button>
+        <button type="button" role="tab" data-v="qc" aria-selected="false" aria-controls="dsStage" tabindex="-1">By review grade</button>
+        <button type="button" role="tab" data-v="mix" aria-selected="false" aria-controls="dsStage" tabindex="-1">By scene and task</button>
+      </div>
+    </header>
+    <div class="ds-stage" id="dsStage" role="tabpanel" data-view="all">
+      <div class="ds-pan" id="dsPan">
+        <canvas id="dsCv" role="img"></canvas>
+        <div class="ds-labs" id="dsLabs"></div>
+        <div class="tk" id="dsTasks" role="group" aria-label="Recordings by action, with the scene types each action was recorded in"></div>
+      </div>
+      <i class="ds-h0" aria-hidden="true"></i>
+    </div>
+    <footer class="ds-sort-foot">
+      <div class="ds-say" id="dsSay" aria-live="polite"></div>
+      <button type="button" class="ds-more" id="dsMore" aria-haspopup="dialog">Explore all 1,812 scenes<i aria-hidden="true"></i></button>
+    </footer>
+  </div>
+
+  <div class="ds-end"></div>
+
+  <dialog class="ds-browse" id="dsBrowse" aria-label="All scenes">
+    <div class="ds-b-in">
+      <div class="ds-b-top">
+        <div class="ds-b-head">
+          <div><h3>All 1,812 scenes</h3><p id="dsCount" aria-live="polite"></p></div>
+          <button type="button" class="ds-x" aria-label="Close"></button>
+        </div>
+        <div class="ds-chips" id="dsChipsQ" role="group" aria-label="Review grade"></div>
+        <div class="ds-chips" id="dsChipsC" role="group" aria-label="Scene category"></div>
+      </div>
+      <div class="ds-grid" id="dsGrid"></div>
+      <p class="ds-b-none" id="dsNone" hidden>No scene has both this grade and this category.</p>
+      <p class="ds-b-note" id="dsNote" hidden></p>
+    </div>
+    <div class="ds-zoom" id="dsZoom" hidden>
+      <button type="button" class="ds-x" aria-label="Back to all scenes"></button>
+      <button type="button" class="ds-nav prev" aria-label="Previous scene"></button>
+      <figure><img alt=""><figcaption><b></b><span></span></figcaption></figure>
+      <button type="button" class="ds-nav next" aria-label="Next scene"></button>
+    </div>
+  </dialog>
+  <div class="ds-tip" id="dsTip" hidden></div>
+</section>
+
+<!-- 04 Applications (apps.js, apps.css). An overview (nine modalities on the left, the three benchmarks and the four
+     demonstrations on the right; a use lights the modalities it takes and a click goes to its part), the benchmarks
+     (a sortable table of the depth and geometry scores; samples and empty tables for the two tracks without scores),
+     then the demonstrations in the film's order: Real-to-Sim (reconstruction, then interaction), long-horizon
+     trajectory generation, virtual teleoperation (no data yet) and human-to-robot retargeting with the eight-home wall -->
+<section class="ap" id="apps" aria-label="Applications">
+  <header class="ap-intro" data-rv>
+    <p class="eyebrow">Applications</p>
+    <h2>From captured data<br>to training data.</h2>
+    <p class="lead">Three benchmarks measure how well today’s models understand these scenes. Four demonstrations <strong>turn scans and recordings into simulator scenes and robot trajectories.</strong></p>
+  </header>
+
+  <!-- overview -->
+  <div class="ap-map" id="apMap" data-rv>
+    <div class="ap-mods" id="apMods" aria-label="Nine modalities"></div>
+    <svg class="ap-links" id="apLinks" aria-hidden="true"></svg>
+    <div class="ap-uses" id="apUses"></div>
+  </div>
+  <p class="ap-map-note" data-rv>Hover a use to see what it takes. For reference, teleoperating a real robot needs the robot, an operator and a reset for every episode.</p>
+
+  <!-- benchmarks -->
+  <div class="ap-part" id="ap-bench">
+    <header class="ap-head" data-rv>
+      <p class="eyebrow">Understand · Benchmarks</p>
+      <h2>Three benchmarks.<br>Ten scenes.</h2>
+      <p class="lead">Existing models, evaluated on the same 10 scanned scenes. <strong>No single model leads on every metric,</strong> and more input views do not consistently help.</p>
+    </header>
+    <div class="ap-tabs" role="tablist" aria-label="Benchmarks" id="apBenchTabs" data-rv>
+      <button type="button" role="tab" id="tab-geo" data-b="geo" aria-selected="true" aria-controls="apB-geo">Depth &amp; Geometry<span>11 models</span></button>
+      <button type="button" role="tab" id="tab-vg" data-b="vg" aria-selected="false" aria-controls="apB-vg" tabindex="-1">3D Visual Grounding<span>7 models</span></button>
+      <button type="button" role="tab" id="tab-sqa" data-b="sqa" aria-selected="false" aria-controls="apB-sqa" tabindex="-1">Spatial Intelligence<span>11 models · 500 questions</span></button>
+    </div>
+
+    <div class="ap-card ap-bpanel" id="apB-geo" role="tabpanel" aria-labelledby="tab-geo" data-rv>
+      <div class="ap-bctl">
+        <div class="ap-ctl"><span>Input views</span><div class="ap-seg" id="apDens" role="group" aria-label="Input density"></div></div>
+        <div class="ap-ctl"><span>Metric</span><div class="ap-seg" id="apMet" role="group" aria-label="Metric"></div></div>
+      </div>
+      <div class="ap-tbl-wrap"><table class="ap-tbl" id="apTbl"><thead></thead><tbody></tbody></table></div>
+      <p class="ap-say" id="apBenchSay" aria-live="polite"></p>
+    </div>
+
+    <div class="ap-card ap-bpanel" id="apB-vg" role="tabpanel" aria-labelledby="tab-vg" hidden>
+      <div class="ap-two">
+        <figure class="ap-vg">
+          <div class="ap-stage"><img id="apVgImg" alt="A scanned living room; the object a phrase refers to is outlined by its 3D box"><svg id="apVgSvg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg></div>
+          <figcaption>An illustration of the task in the Real-to-Sim scene. The benchmark’s own annotations will replace it.</figcaption>
+        </figure>
+        <div class="ap-vg-side">
+          <h3>A phrase in, a 3D box out.</h3>
+          <p class="ap-p">Annotators write referring expressions for objects in each scene and mark the 3D box of each target in the scene’s frame. A model is given the phrase and has to return the box.</p>
+          <div class="ap-exprs" id="apExprs" role="group" aria-label="Referring expressions"></div>
+        </div>
+      </div>
+      <div class="ap-tbl-wrap"><table class="ap-tbl pending" id="apVgTbl"></table></div>
+      <p class="ap-say"><b class="ap-pend">Scores pending</b>Acc@0.25 and Acc@0.5 on the Unique and Multiple splits.</p>
+    </div>
+
+    <div class="ap-card ap-bpanel" id="apB-sqa" role="tabpanel" aria-labelledby="tab-sqa" hidden>
+      <h3>500 questions, six kinds.</h3>
+      <p class="ap-p">Question–answer pairs written on the 10 scenes, scored by answer accuracy for each kind and overall.</p>
+      <div class="ap-qs" id="apQs"></div>
+      <div class="ap-tbl-wrap"><table class="ap-tbl pending" id="apSqaTbl"></table></div>
+      <p class="ap-say"><b class="ap-pend">Scores pending</b>Example questions show the form of each kind; the benchmark’s own questions will replace them.</p>
+    </div>
+  </div>
+
+  <!-- demonstrations -->
+  <div class="ap-part" id="ap-demos">
+    <header class="ap-head" data-rv>
+      <p class="eyebrow">Act · Demonstrations</p>
+      <h2>Four ways to make<br>robot data.</h2>
+      <p class="lead">Every scan is metric and gravity-aligned, and every recording is registered to its scan. <strong>That is enough to build a simulator scene, and to move a robot through it.</strong></p>
+    </header>
+
+    <!-- Real-to-Sim (r2s3d.js): the simulator scene in free-view 3D, playing the film's physics run; picking an object
+         flies to it and loops its part of the run, with the film's offline render of the same frames beside it -->
+    <article class="ap-demo" id="ap-r2s">
+      <header class="ap-dhead" data-rv>
+        <p class="ap-tag" style="--c:#6FD39A">Real-to-Sim</p>
+        <h3>One scan becomes a digital twin.</h3>
+        <p class="ap-p">A scanned home, rebuilt as a simulator scene in the scan’s own metric frame, where every object keeps its physics. Look around it, and pick an object to run it.</p>
+      </header>
+      <div class="r3" data-rv>
+        <div class="r3-stage" id="r3Stage">
+          <canvas id="r3Cv" role="img" aria-label="The simulator scene in 3D"></canvas>
+          <div class="gl-load"><i></i><span>Loading the simulator scene</span></div>
+          <div class="ap-seg over" id="r3Views" role="group" aria-label="View">
+            <button type="button" data-v="film" aria-pressed="true">Film camera</button><button type="button" data-v="living" aria-pressed="false">Living room</button><button type="button" data-v="kitchen" aria-pressed="false">Kitchen</button><button type="button" data-v="home" aria-pressed="false">Whole home</button>
+          </div>
+          <figure class="r3-clip" id="r3Clip" hidden><canvas width="560" height="315" role="img" aria-label="The same frames rendered offline"></canvas><figcaption><b></b><span></span><em>Offline render of the same run</em></figcaption></figure>
+          <div class="ap-tip" id="r3Tip" hidden></div>
+          <span class="ap-hint">Drag to look around; let go and the camera returns · click, then scroll to zoom</span>
+        </div>
+        <div class="ap-bar">
+          <button type="button" class="ap-play" id="r3Play" aria-label="Pause"><i></i></button>
+          <div class="ap-scrub r3-scrub" id="r3Scrub" role="slider" tabindex="0" aria-label="Time in the physics run" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="r3-lanes" id="r3Lanes"></div><i class="ap-headm" id="r3Head"></i></div>
+          <span class="r3-clock" id="r3Clock"></span>
+          <button type="button" class="ap-tog" id="r3BoxT" aria-pressed="false">Object boxes</button>
+        </div>
+        <div class="ap-int-list r3-list" id="r3List" role="group" aria-label="Interactions"></div>
+        <div class="ap-legend" id="r3Legend" aria-label="Physics types"></div>
+      </div>
+      <dl class="ap-stats" data-rv>
+        <div><dt>107</dt><dd>objects in the scene</dd></div>
+        <div><dt>73</dt><dd>of them interactive</dd></div>
+        <div><dt>1</dt><dd>physics run behind every clip here</dd></div>
+      </dl>
+    </article>
+
+    <!-- long-horizon -->
+    <article class="ap-demo" id="ap-lh">
+      <header class="ap-dhead" data-rv>
+        <p class="ap-tag" style="--c:#F29A5E">Long-Horizon Trajectory Generation</p>
+        <h3>New tasks, beyond the recordings.</h3>
+        <p class="ap-p">In the same simulator scene, a wheeled dual-arm robot heats a drink and carries it to the bedroom: eight subtasks in one continuous trajectory. More trajectories cost only compute.</p>
+      </header>
+      <div class="ap-lh" data-rv>
+        <div class="ap-lh-main">
+          <div class="ap-stage r85"><canvas id="apLhCv" width="1152" height="720" role="img" aria-label="The robot running the task in the simulator scene, time-lapsed"></canvas>
+            <span class="ap-lab l" id="apLhNow"></span><span class="ap-lab r" id="apLhClock"></span></div>
+          <div class="ap-bar">
+            <button type="button" class="ap-play" id="apLhPlay" aria-label="Pause"><i></i></button>
+            <div class="ap-scrub" id="apLhScrub" role="slider" tabindex="0" aria-label="Time in the trajectory" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ap-segs" id="apLhSegs"></div><i class="ap-headm" id="apLhHead"></i></div>
+          </div>
+        </div>
+        <aside class="ap-lh-side">
+          <div class="ap-plan"><img src="data/traj/plan.png" alt="Floor plan of the simulator scene"><svg id="apLhPlan" aria-label="Thirty start positions on the plan; the path of the robot base and the mug"></svg></div>
+          <p class="ap-plan-key"><i class="k-st"></i>30 held-out starts<i class="k-path"></i>base path<i class="k-mug"></i>mug</p>
+          <div class="ap-run" id="apLhRun" aria-live="polite"></div>
+        </aside>
+      </div>
+      <dl class="ap-stats" data-rv>
+        <div><dt>30<small> / 30</small></dt><dd>held-out starts complete all eight subtasks</dd></div>
+        <div><dt>2.2<small>min</small></dt><dd>average trajectory</dd></div>
+        <div><dt>10–16<small>min</small></dt><dd>of compute per trajectory</dd></div>
+      </dl>
+    </article>
+
+    <!-- virtual teleoperation -->
+    <article class="ap-demo" id="ap-tel">
+      <header class="ap-dhead" data-rv>
+        <p class="ap-tag" style="--c:#FF8FD0">Virtual Teleoperation</p>
+        <h3>An operator, and no robot.</h3>
+        <p class="ap-p">An operator drives a simulated robot live inside the simulator scene. Every episode starts from the same captured state, so a reset is a reload.</p>
+      </header>
+      <div class="ap-soon" data-rv><b>Demonstration to come</b><span>Operator motion → simulated robot, live, in the converted scene</span></div>
+    </article>
+
+    <!-- retargeting -->
+    <article class="ap-demo" id="ap-ret">
+      <header class="ap-dhead" data-rv>
+        <p class="ap-tag" style="--c:#7AC4D8">Human → Robot Retargeting</p>
+        <h3>The same recording, a different body.</h3>
+        <p class="ap-p">The operator’s body and hand motion, registered to the scan, drives a wheeled humanoid through the same room. No robot was there.</p>
+      </header>
+      <div class="ap-ret" data-rv>
+        <div class="gl-slot box" data-mode="retarget" id="apRetSlot">
+          <div class="gl-host"></div>
+          <div class="gl-load"><i></i><span>Loading the scan</span></div>
+          <div class="ap-seg over" id="apEmb" role="group" aria-label="Body">
+            <button type="button" data-e="human" aria-pressed="true">Human</button><button type="button" data-e="A" aria-pressed="false">Robot A</button><button type="button" data-e="B" aria-pressed="false">Robot B</button>
+          </div>
+          <button type="button" class="ap-tog over" id="apCmp" aria-pressed="false">Compare</button>
+          <button type="button" class="ap-lab l" id="apRetL" hidden>Human</button><span class="ap-lab r" id="apRetR" hidden>Robot A</span>
+          <div class="ap-seam" id="apRetSeam" role="slider" tabindex="0" aria-label="Divider between the human and the robot" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" hidden><i></i></div>
+          <span class="ap-hint">Drag to look around</span>
+        </div>
+        <div class="ap-bar">
+          <button type="button" class="ap-play" id="apRetPlay" aria-label="Pause"><i></i></button>
+          <div class="ap-scrub tall" id="apRetScrub" role="slider" tabindex="0" aria-label="Time in the recording" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><canvas id="apRetErr" width="1600" height="120" aria-hidden="true"></canvas><i class="ap-headm" id="apRetHead"></i></div>
+        </div>
+        <p class="ap-err-key"><span>Fingertip error over this window</span><i style="--c:#CCFFA0"></i>Robot A <b id="apErrA"></b><i style="--c:#B9A7FF"></i>Robot B <b id="apErrB"></b></p>
+      </div>
+      <dl class="ap-stats" data-rv>
+        <div><dt>0.40–0.55<small>cm</small></dt><dd>median fingertip error</dd></div>
+        <div><dt>96<small>m</small></dt><dd>of base travel in 10.3 min of recordings</dd></div>
+        <div><dt>0</dt><dd>frames failing a speed, torque, balance or collision check</dd></div>
+      </dl>
+
+      <header class="ap-dhead sub" data-rv>
+        <h3>Eight homes, two robots.</h3>
+        <p class="ap-p">One recording from each of eight homes, retargeted to both robots: Robot A left of the divider, Robot B right of it. Open any of them in 3D to look around, switch bodies and drag the divider.</p>
+      </header>
+      <div class="ap-wall" id="apWall" data-rv></div>
+      <dl class="ap-stats" data-rv>
+        <div><dt>8</dt><dd>homes</dd></div>
+        <div><dt>16</dt><dd>full recordings on Robot B</dd></div>
+        <div><dt>52.6<small>min</small></dt><dd>of robot motion</dd></div>
+        <div><dt>0</dt><dd>joint-limit violations</dd></div>
+      </dl>
+    </article>
+  </div>
+
+  <dialog class="ap-zoom" id="apZoom" aria-label="A retargeted recording in 3D">
+    <button type="button" class="ds-x" aria-label="Close"></button>
+    <button type="button" class="ds-nav prev" aria-label="Previous home"></button>
+    <figure>
+      <div class="ap-ret">
+        <div class="gl-slot box" data-mode="retarget" id="apZSlot">
+          <div class="gl-host"></div>
+          <img class="ap-zposter" id="apZPoster" alt="" width="800" height="450">
+          <div class="gl-load"><i></i><span>Loading the home</span></div>
+          <div class="ap-seg over" id="apZEmb" role="group" aria-label="Body">
+            <button type="button" data-e="human" aria-pressed="false">Human</button><button type="button" data-e="A" aria-pressed="false">Robot A</button><button type="button" data-e="B" aria-pressed="true">Robot B</button>
+          </div>
+          <button type="button" class="ap-tog over" id="apZCmp" aria-pressed="true">Side by side</button>
+          <button type="button" class="ap-lab l" id="apZL" hidden>Robot A</button><span class="ap-lab r" id="apZR" hidden>Robot B</span>
+          <div class="ap-seam" id="apZSeam" role="slider" tabindex="0" aria-label="Divider between the two bodies" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" hidden><i></i></div>
+        </div>
+        <div class="ap-bar">
+          <button type="button" class="ap-play" id="apZPlay" aria-label="Pause"><i></i></button>
+          <div class="ap-scrub" id="apZScrub" role="slider" tabindex="0" aria-label="Time in the recording" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ap-line"><i id="apZFill"></i></div><i class="ap-headm" id="apZHead"></i></div>
+        </div>
+      </div>
+      <figcaption><b></b><span></span></figcaption>
+    </figure>
+    <button type="button" class="ds-nav next" aria-label="Next home"></button>
+  </dialog>
+</section>
+</main>
+
+<footer class="foot">© 2026 Ropedia</footer>
+
+<script type="module" src="hero.js"></script>
+<script type="module" src="story.js"></script>
+<script type="module" src="viewer.js"></script>
+<script type="module" src="dataset.js"></script>
+<script type="module" src="apps.js"></script>
+<script type="module" src="r2s3d.js"></script>
+<script type="module" src="scroll.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# the media (1.1 GB) live in S3, not here: see README.md, "Deploying"
+home/data/
+home/assets/
+# built by home/tools/deploy.py (Cloudflare Pages runs it on every push)
+dist/
+__pycache__/
+*.pyc
+.DS_Store

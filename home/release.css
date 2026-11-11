@@ -1,7 +1,26 @@
-/* 05 Release (index.html, #get): where the paper, the dataset and the code live, a card each. Tokens and type come from
-   home.css. A card whose link is out is an <a class="rl-card" href="..."> ending in "Read on arXiv" and an arrow; one
-   that is not out yet is a <div class="rl-card soon"> ending in "Coming soon". */
+/* The release links (links.js holds the URLs): the buttons under the hero's slogan, Paper and Code in the bar, and the
+   05 Release section (index.html, #get). Tokens and type come from home.css. An element whose link is not out yet has
+   .soon and no href: the hero button says "soon", the card "Coming soon", and neither reacts to the pointer. */
 
+/* ------------------------------------------------------------ under the slogan: Dataset (brand green), Paper, Code */
+.hero-links { position: absolute; left: 50%; top: 0; z-index: 2; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; width: max-content; max-width: calc(100vw - 32px); transform: translateX(-50%); opacity: 0; visibility: hidden; }
+.hero-links a { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px 0 14px; border-radius: 980px; border: 1px solid rgba(245, 245, 247, 0.24); background: rgba(10, 10, 10, 0.55); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font: 500 15px/1 var(--sans); color: var(--w); white-space: nowrap; transition: background 0.2s, border-color 0.2s; }
+.hero-links a[href]:hover { border-color: rgba(245, 245, 247, 0.6); background: rgba(40, 40, 42, 0.7); }
+.hero-links a.pri { background: var(--g); border-color: var(--g); color: var(--g-ink); font-weight: 600; }
+.hero-links a.pri[href]:hover { background: #ddffc0; border-color: #ddffc0; }
+.hero-links svg { width: 17px; height: 17px; flex: none; }
+.hero-links small { margin-left: -2px; font-size: 12px; font-weight: 450; opacity: 0.6; }
+.hero-links small:empty { display: none; }
+.hero-links a.soon, .rl-card.soon { cursor: default; }
+.hero-hint.aside { visibility: hidden; }
+
+/* ------------------------------------------------------------ the bar: Paper and Code after a thin divider */
+.lnav-ext { display: flex; align-items: center; gap: 18px; padding-left: 24px; border-left: 1px solid rgba(255, 255, 255, 0.16); }
+.lnav-ext[hidden], .lnav-ext a[hidden] { display: none; }
+.lnav-ext a { display: inline-flex; align-items: center; gap: 6px; }
+.lnav-ext svg { width: 14px; height: 14px; flex: none; }
+
+/* ------------------------------------------------------------ 05 Release: a card each */
 .rl { --edge: max(20px, calc((100vw - 1180px) / 2)); padding: 0 var(--edge) clamp(90px, 15vh, 160px); background: #000; scroll-margin-top: 20px; }
 .rl-head { max-width: 860px; margin: 0 auto clamp(34px, 6vh, 56px); text-align: center; }
 .rl-head .eyebrow { color: var(--g); }
@@ -15,14 +34,23 @@
 .rl-card p { margin: 10px 0 0; color: var(--gray); font: 500 16px/1.4 var(--sans); text-wrap: pretty; }
 .rl-go { display: flex; align-items: center; gap: 8px; margin-top: auto; padding-top: 28px; font: 600 15px/1 var(--sans); color: var(--g); }
 .rl-go::after { content: '\2197'; transition: transform 0.3s var(--ease); }
-a.rl-card:hover { background: #151516; }
-a.rl-card:hover .rl-go::after { transform: translate(2px, -2px); }
+a.rl-card[href]:hover { background: #151516; }
+a.rl-card[href]:hover .rl-go::after { transform: translate(2px, -2px); }
 .rl-card.soon .rl-k { color: var(--gray); }
 .rl-card.soon .rl-go { color: var(--gray2); }
 .rl-card.soon .rl-go::after { content: none; }
 
+@media (max-width: 900px) {
+  .lnav-ext { display: none; }
+}
 @media (max-width: 760px) {
   .rl-cards { grid-template-columns: 1fr; gap: 12px; }
   .rl-card { min-height: 0; padding: 22px 22px 20px; border-radius: 20px; }
   .rl-go { padding-top: 22px; }
+}
+@media (max-width: 520px) {
+  .hero-links { gap: 6px; }
+  .hero-links a { height: 34px; padding: 0 12px 0 10px; gap: 6px; font-size: 13.5px; }
+  .hero-links svg { width: 15px; height: 15px; }
+  .hero-links small { font-size: 11.5px; }
 }

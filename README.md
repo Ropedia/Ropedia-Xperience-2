@@ -154,14 +154,16 @@ shadows from the panels (the page's are sharp) and any light detail finer than t
 The earlier scan | simulator pictures and the gap heat map are no longer on the page; `data/r2s/real`, `data/r2s/sim`
 and `data/apps/gap` are now only used by the grounding sample (one frame of `real`).
 
-## Homepage: the 05 Release section
+## Homepage: the release links
 
-The end of `home/index.html` (`#get`, styled by `home/release.css`; the nav's "Get the data" points at it) has a card
-each for the paper (arXiv), the dataset (Hugging Face) and the code (GitHub). A card whose link is not out yet is a
-`<div class="rl-card soon">` ending in "Coming soon". To publish one, turn it into
-`<a class="rl-card" href="https://..." target="_blank" rel="noopener">` and set its last line to "Read on arXiv",
-"Open on Hugging Face" or "Open on GitHub"; the card then gets the green label and the arrow. Code only, so a push is
-enough (no new media prefix).
+The dataset (Hugging Face), the paper (arXiv) and the code (GitHub) are linked from three places, styled by
+`home/release.css`: three buttons under the hero's slogan (Dataset in the brand green), Paper and Code in the bar
+(with "Get the data" going to the dataset), and the 05 Release section at the end of the page (`#get`), a card each.
+The URLs are written once, in `LINKS` at the top of `home/links.js`; every element with a `data-link` follows it. A
+link left empty says "soon" on its hero button and "Coming soon" on its card (neither clickable), keeps Paper or Code
+out of the bar, and sends "Get the data" to `#get`. `links.js` also places the hero buttons: `hero.js` moves the
+slogan every frame, so they are set under it each frame while the hero is at its start, and fade out with the Scroll
+hint. To publish a link, fill in its URL and push (code only, no new media prefix).
 
 ## Deploying: code on Cloudflare Pages, media on Cloudflare R2
 

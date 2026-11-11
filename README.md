@@ -47,6 +47,13 @@ It writes `home/data/scenes.json` (preview tile, category and review grade of ev
 upload labels and can carry an operator's name) and `home/data/recordings.json` (recordings per action × scene type,
 with the tasks behind each row and column).
 
+The page's review grades are the audit's with one rule on top (`REUSE_NOT_EXCLUDED` in `build_data.py`): in Restaurant,
+Store, Office, Meeting room, Outdoor corridor and Urban street an excluded scan counts as a reuse candidate, which makes
+the totals 150 perfect / 971 usable / 601 reuse candidates / 90 excluded (the audit and the film: 579 and 112).
+`build_data.py` also writes the rule into the grades of `data/hero.json` (the hero's tooltip), so run it after
+`build.py`. The Data section's grade numbers are counted from `scenes.json`; the lead in `index.html` (1,121 usable or
+perfect) is the one written out.
+
 The scans carry 12 categories and the tasks 8 scene types, and the sources hold no link between a recording and a scan.
 `build_data.py` matches the two lists by name (`COLS`, which also sets the categories' groups, and fails if a name is
 missing); seven names are shared. The page uses the match for its highlight only: a scan category and the scene type

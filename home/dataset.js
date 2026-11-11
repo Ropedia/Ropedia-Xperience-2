@@ -279,7 +279,7 @@ if (!R) tabs.pop().remove();                         // no third arrangement wit
 const S = { W: 0, H: 0, H0: 0, dpr: 1, L: null, view: 'all', cur: new Float32Array(N * 4), from: new Float32Array(N * 4), to: null, t0: 0, moving: false, band: false, aq: 0, lit: 0, was: 0, hk: 0, ph: 0, hover: -1, on: false, raf: 0, last: 0 };
 const SAY = {
   all: ['1,812', 'scans in this release. <strong>One tile per scan,</strong> each a real space captured in 3D at metric scale.'],
-  qc: ['1,121', 'scans are rated <strong>usable or perfect,</strong> 62% of the release. Another 579 are kept as reuse candidates; 112 are excluded.'],
+  qc: [fmt(QN[0] + QN[1]), `scans are rated <strong>usable or perfect,</strong> ${Math.round((100 * (QN[0] + QN[1])) / N)}% of the release. Another ${fmt(QN[2])} are kept as reuse candidates; ${fmt(QN[3])} are excluded.`],
   mix: [fmt(R?.total ?? 0), `recordings of ${R?.tasks ?? 0} tasks, beside the ${fmt(N)} scans. <strong>Scene categories on the left, actions on the right.</strong> Point at one to see where it meets the other side.`],
 };
 const ALT = {

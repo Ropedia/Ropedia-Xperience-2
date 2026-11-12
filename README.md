@@ -10,7 +10,7 @@
   <a href="https://ropedia.com/xperience/2-research/"><img src="https://img.shields.io/badge/Project_Page-B5E853?style=for-the-badge&logo=googlechrome&logoColor=182015" alt="Project page"></a>
   <a href="https://huggingface.co/datasets/ropedia-ai/Ropedia-Xperience-2"><img src="https://img.shields.io/badge/Dataset-FFD21E?style=for-the-badge&logo=huggingface&logoColor=182015" alt="Dataset on Hugging Face"></a>
   <a href="https://pub-a5d54d8bd1a5427c92ce334fabec455e.r2.dev/github/v37-20261112/xperience-2-demo.mp4"><img src="https://img.shields.io/badge/%E2%96%B6_Demo_Video-5B8DEF?style=for-the-badge&logoColor=white" alt="Watch the full demo video"></a>
-  <img src="https://img.shields.io/badge/Paper-Coming_Soon-8B949E?style=for-the-badge&logo=arxiv&logoColor=white" alt="Paper: coming soon">
+  <a href="assets/Xperience2-paper.pdf"><img src="https://img.shields.io/badge/Paper-PDF-B31B1B?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Read the paper (PDF)"></a>
 </p>
 
 **Metric 3D environments and human behaviors, connected in one scene.**

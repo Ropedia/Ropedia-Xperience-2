@@ -43,7 +43,7 @@
     <div class="hero-glow" id="heroGlow" aria-hidden="true"><canvas></canvas></div>
     <img class="lk-brand" id="lkBrand" src="assets/ropedia_brand.png" alt="Ropedia">
     <span class="lk-word" id="lkWord">perience <em class="lk-2">2</em></span>
-    <p class="lk-sub" id="lkSub">A Golden Standard for Scaling Physical AI Environments and Behaviors</p>
+    <p class="lk-sub" id="lkSub">A Gold Standard for Scaling Physical AI Environments and Behaviors</p>
     <div class="hero-tip" id="heroTip" hidden></div>
     <div class="hero-hint" id="heroHint"><span>Scroll</span><i></i></div>
     <!-- the release links under the slogan (links.js places them and holds the URLs; "soon" until a link is out) -->
@@ -53,8 +53,7 @@
       <a class="soon" data-link="code" aria-disabled="true"><svg aria-hidden="true"><use href="#i-gh"/></svg>Code<small>soon</small></a>
     </div>
     <div class="hero-cap" id="heroCap">
-      <h2>One of 1,500+ scenes.</h2>
-      <p>Each one scanned in 3D, at metric scale.</p>
+      <h2>Explore 1,500+ real-world scenes.</h2>
     </div>
   </div>
 </section>
@@ -91,8 +90,7 @@
       </section>
     </aside>
     <div class="hero-cap story-carry" id="storyCarry">
-      <h2>One of 1,500+ scenes.</h2>
-      <p>Each one scanned in 3D, at metric scale.</p>
+      <h2>Explore 1,500+ real-world scenes.</h2>
     </div>
     <div class="story-copy">
       <article class="sc sc-side" data-in="0.1" data-out="0.41">
@@ -101,7 +99,7 @@
         <p>A handheld LiDAR scanner captures the whole space in one pass, <strong>in 3D and at metric scale.</strong></p>
       </article>
       <article class="sc sc-side sc-rec" data-in="0.42" data-out="0.72">
-        <h2>Recorded many times.</h2>
+        <h2>Multiple tasks, recorded in one scene.</h2>
         <p class="rec-lead">Then the operator wears HOMIE Gen 2 and records <strong>every task assigned to the scene.</strong></p>
         <figure class="dev-big"><img src="assets/homie_gen2.jpg" alt="HOMIE Gen 2, the head-mounted recording rig"><figcaption><b>HOMIE Gen 2</b><span>Head-mounted · 4 fisheye cameras · IMU · 4-channel audio</span></figcaption></figure>
         <div class="dev-chip"><img src="assets/homie_gen2.jpg" alt=""><div><b>HOMIE Gen 2</b><span>8 recordings in this scene · 19 min</span></div></div>
@@ -109,7 +107,6 @@
       </article>
       <article class="sc sc-low" data-in="0.88" data-out="1.01">
         <h2>In one metric frame.</h2>
-        <p>Each recording is registered to the scan: <strong>the operator’s body, hands and head camera, in the scene’s own coordinates.</strong></p>
         <div class="cases" id="cases" role="group" aria-label="Recordings shown in 3D"></div>
       </article>
     </div>
@@ -121,7 +118,6 @@
 <section class="viewer" id="viewer" aria-label="Three homes">
   <header class="hl-head">
     <h2>Everything in one scene.</h2>
-    <p>Three more homes, one recording in each. Drag to look around.</p>
   </header>
   <div class="hl-track" id="hlTrack">
     <article class="hlc" data-i="0" aria-label="Dining area, LH_17763">
@@ -186,7 +182,7 @@
 
   <div class="ds-sort" id="dsSort">
     <header class="ds-sort-head">
-      <h2>Every tile is a scene.</h2>
+      <h2>Explore scenes across diverse settings.</h2>
       <div class="ds-tabs" role="tablist" aria-label="Arrange the scenes">
         <button type="button" role="tab" data-v="all" aria-selected="true" aria-controls="dsStage" tabindex="0">All scenes</button>
         <button type="button" role="tab" data-v="qc" aria-selected="false" aria-controls="dsStage" tabindex="-1">By review grade</button>
@@ -242,8 +238,7 @@
 <section class="ap" id="apps" aria-label="Applications">
   <header class="ap-intro" data-rv>
     <p class="eyebrow">Applications</p>
-    <h2>From captured data<br>to training data.</h2>
-    <p class="lead">Three benchmarks measure how well today’s models understand these scenes. Four demonstrations <strong>turn scans and recordings into simulator scenes and robot trajectories.</strong></p>
+    <h2>A controlled world for robot learning.</h2>
   </header>
 
   <!-- overview -->
@@ -256,9 +251,8 @@
   <!-- benchmarks -->
   <div class="ap-part" id="ap-bench">
     <header class="ap-head" data-rv>
-      <p class="eyebrow">Understand · Benchmarks</p>
-      <h2>Three benchmarks.<br>Twenty scenes.</h2>
-      <p class="lead">Existing models, evaluated on the same 20 scanned scenes. <strong>No single model leads on every metric,</strong> more input views do not consistently help, and precise 3D boxes and metric distances are still out of reach.</p>
+      <p class="eyebrow">High-precision</p>
+      <h2>Tested across three Benchmarks</h2>
     </header>
     <div class="ap-tabs" role="tablist" aria-label="Benchmarks" id="apBenchTabs" data-rv>
       <button type="button" role="tab" id="tab-geo" data-b="geo" aria-selected="true" aria-controls="apB-geo">Depth &amp; Geometry<span>11 models</span></button>
@@ -297,7 +291,7 @@
   <div class="ap-part" id="ap-demos">
     <header class="ap-head" data-rv>
       <p class="eyebrow">Act · Demonstrations</p>
-      <h2>Four ways to make<br>robot data.</h2>
+      <h2>Interactive simulation environment</h2>
       <p class="lead">Every scan is metric and gravity-aligned, and every recording is registered to its scan. <strong>That is enough to build a simulator scene, and to move a robot through it.</strong></p>
     </header>
 
@@ -307,7 +301,6 @@
       <header class="ap-dhead" data-rv>
         <p class="ap-tag" style="--c:#6FD39A">Real-to-Sim</p>
         <h3>One scan becomes a digital twin.</h3>
-        <p class="ap-p">A scanned home, rebuilt as a simulator scene in the scan’s own metric frame, where every object keeps its physics. Look around it, and pick an object to run it.</p>
       </header>
       <div class="r3" data-rv>
         <div class="r3-stage" id="r3Stage">
@@ -340,7 +333,6 @@
       <header class="ap-dhead" data-rv>
         <p class="ap-tag" style="--c:#F29A5E">Long-Horizon Trajectory Generation</p>
         <h3>New tasks, beyond the recordings.</h3>
-        <p class="ap-p">In the same simulator scene, a wheeled dual-arm robot heats a drink and carries it to the bedroom: eight subtasks in one continuous trajectory. More trajectories cost only compute.</p>
       </header>
       <div class="ap-lh" data-rv>
         <div class="ap-lh-main">
@@ -368,8 +360,7 @@
     <article class="ap-demo" id="ap-tel">
       <header class="ap-dhead" data-rv>
         <p class="ap-tag" style="--c:#FF8FD0">Virtual Teleoperation</p>
-        <h3>An operator, and no robot.</h3>
-        <p class="ap-p">An operator drives a simulated robot live inside the simulator scene. Every episode starts from the same captured state, so a reset is a reload.</p>
+        <h3>Teleoperate a robot in simulation.</h3>
       </header>
       <div class="ap-tel" data-rv>
         <figure class="ap-stage ap-tel-op">
@@ -398,8 +389,7 @@
     <article class="ap-demo" id="ap-ret">
       <header class="ap-dhead" data-rv>
         <p class="ap-tag" style="--c:#7AC4D8">Human → Robot Retargeting</p>
-        <h3>The same recording, a different body.</h3>
-        <p class="ap-p">The operator’s body and hand motion, registered to the scan, drives a wheeled humanoid through the same room. No robot was there.</p>
+        <h3>Turn human motion into robot motion.</h3>
       </header>
       <div class="ap-ret" data-rv>
         <div class="gl-slot box" data-mode="retarget" id="apRetSlot">
@@ -425,10 +415,6 @@
         <div><dt>0</dt><dd>frames failing a speed, torque, balance or collision check</dd></div>
       </dl>
 
-      <header class="ap-dhead sub" data-rv>
-        <h3>Eight homes, two robots.</h3>
-        <p class="ap-p">One recording from each of eight homes, on both robots. Open any of them in 3D.</p>
-      </header>
       <div class="ap-wall" id="apWall" data-rv></div>
     </article>
   </div>

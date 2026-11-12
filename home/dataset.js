@@ -280,7 +280,7 @@ if (!R) tabs.pop().remove();                         // no third arrangement wit
 const S = { W: 0, H: 0, H0: 0, dpr: 1, L: null, view: 'all', cur: new Float32Array(N * 4), from: new Float32Array(N * 4), to: null, t0: 0, moving: false, band: false, aq: 0, lit: 0, was: 0, hk: 0, ph: 0, hover: -1, on: false, raf: 0, last: 0 };
 const SAY = {
   all: '<strong>One tile per scan,</strong> each a real space captured in 3D at metric scale.',
-  qc: 'The same tiles, <strong>grouped by review grade.</strong>',
+  qc: '',
   mix: `<strong>${RECS} recordings of ${R?.tasks ?? 0} tasks</strong> beside the scans. Point at a row to see where it meets the other side.`,
 };
 const ALT = {

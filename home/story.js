@@ -99,7 +99,7 @@ function onScroll() {
   const r = sec.getBoundingClientRect();
   s = clamp01(-r.top / Math.max(1, r.height - innerHeight));
   stick.classList.toggle('pinned', r.top <= 0.5);   // shown once pinned: until then the hero is on screen
-  if (E) E.story = s;
+  if (E) { E.story = s; if (s > STORY.homie[0]) E.preloadCases(); }   // step 3's other cases, from HOMIE on
   copies.forEach((c) => c.classList.toggle('on', s >= Number(c.dataset.in) && s < Number(c.dataset.out)));
   if (r.top < innerHeight * 2 && !E) start();
   overlay();

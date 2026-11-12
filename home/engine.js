@@ -49,6 +49,25 @@ async function fetchBytes(url, onProgress) {
 const f32 = async (url, p) => new Float32Array((await fetchBytes(url, p)).buffer);
 const u32 = async (url) => new Uint32Array((await fetchBytes(url)).buffer);
 const json = (url) => fetch(url).then((r) => r.json());
+// a recording window's mesh.json and its body mesh: mesh.q16z when mesh.json names one (tools/pack_mesh.py: a quarter
+// of the size; uint16 per axis over the window's box, frame-to-frame deltas, low bytes then high bytes, gzipped),
+// else the raw mesh.f32
+async function meshOf(HB) {
+  const mj = await json(`${HB}mesh.json`), q = mj.q16;
+  if (!q || typeof DecompressionStream === 'undefined') return [await f32(`${HB}mesh.f32`), mj];
+  const r = await fetch(`${HB}${q.file}`);
+  if (!r.ok) throw new Error(`${HB}${q.file}: ${r.status}`);
+  const b = new Uint8Array(await new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).arrayBuffer());
+  const n = b.length >> 1, per = mj.verts * 3, out = new Float32Array(n), acc = new Uint16Array(per);
+  const s = [0, 1, 2].map((a) => (q.hi[a] - q.lo[a]) / 65535);
+  for (let k = 0, j = 0; k < n; k++) {
+    acc[j] += b[k] | (b[n + k] << 8);   // (Uint16Array: the sum wraps mod 2^16 as it was packed)
+    const a = j % 3;
+    out[k] = q.lo[a] + acc[j] * s[a];
+    if (++j === per) j = 0;
+  }
+  return [out, mj];
+}
 const smoothPts = (P, k) => P.map((_, i) => {
   const s = [0, 0, 0]; let n = 0;
   for (let j = Math.max(0, i - k); j <= Math.min(P.length - 1, i + k); j++) { s[0] += P[j][0]; s[1] += P[j][1]; s[2] += P[j][2]; n++; }
@@ -156,8 +175,8 @@ export class Engine {
     this.caseId = null; this.recs = new Map(); this.loadedIds = new Set(); this.hopT = null; this.caseT0 = -1e9;   // step 3's cases (selectCase)
     this.ready = this.load();
     this.recReady = this.ready.then(() => this.selectCase(this.cards.cases[0].id));
-    // then every other case, one after another, so a switch in step 3 never waits
-    this.recReady.then(async () => { for (const c of this.cards.cases) await this.loadCase(c.id).catch(() => {}); });
+    // every other case, one after another, so a switch in step 3 never waits: once the story is half way
+    // (story.js calls preloadCases), not at page load, where they were some 80 MB more for a visitor who never gets there
     this.raf = 0;
   }
 
@@ -227,13 +246,17 @@ export class Engine {
     this.loaded = true;
     this.resize();
   }
+  preloadCases() {
+    this.casesP ??= this.recReady.then(async () => { for (const c of this.cards.cases) await this.loadCase(c.id).catch(() => {}); });
+    return this.casesP;
+  }
   // step 3's cases: the recordings with a 3D window (recordings.json), each loaded the first time it is picked
   loadCase(id) {
     if (this.recs.has(id)) return this.recs.get(id);
     const B = this.base, HB = `${B}${id}/`, color = this.trails.find((t) => t.id === id)?.color ?? '#FF6B9A';
     const p = (this.faces ??= u32(`${B}faces.u32`)).then((faces) => Promise.all([json(`${HB}take.json`), f32(`${HB}body.f32`),
-      f32(`${HB}cam.f32`), f32(`${HB}hands.f32`), f32(`${HB}mesh.f32`), json(`${HB}mesh.json`)])
-      .then(([take, body, cam, hands, mesh, mj]) => {
+      f32(`${HB}cam.f32`), f32(`${HB}hands.f32`), meshOf(HB)])
+      .then(([take, body, cam, hands, [mesh, mj]]) => {
         const r = new Recording(this, HB, take, body, cam, hands, mesh, mj, faces, color);
         r.id = id; this.loadedIds.add(id);
         r.show({ alpha: 0 });
@@ -282,8 +305,8 @@ export class Engine {
     if (sp.recs.has(take)) return sp.recs.get(take);
     const HB = `${sp.base}${take}/`;
     const p = (this.faces ??= u32(`${this.base}faces.u32`)).then((faces) => Promise.all([json(`${HB}take.json`), f32(`${HB}body.f32`),
-      f32(`${HB}cam.f32`), f32(`${HB}hands.f32`), f32(`${HB}mesh.f32`), json(`${HB}mesh.json`)])
-      .then(([meta, body, cam, hands, mesh, mj]) => {
+      f32(`${HB}cam.f32`), f32(`${HB}hands.f32`), meshOf(HB)])
+      .then(([meta, body, cam, hands, [mesh, mj]]) => {
         const r = new Recording(this, HB, meta, body, cam, hands, mesh, mj, faces, color, sp);
         r.id = take; r.show({ alpha: 0 });
         r.group.updateMatrixWorld(true);   // (its joints are asked for before its first frame is drawn)

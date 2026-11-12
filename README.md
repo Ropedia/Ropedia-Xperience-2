@@ -211,6 +211,10 @@ python3 tools/deploy.py --base https://media.<site domain>/v2 --upload r2:ropedi
 
 (This also writes `website/dist`, which is only for checking locally; Pages builds its own.)
 
+Before uploading, run `python3 tools/pack_mesh.py`: it writes each recording window's body mesh as `mesh.q16z` (a
+quarter of `mesh.f32`) and names it in `mesh.json`, and the page downloads that instead. A build script that rewrites
+`mesh.json` drops the entry (the page then falls back to `mesh.f32`), so run it again after one.
+
 A copy of `v1` is also in `s3://kosmos-data-492661376500-ap-southeast-3-an/website-assets/v1/` (private, uploaded
 2026-11-10). The site does not use it.
 

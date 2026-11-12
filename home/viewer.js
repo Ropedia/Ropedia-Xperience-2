@@ -299,7 +299,13 @@ function start() {
   cardEls.forEach((el) => E.track(el.querySelector('.gl-slot')));
   syncDots(0); setPlay();
   // the homes in order, each scan and its recording, after the story's own scan
-  E.ready.then(() => fetch('data/viewer.json')).then((r) => r.json()).then(async (V) => {
+  // (only once the gallery is within two screens: three scans and recordings, some 250 MB, that a visitor who stops
+  // at the story never needs)
+  const near = new Promise((res) => {
+    const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); res(); } }, { rootMargin: '200% 0px' });
+    io.observe(document.getElementById('viewer'));
+  });
+  Promise.all([E.ready, near]).then(() => fetch('data/viewer.json')).then((r) => r.json()).then(async (V) => {
     cards = V.cards.map((c) => ({ ...c, t: 0, T: (c.win[1] - c.win[0]) / FPS }));
     for (const [i, c] of cards.entries()) {
       c.sp = await E.space(c.scene);

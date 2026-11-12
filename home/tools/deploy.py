@@ -25,9 +25,9 @@ import sys
 from pathlib import Path
 
 HOME = Path(__file__).resolve().parent.parent
-# where the published site reads its media (the R2 bucket ropedia-xperience-2, prefix v4). The Cloudflare build uses
+# where the published site reads its media (the R2 bucket ropedia-xperience-2, prefix v5). The Cloudflare build uses
 # this unless ASSET_BASE is set; to move the site to other media (a custom domain, a new prefix), change it and push.
-MEDIA_URL = 'https://pub-a5d54d8bd1a5427c92ce334fabec455e.r2.dev/v4'
+MEDIA_URL = 'https://pub-a5d54d8bd1a5427c92ce334fabec455e.r2.dev/v5'
 MEDIA = ('data', 'assets')                       # the folders that move to the bucket
 CODE = ('*.html', '*.css', '*.js')               # top-level files that make the page
 SKIP = {'engine_v0.js', 'full.html'}             # earlier versions, not part of the page

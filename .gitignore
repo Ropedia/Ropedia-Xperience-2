@@ -6,3 +6,8 @@ dist/
 __pycache__/
 *.pyc
 .DS_Store
+
+# Local Worker tooling
+.wrangler/
+node_modules/
+.dev.vars*

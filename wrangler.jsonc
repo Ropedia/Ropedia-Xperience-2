@@ -1,9 +1,19 @@
-// Cloudflare Workers Builds deploys the site from this file: a Worker with no script of its own that serves the
-// static files in dist/ (written by the build command, `python3 home/tools/deploy.py`; see README.md, "Deploying").
+// Build dist with python3 home/tools/deploy.py. This Worker serves its own assets
+// both at workers.dev/ and at ropedia.com/xperience/2-research/; no Ingress is needed.
 {
   "name": "ropedia-xperience-2",
+  "main": "worker/index.mjs",
   "compatibility_date": "2026-11-10",
   "assets": {
-    "directory": "./dist"
-  }
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "not_found_handling": "none"
+  },
+  "routes": [
+    {
+      "pattern": "ropedia.com/xperience/2-research*",
+      "zone_name": "ropedia.com"
+    }
+  ]
 }

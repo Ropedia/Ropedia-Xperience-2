@@ -168,7 +168,7 @@ out of the bar, and sends "Get the data" to `#get`. `links.js` also places the h
 slogan every frame, so they are set under it each frame while the hero is at its start, and fade out with the Scroll
 hint. To publish a link, fill in its URL and push (code only, no new media prefix).
 
-## Deploying: code on Cloudflare Pages, media on Cloudflare R2
+## Deploying: code on Cloudflare Workers, media on Cloudflare R2
 
 The page is about 4 MB of code and 1.1 GB of media (`home/data`, `home/assets`). `home/tools/deploy.py` splits them:
 it leaves `home/` as it is (local development still reads everything from disk) and writes `website/dist`, a copy of
@@ -178,7 +178,7 @@ the code alone in which every `data/...` and `assets/...` reference points at a 
 github.com/Ropedia/Ropedia-Xperience-2, which holds the code only (`home/data`, `home/assets` and `dist` are in
 `.gitignore`). The Worker project `ropedia-xperience-2` has the build command
 `python3 home/tools/deploy.py` and the deploy command `npx wrangler deploy`;
-`wrangler.jsonc` makes it a Worker with no script that serves `dist` as static files. Every push to `page` builds and
+`wrangler.jsonc` runs `worker/index.mjs` first, then serves this project's own `dist` files via the `ASSETS` binding. It handles `/xperience/2-research/` directly; no separate Ingress Worker or Service Binding is needed. Every push to `page` builds and
 publishes the site. The media's URL is `MEDIA_URL` in `home/tools/deploy.py` (an `ASSET_BASE` environment variable or build
 variable overrides it); to point the site at other media, change that line and push.
 
@@ -216,3 +216,61 @@ A copy of `v1` is also in `s3://kosmos-data-492661376500-ap-southeast-3-an/websi
 
 `dist` was checked on 2026-11-10 with the code and the media on two local origins (the media with a CORS header): all
 sections loaded, no cross-origin failure. It has not yet been checked against R2.
+
+
+## 官网子路径：直接绑定本 Worker
+
+公开入口为 `https://ropedia.com/xperience/2-research/`。访问不带末尾 `/` 的入口会 307 跳转并保留查询参数；CSS、JS、Three.js 和 WASM 请求会去掉此前缀，再读取本 Worker 自己的 `ASSETS`。媒体仍从 R2 直读，原 workers.dev 根地址仍可使用。
+
+官网源码、DNS 目标及官网 Pages 的域名绑定均不需要修改。只给本 Worker 分配这一条路径，不要使用 `ropedia.com/*` 或 `ropedia.com/xperience/*`，不要把官网主域名作为本 Worker 的 Custom Domain。
+
+### 本地检查
+
+需要 Node.js 22+ 和 Python 3，无需额外测试依赖：
+
+```sh
+node --test test/worker.test.mjs
+python3 home/tools/deploy.py
+npx wrangler deploy --dry-run --outdir .wrangler/dry-run
+```
+
+如需本地浏览器联调，使用 `npx wrangler dev --local --infer-origin-from-routes=false`，然后访问本机的 `/xperience/2-research/`；此选项防止 Wrangler 将 localhost 请求自动模拟成官网域名。页面交互会直接加载远端 R2 媒体。
+
+以上检查命令不发布代码、不上传媒体。`dist/` 由构建脚本生成，保持忽略；不用运行依赖原始数据的 `home/build*.py`。
+
+### GitHub → Cloudflare 发布
+
+将改动提交并推送到 GitHub 的 `page` 分支后，由已有 `ropedia-xperience-2` Workers Builds 发布：
+
+| 项目 | 值 |
+| --- | --- |
+| GitHub 仓库 | `Ropedia/Ropedia-Xperience-2` |
+| 生产分支 | `page` |
+| 根目录 | 仓库根目录 |
+| Build command | `node --test test/worker.test.mjs && python3 home/tools/deploy.py` |
+| Deploy command | `npx wrangler deploy` |
+| Node.js 构建变量 | `NODE_VERSION=22` |
+
+保留已有 `ASSET_BASE` 等媒体相关构建变量。
+
+`wrangler.jsonc` 已包含以下 Route，发布成功就会应用，不需要再配置第二个 Worker：
+
+```json
+{ "pattern": "ropedia.com/xperience/2-research*", "zone_name": "ropedia.com" }
+```
+
+在 **Workers & Pages → ropedia-xperience-2 → Settings → Domains & Routes** 核对上述规则，类型必须是 **Route**。若选择手动添加，使用 **Add → Route**，zone `ropedia.com`，pattern 为上述值，并保持仓库配置一致。`ASSETS` 是本项目静态资源绑定，部署自动配置，不是 Service Binding。
+
+**如果此前已把同一条 Route 绑到 official-ingress：先解除或改绑那一条，确保它最终仅指向 ropedia-xperience-2。** 不要改官网原有绑定。停止旧 Ingress 的 Git 自动部署，或确认其配置已移除此路径，防止它在下次发布时抢回路由。如果从未部署过 Ingress，不用做任何迁移操作。
+
+仅添加这条窄路由时，官网其他路径不进入本 Worker。`/xperience/2-research-extra` 等宽匹配边界由 Worker 透传回官网原站；不要开启 `global_fetch_strictly_public`，以免此透传再次进入自身 Route。
+
+### 验收与回退
+
+- 检查正式入口、带 `?lite=1` 的入口、CSS/JS/WASM、缺失资源的 404，以及浏览器刷新。
+- `/xperience/2-research/index.html` 的规范化跳转应停留在此子路径，不能跳到官网首页。
+- 检查原 workers.dev 根地址、官网 `/`、`/dataset`、`/homie` 仍正常。
+- R2 媒体、跨域设置和 Web Analytics 需在真实部署后检查；离线测试不验证它们。
+- 回退接入只需移除本 Worker 的这条 Route，并同步从仓库配置移除，避免下次自动部署恢复。该新路径会回到官网原来的处理（通常为 404）。
+
+配置参考：[静态资源绑定](https://developers.cloudflare.com/workers/static-assets/binding/) · [先运行 Worker](https://developers.cloudflare.com/workers/static-assets/routing/worker-script/) · [Workers Routes](https://developers.cloudflare.com/workers/configuration/routing/routes/)

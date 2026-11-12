@@ -4,6 +4,7 @@
   "name": "ropedia-xperience-2",
   "main": "worker/index.mjs",
   "compatibility_date": "2026-11-10",
+  "previews": {},
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",

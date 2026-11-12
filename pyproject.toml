@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xperience-scene-registration"
+version = "0.1.0a1"
+description = "Register HOMIE egocentric recordings to KOSMO scene scans"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+license = {text = "Apache-2.0"}
+authors = [{name = "Ropedia Research Team"}]
+dependencies = [
+  "numpy>=1.24",
+  "scipy>=1.10",
+  "h5py>=3.9",
+  "opencv-python-headless>=4.8",
+  "open3d>=0.19",
+  "matplotlib>=3.7",
+]
+
+[project.urls]
+Homepage = "https://ropedia.com/xperience/2-research/"
+Repository = "https://github.com/Ropedia/Ropedia-Xperience-2"
+Dataset = "https://huggingface.co/datasets/ropedia-ai/Ropedia-Xperience-2"
+
+[project.scripts]
+xperience-register = "scene_registration.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["scene_registration*"]

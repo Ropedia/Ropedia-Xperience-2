@@ -1,0 +1,7 @@
+Ropedia Xperience 2 — Scene Registration
+Copyright 2026 Ropedia Research Team
+
+This distribution contains the HOMIE-to-KOSMO registration tool.
+Third-party dependencies are installed separately and retain their respective licenses.
+The Apache-2.0 license covers the code in this repository, not the dataset,
+device software, or separately distributed body-model assets.

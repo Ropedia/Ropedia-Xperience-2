@@ -279,9 +279,9 @@ if (!R) tabs.pop().remove();                         // no third arrangement wit
 // W x H0: the stage as the grid and the grades see it; W x H: the canvas; lit, was, hk: the rows of scans that are lit (a bit each: now, last) and how far their light is up; ph: the tasks' panel as placed
 const S = { W: 0, H: 0, H0: 0, dpr: 1, L: null, view: 'all', cur: new Float32Array(N * 4), from: new Float32Array(N * 4), to: null, t0: 0, moving: false, band: false, aq: 0, lit: 0, was: 0, hk: 0, ph: 0, hover: -1, on: false, raf: 0, last: 0 };
 const SAY = {
-  all: [SCANS, 'scans in this release. <strong>One tile per scan,</strong> each a real space captured in 3D at metric scale.'],
-  qc: [SCANS, 'scans, each one reviewed and graded <strong>perfect, usable or reuse candidate.</strong>'],
-  mix: [RECS, `recordings of ${R?.tasks ?? 0} tasks, beside the ${SCANS} scans. <strong>Scene categories on the left, actions on the right.</strong> Point at one to see where it meets the other side.`],
+  all: '<strong>One tile per scan,</strong> each a real space captured in 3D at metric scale.',
+  qc: 'The same tiles, <strong>grouped by review grade.</strong>',
+  mix: `<strong>${RECS} recordings of ${R?.tasks ?? 0} tasks</strong> beside the scans. Point at a row to see where it meets the other side.`,
 };
 const ALT = {
   all: () => `${SCANS} scene tiles in one grid, one per scan`,
@@ -331,7 +331,6 @@ function placeMix() {
 function labels() {
   const q = S.L.qc, m = S.L.mix;
   labs.innerHTML = q.bins.map((b, g) => `<p class="ds-lab ds-lab-q" data-v="qc" style="left:${(b.x + q.inp).toFixed(1)}px;top:${(b.y + q.head / 2 - 7).toFixed(1)}px;--c:${QCOL[g]}">${GRADES[g]}</p>`).join('')
-    + `<p class="ds-lab ds-lab-src" data-v="qc" style="left:${q.sx}px;${S.W < 620 ? 'top:14px' : `bottom:${(S.H - q.segs[0][0] + 12).toFixed(1)}px`}"><b>${SCANS}</b>scans reviewed</p>`   // (clear of the bands on a narrow stage)
     // the scans' half of the third arrangement: its heading, each group's name over its rows, each row's name and count (a button: it opens that category)
     + (m ? `<p class="ds-lab ds-lab-h" data-v="mix" style="left:${m.pad}px;top:${m.top}px;width:${m.x1 - m.pad}px"><span>Scans by scene category</span><span>${SCANS}</span></p>`
       + m.heads.map((h) => `<p class="ds-lab ds-lab-g" data-v="mix" style="left:${m.pad}px;top:${h.y.toFixed(1)}px;width:${m.x1 - m.pad}px">${h.name}</p>`).join('')
@@ -349,7 +348,7 @@ function go(view) {
   cv.setAttribute('aria-label', ALT[view]());
   for (const b of tabs) { const on = b.dataset.v === view; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; }
   say.classList.remove('swap');
-  say.innerHTML = `<b>${SAY[view][0]}</b><p>${SAY[view][1]}</p>`;
+  say.innerHTML = `<p>${SAY[view]}</p>`;
   void say.offsetWidth;
   say.classList.add('swap');
   S.on ? kick() : drawB();
@@ -646,7 +645,7 @@ let rz = 0;
 addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { sizeA(); sizeB(); }, 140); });
 stage.dataset.view = 'all';
 cv.setAttribute('aria-label', ALT.all());
-say.innerHTML = `<b>${SAY.all[0]}</b><p>${SAY.all[1]}</p>`;
+say.innerHTML = `<p>${SAY.all}</p>`;
 // The card opens as the wall the scroll above ended on; once most of it is on screen the tiles sort themselves into the
 // review grades, one time, unless a tab was chosen first. So the tabs are seen to re-arrange the same tiles.
 S.auto = !reduce;

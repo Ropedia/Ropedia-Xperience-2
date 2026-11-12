@@ -19,7 +19,6 @@ const pad = (n, k) => String(n).padStart(k, '0');
 const smooth = (u) => u * u * (3 - 2 * u);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const B = 'data/r2s3d/';
-const KIND = { cloth: 'Cloth', soft: 'Soft body', remote: 'Button', switch: 'Button', water: 'Fluid', towel: 'Cloth · hinge', fridge: 'Articulated' };
 const CTYPE = { cloth: 'cloth', soft: 'soft', remote: 'button', switch: 'button', water: 'fluid', towel: 'cloth', fridge: 'joint' };
 const pretty = (id) => { const s = id.replace(/^Tour_/, '').replace(/_(\d+)$/, ' $1').replace(/_/g, ' '); return s[0].toUpperCase() + s.slice(1); };
 
@@ -45,7 +44,7 @@ async function start() {
 
   // ---------------------------------------------------------------- the page's side first: it works while the scene loads
   list.innerHTML = `<button type="button" data-c="" aria-pressed="true" style="--c:#f5f5f7"><b>The whole run</b><span>${T.toFixed(1)} s</span></button>` +
-    R.clips.map((c) => `<button type="button" data-c="${c.id}" aria-pressed="false" style="--c:${TYPE[CTYPE[c.id]].color}"><b>${c.name}</b><span>${KIND[c.id]}</span></button>`).join('');
+    R.clips.map((c) => `<button type="button" data-c="${c.id}" aria-pressed="false" style="--c:${TYPE[CTYPE[c.id]].color}"><b>${c.name}</b></button>`).join('');
   $('r3Legend').innerHTML = R.types.filter((t) => typeof t.n === 'number').map((t) => `<button type="button" data-t="${t.key}" style="--c:${t.color}">${t.name}<b>${t.n}</b></button>`).join('');
   $('r3Lanes').innerHTML = R.clips.map((c, k) => `<i data-c="${c.id}" title="${c.name}" style="left:${(100 * c.t[0] / T).toFixed(2)}%;width:${(100 * (c.t[1] - c.t[0]) / T).toFixed(2)}%;top:${4 + k * 5}px;--c:${TYPE[CTYPE[c.id]].color}"></i>`).join('');
 

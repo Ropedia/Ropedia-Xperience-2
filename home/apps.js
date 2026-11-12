@@ -104,22 +104,22 @@ const ICON = {   // the film's (video/metrics/uses.js)
 };
 // what each use takes: the applications as in the paper's motivation figure, the benchmarks the scan's references
 const USES = [
-  { card: 0, id: 'geo', name: 'Depth & Geometry', io: 'Depth, camera pose and surface reconstruction', cost: '11 models', col: '#CCFFA0', uses: ['posed', 'mesh'], to: 'ap-bench', tab: 'geo' },
-  { card: 0, id: 'det', name: '3D Object Detection', io: 'Object categories in, metric 3D boxes out', cost: '7 methods', col: '#B79CF2', uses: ['posed', 'mesh'], to: 'ap-bench', tab: 'det' },
-  { card: 0, id: 'sqa', name: 'Spatial Intelligence', io: '500 spatial questions of six kinds', cost: '12 models', col: '#F2D16B', uses: ['posed', 'mesh'], to: 'ap-bench', tab: 'sqa' },
+  { card: 0, id: 'geo', name: 'Depth & Geometry', io: 'Depth, camera pose and surface reconstruction', col: '#CCFFA0', uses: ['posed', 'mesh'], to: 'ap-bench', tab: 'geo' },
+  { card: 0, id: 'det', name: '3D Object Detection', io: 'Object categories in, metric 3D boxes out', col: '#B79CF2', uses: ['posed', 'mesh'], to: 'ap-bench', tab: 'det' },
+  { card: 0, id: 'sqa', name: 'Spatial Intelligence', io: '500 spatial questions of six kinds', col: '#F2D16B', uses: ['posed', 'mesh'], to: 'ap-bench', tab: 'sqa' },
   { card: 1, id: 'r2s', name: 'Real-to-Sim', io: '<em>One scanned scene</em> → an interactive digital twin', cost: 'One scan per scene', col: '#6FD39A', uses: ['mesh', 'gs'], to: 'ap-r2s' },
   { card: 1, id: 'lh', name: 'Long-Horizon Trajectory Generation', io: '<em>The simulator scene</em> → new multi-subtask robot trajectories', cost: 'Compute only', col: '#F29A5E', uses: ['mesh', 'gs'], to: 'ap-lh' },
   { card: 1, id: 'tel', name: 'Virtual Teleoperation', io: '<em>The simulator scene and an operator</em> → teleoperated robot episodes', cost: 'Operator only', sub: 'reset is a reload', col: '#FF8FD0', uses: ['mesh', 'gs'], to: 'ap-tel' },
   { card: 1, id: 'ret', name: 'Human → Robot Retargeting', io: '<em>One registered recording</em> → robot body and hand trajectories', cost: 'One recording', sub: 'no robot', col: '#7AC4D8', uses: ['mesh', 'gs', 'pose', 'mano', 'smplh'], to: 'ap-ret' },
 ];
-const CARDS = [{ tag: 'Understand · Benchmarks', meta: '20 scenes' }, { tag: 'Act · Demonstrations', meta: 'Cost per collection' }];
+const CARDS = [{ tag: 'Understand · Benchmarks', meta: '' }, { tag: 'Act · Demonstrations', meta: 'Cost per collection' }];
 
 function overview() {
   const map = $('apMap'), links = $('apLinks');
   $('apMods').innerHTML = GROUPS.map((g) => `<section class="ap-grp"><header><b>${g.name}</b><span>${g.dev}</span></header>${
-    g.mods.map((m) => `<div class="ap-mod" data-m="${m.id}">${m.icon ? `<span class="ic">${m.icon}</span>` : `<img src="data/apps/mods/${m.id}.jpg" alt="" loading="lazy" width="264" height="176">`}<div><b>${m.name}</b><span>${m.det}</span></div></div>`).join('')}</section>`).join('');
+    g.mods.map((m) => `<div class="ap-mod" data-m="${m.id}">${m.icon ? `<span class="ic">${m.icon}</span>` : `<img src="data/apps/mods/${m.id}.jpg" alt="" loading="lazy" width="264" height="176">`}<div><b>${m.name}</b></div></div>`).join('')}</section>`).join('');
   $('apUses').innerHTML = CARDS.map((c, k) => `<section class="ap-grp"><header><b>${c.tag}</b><span>${c.meta}</span></header>${
-    USES.filter((u) => u.card === k).map((u) => `<button type="button" class="ap-use" data-u="${u.id}" style="--c:${u.col}"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true">${ICON[u.id]}</svg><span><b>${u.name}</b><span class="io">${u.io}</span></span><span class="cost">${u.cost}${u.sub ? `<small>${u.sub}</small>` : ''}</span><span class="go" aria-hidden="true">↓</span></button>`).join('')}</section>`).join('');
+    USES.filter((u) => u.card === k).map((u) => `<button type="button" class="ap-use" data-u="${u.id}" style="--c:${u.col}"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true">${ICON[u.id]}</svg><span><b>${u.name}</b></span><span class="cost">${u.cost ?? ''}</span><span class="go" aria-hidden="true">↓</span></button>`).join('')}</section>`).join('');
   const modEl = Object.fromEntries([...map.querySelectorAll('.ap-mod')].map((e) => [e.dataset.m, e]));
   const useEl = Object.fromEntries([...map.querySelectorAll('.ap-use')].map((e) => [e.dataset.u, e]));
   const paths = [];
@@ -245,7 +245,7 @@ async function bench() {
     order.forEach((m, i) => {
       const tr = rows.get(m.name), oom = val(m) == null;
       tr.className = oom ? 'oom' : val(m) === bestOf[st.met] ? 'best' : '';
-      tr.innerHTML = `<td>${oom ? '' : i + 1}</td><td class="nm"><b>${m.name}</b><span>${m.group}</span></td>` + (oom
+      tr.innerHTML = `<td>${oom ? '' : i + 1}</td><td class="nm"><b>${m.name}</b></td>` + (oom
         ? `<td class="oomc" colspan="${METS.length}">Out of memory on dense input</td>`
         : METS.map((c) => (c.k === st.met
           ? `<td class="sel"><div class="bar"><i style="--u:${(100 * val(m) / max).toFixed(1)}%"></i>${fmt(val(m))}</div></td>`
@@ -312,7 +312,7 @@ async function longHorizon() {
     st.run = i;
     dots.forEach((d, j) => { d.classList.toggle('on', j === i); d.setAttribute('r', j === i ? 6 : 4.2); });
     const r = D.runs[i], d = r.stages.map((s, j) => (s - (j ? r.stages[j - 1] : 0)) / 30), max = Math.max(...D.runs.flatMap((x) => x.stages.map((s, j) => (s - (j ? x.stages[j - 1] : 0)) / 30)));
-    runEl.innerHTML = `<header><b>Start ${i + 1} of ${D.runs.length}${i === hero ? ' · shown in the video' : ''}</b><span>${mmss(r.stages[7] / 30)} · 8 / 8 done</span></header><ol>${
+    runEl.innerHTML = `<header><b>Start ${i + 1} of ${D.runs.length}${i === hero ? ' · shown in the video' : ''}</b><span>${mmss(r.stages[7] / 30)}</span></header><ol>${
       D.stages.map((s, j) => `<li data-j="${j}"><em>${j + 1}</em><span>${s.name}</span><i style="--u:${(100 * d[j] / max).toFixed(1)}%"></i><b>${d[j] < 59.5 ? `${Math.round(d[j])} s` : mmss(d[j])}</b></li>`).join('')}</ol>`;
     paint();
   }
@@ -344,6 +344,33 @@ async function longHorizon() {
   scrub($('apLhScrub'), (u, ph) => { st.held = ph !== 'end'; st.k = u * (N - 1); paint(); }, (d) => { st.k = clamp(st.k + d * 3, 0, N - 1); paint(); });
   setPlay(st.playing); pick(hero);
   onScreen(cv, (on) => { if (on && !st.on) { st.on = true; seq.load(Math.round(st.k)); st.last = performance.now(); requestAnimationFrame(loop); } else st.on = on; });
+}
+
+// ================================================================ virtual teleoperation
+// The operator at a desk (a loop of its own) beside one robot episode in the simulator scene, seen from the robot's
+// head camera and from beside it; the two views of the episode share one clock (the head camera's), and the bar
+// scrubs that episode. Videos play only on screen.
+function teleop() {
+  const op = $('apTelOp'), eg = $('apTelEgo'), ex = $('apTelExo'), vids = [op, eg, ex];
+  const play = $('apTelPlay'), bar = $('apTelScrub'), head = $('apTelHead'), fill = $('apTelFill'), clock = $('apTelClock');
+  const st = { playing: !reduced, on: false, held: false };
+  const dur = () => eg.duration || 6.7;
+  const apply = () => { const run = st.playing && st.on && !st.held; for (const v of vids) { if (run) v.play().catch(() => {}); else v.pause(); } };
+  const paint = () => {
+    const t = eg.currentTime, u = clamp01(t / dur());
+    if (ex.readyState >= 1 && !ex.seeking && Math.abs(ex.currentTime - t) > 0.12) ex.currentTime = t;   // the side view follows the head camera
+    head.style.left = `${u * 100}%`; fill.style.setProperty('--u', `${u * 100}%`);
+    bar.setAttribute('aria-valuenow', Math.round(u * 100));
+    clock.textContent = `${mmss(t)} / ${mmss(dur())}`;
+  };
+  const loop = () => { if (!st.on) return; requestAnimationFrame(loop); paint(); };
+  const seek = (u) => { eg.currentTime = ex.currentTime = clamp01(u) * dur(); paint(); };
+  const setPlay = (p) => { st.playing = p; play.classList.toggle('paused', !p); play.setAttribute('aria-label', p ? 'Pause' : 'Play'); apply(); };
+  play.addEventListener('click', () => setPlay(!st.playing));
+  scrub(bar, (u, ph) => { st.held = ph !== 'end'; seek(u); apply(); }, (d) => seek(eg.currentTime / dur() + d * 0.05));
+  eg.addEventListener('loadedmetadata', paint); eg.addEventListener('seeked', paint); ex.addEventListener('loadedmetadata', paint);
+  setPlay(st.playing);
+  onScreen(op.closest('.ap-tel'), (on) => { const was = st.on; st.on = on; apply(); if (on && !was) requestAnimationFrame(loop); });
 }
 
 // ================================================================ human → robot retargeting
@@ -541,5 +568,6 @@ overview();
 bench();
 // (Real-to-Sim is r2s3d.js: the simulator scene in free-view 3D)
 near($('ap-lh'), longHorizon);
+near($('ap-tel'), teleop);
 near($('ap-ret'), retarget);
 near($('apWall'), wall);

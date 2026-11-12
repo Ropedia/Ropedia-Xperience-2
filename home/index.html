@@ -27,7 +27,6 @@
   <a class="lnav-brand" href="#top"><img src="assets/ropedia_brand.png" alt="Ropedia"><span>Xperience 2</span></a>
   <div class="lnav-links">
     <a href="#hero">Overview</a>
-    <a href="#hero">Scene</a>
     <a href="#data">Data</a>
     <a href="#apps">Applications</a>
     <span class="lnav-ext" hidden><a data-link="paper" hidden><svg aria-hidden="true"><use href="#i-paper"/></svg>Paper</a><a data-link="code" hidden><svg aria-hidden="true"><use href="#i-gh"/></svg>Code</a></span>
@@ -54,7 +53,6 @@
       <a class="soon" data-link="code" aria-disabled="true"><svg aria-hidden="true"><use href="#i-gh"/></svg>Code<small>soon</small></a>
     </div>
     <div class="hero-cap" id="heroCap">
-      <p class="eyebrow">LH_17761 · multi-room home</p>
       <h2>One of 1,500+ scenes.</h2>
       <p>Each one scanned in 3D, at metric scale.</p>
     </div>
@@ -75,25 +73,24 @@
     <svg class="co-lines" id="calloutLines" aria-hidden="true"></svg>
     <div class="callouts" id="callouts" aria-hidden="true"></div>
     <aside class="story-panel" id="storyPanel" aria-label="The recording at this moment">
-      <figure class="story-ego" id="storyEgo"><canvas width="720" height="409"></canvas><figcaption>HOMIE Gen 2 head camera, as recorded</figcaption></figure>
+      <figure class="story-ego" id="storyEgo"><canvas width="720" height="409"></canvas></figure>
       <section class="pc pc-cap" aria-label="Captions">
-        <header><b>Captions</b><span>three temporal scales</span></header>
+        <header><b>Captions</b></header>
         <div class="lv"><span class="k">Recording</span><p id="capTask"></p><div class="tl"><i id="capTaskHead"></i></div></div>
         <div class="lv"><span class="k">Sub-task · action</span><p id="capAct"></p><div class="tl"><b id="capActSpan"></b><i id="capActHead"></i></div></div>
         <div class="lv"><span class="k">Frame</span><p id="capNow"></p><p class="hs" id="capHands"></p></div>
       </section>
       <section class="pc pc-imu" aria-label="HOMIE Gen 2 sensors">
         <header><b>IMU</b><span><span id="imuRate">200 Hz</span> · <span class="xyz"><i style="--c:#FF6B9A">x</i><i style="--c:#CCFFA0">y</i><i style="--c:#7AC4D8">z</i></span></span></header>
-        <div class="tr"><span class="k">Gyro <em>rad/s</em></span><span class="v" id="imuGv"></span></div>
+        <div class="tr"><span class="k">Gyro</span><span class="v" id="imuGv"></span></div>
         <canvas id="imuGyro" width="640" height="84"></canvas>
-        <div class="tr"><span class="k">Accel <em>m/s²</em></span><span class="v" id="imuAv"></span></div>
+        <div class="tr"><span class="k">Accel</span><span class="v" id="imuAv"></span></div>
         <canvas id="imuAcc" width="640" height="84"></canvas>
-        <div class="tr"><span class="k">Audio <em>4 microphones</em></span><span class="v" id="audV"></span></div>
+        <div class="tr"><span class="k">Audio</span><span class="v" id="audV"></span></div>
         <canvas id="audio" width="640" height="64"></canvas>
       </section>
     </aside>
     <div class="hero-cap story-carry" id="storyCarry">
-      <p class="eyebrow">LH_17761 · multi-room home</p>
       <h2>One of 1,500+ scenes.</h2>
       <p>Each one scanned in 3D, at metric scale.</p>
     </div>
@@ -102,7 +99,6 @@
         <p class="eyebrow">Capture</p>
         <h2>Scanned once.</h2>
         <p>A handheld LiDAR scanner captures the whole space in one pass, <strong>in 3D and at metric scale.</strong></p>
-        <p class="legend"><i></i>Reconstruction trajectory</p>
       </article>
       <article class="sc sc-side sc-rec" data-in="0.42" data-out="0.72">
         <h2>Recorded many times.</h2>
@@ -110,7 +106,6 @@
         <figure class="dev-big"><img src="assets/homie_gen2.jpg" alt="HOMIE Gen 2, the head-mounted recording rig"><figcaption><b>HOMIE Gen 2</b><span>Head-mounted · 4 fisheye cameras · IMU · 4-channel audio</span></figcaption></figure>
         <div class="dev-chip"><img src="assets/homie_gen2.jpg" alt=""><div><b>HOMIE Gen 2</b><span>8 recordings in this scene · 19 min</span></div></div>
         <ol class="recs" id="storyList" aria-label="Recordings in this scene"></ol>
-        <p class="rec-hint">Pick one to follow it.</p>
       </article>
       <article class="sc sc-low" data-in="0.88" data-out="1.01">
         <h2>In one metric frame.</h2>
@@ -131,15 +126,15 @@
   <div class="hl-track" id="hlTrack">
     <article class="hlc" data-i="0" aria-label="Dining area, LH_17763">
       <div class="gl-slot" data-mode="viewer" data-card="0" data-poster><div class="gl-host"></div><img class="hlc-poster" src="assets/hl_LH_17763.jpg" alt=""><div class="gl-load"><i></i><span>Loading the scan</span></div></div>
-      <p class="hlc-cap"><span>LH_17763</span><b>Dining area.</b> Wiping the table, then tidying up.</p>
+      <p class="hlc-cap"><b>Dining area.</b> Wiping the table, then tidying up.</p>
     </article>
     <article class="hlc" data-i="1" aria-label="Kitchen, LH_17764">
       <div class="gl-slot" data-mode="viewer" data-card="1" data-poster><div class="gl-host"></div><img class="hlc-poster" src="assets/hl_LH_17764.jpg" alt=""><div class="gl-load"><i></i><span>Loading the scan</span></div></div>
-      <p class="hlc-cap"><span>LH_17764</span><b>Kitchen.</b> Putting a food container in the microwave.</p>
+      <p class="hlc-cap"><b>Kitchen.</b> Putting a food container in the microwave.</p>
     </article>
     <article class="hlc" data-i="2" aria-label="Living room, LH_17766">
       <div class="gl-slot" data-mode="viewer" data-card="2" data-poster><div class="gl-host"></div><img class="hlc-poster" src="assets/hl_LH_17766.jpg" alt=""><div class="gl-load"><i></i><span>Loading the scan</span></div></div>
-      <p class="hlc-cap"><span>LH_17766</span><b>Living room.</b> Moving a small device, then reaching for the AC remote.</p>
+      <p class="hlc-cap"><b>Living room.</b> Moving a small device, then reaching for the AC remote.</p>
     </article>
   </div>
   <!-- what the card in front adds over its scan; moved into that card -->
@@ -177,7 +172,7 @@
   <div class="ds-wall" id="dsWall">
     <div class="ds-stick">
       <canvas id="dsWallCv" role="img" aria-label="An X made of 1,500+ scene tiles spreads into a wall of scenes that fills the screen"></canvas>
-      <p class="ds-xcap" id="dsXcap"><b>1,500+</b><span>scenes · one tile per scan</span></p>
+      <p class="ds-xcap" id="dsXcap"><b>1,500+</b><span>scenes</span></p>
       <dl class="ds-nums" aria-label="The release in numbers">
         <div class="ds-num"><dt data-n="1500">1,500<small>+</small></dt><dd>scenes scanned in 3D</dd></div>
         <div class="ds-num"><dt data-n="596">596</dt><dd>locations</dd></div>
@@ -243,7 +238,7 @@
      (a sortable table of the depth and geometry scores; the 3D object detection scores beside an illustration of the
      task; the spatial-intelligence scores under an example of each kind of question),
      then the demonstrations in the film's order: Real-to-Sim (reconstruction, then interaction), long-horizon
-     trajectory generation, virtual teleoperation (no data yet) and human-to-robot retargeting with the eight-home wall -->
+     trajectory generation, virtual teleoperation (the operator beside the robot episode) and human-to-robot retargeting with the eight-home wall -->
 <section class="ap" id="apps" aria-label="Applications">
   <header class="ap-intro" data-rv>
     <p class="eyebrow">Applications</p>
@@ -257,7 +252,6 @@
     <svg class="ap-links" id="apLinks" aria-hidden="true"></svg>
     <div class="ap-uses" id="apUses"></div>
   </div>
-  <p class="ap-map-note" data-rv>Hover a use to see what it takes. For reference, teleoperating a real robot needs the robot, an operator and a reset for every episode.</p>
 
   <!-- benchmarks -->
   <div class="ap-part" id="ap-bench">
@@ -285,8 +279,8 @@
       <h3>Categories in, 3D boxes out.</h3>
       <p class="ap-p">Annotators labelled the category and 3D box of every object in the 20 scenes. A method is given the categories that occur in a scene and returns their 3D boxes, metric and in the scene’s gravity-aligned frame.</p>
       <div class="ap-tbl-wrap"><table class="ap-tbl ap-sc" id="apDetTbl"></table></div>
-      <p class="ap-say"><span>Best on all three metrics: <b>Boxer</b>, which lifts open-vocabulary 2D detections to 3D boxes. Every other method stays under 7 AP25, and LLaVA-3D and SceneScript place no box at IoU 0.25.</span><span>No method reaches 7 AP50: precise 3D boxes in real, cluttered scenes are still beyond current models.</span></p>
-      <p class="ap-tnote">AP25 and AP50: average precision at a 3D IoU of 0.25 and 0.5. mIoU@0.25: the mean 3D IoU of the predictions matched to a reference box at IoU 0.25 (0 where none match). All in %. *LLaVA-3D: the public checkpoint, its boxes read from its text output.</p>
+      <p class="ap-say"><span>Best on all three metrics: <b>Boxer</b>, which lifts open-vocabulary 2D detections to 3D boxes.</span></p>
+      <details class="ap-tnote"><summary>About the metrics</summary><p>AP25 and AP50: average precision at a 3D IoU of 0.25 and 0.5. mIoU@0.25: the mean 3D IoU of the predictions matched to a reference box at IoU 0.25 (0 where none match). All in %. *LLaVA-3D: the public checkpoint, its boxes read from its text output.</p></details>
     </div>
 
     <div class="ap-card ap-bpanel" id="apB-sqa" role="tabpanel" aria-labelledby="tab-sqa" hidden>
@@ -294,8 +288,8 @@
       <p class="ap-p">Question–answer pairs written on the 20 scenes, scored by answer accuracy for each kind and overall. One example of each kind, written for this page:</p>
       <div class="ap-qs" id="apQs"></div>
       <div class="ap-tbl-wrap"><table class="ap-tbl ap-sc" id="apSqaTbl"></table></div>
-      <p class="ap-say"><span>Best overall: <b>Gemini-2.5-Pro</b>, 74.2%. HoliWorld-VL-4B reaches 67.8%, above every open-weight model (at most 60.4%) and GPT-5 High (65.8%).</span><span>Every model answers at least 74% of the height and relative-position questions; none passes 34% on distance or 55% on translation.</span></p>
-      <p class="ap-tnote">Answer accuracy in %; Overall is over all 500 questions. 23 are multiple choice and 84 take a number. Object names and equivalent directions are normalised; a distance counts as correct within max(0.1 m, 10% of the true value).</p>
+      <p class="ap-say"><span>Best overall: <b>Gemini-2.5-Pro</b>, 74.2%. HoliWorld-VL-4B reaches 67.8%, above every open-weight model (at most 60.4%) and GPT-5 High (65.8%).</span></p>
+      <details class="ap-tnote"><summary>About the scoring</summary><p>Answer accuracy in %; Overall is over all 500 questions. Object names and equivalent directions are normalised; a distance counts as correct within max(0.1 m, 10% of the true value).</p></details>
     </div>
   </div>
 
@@ -324,7 +318,7 @@
           </div>
           <figure class="r3-clip" id="r3Clip" hidden><canvas width="560" height="315" role="img" aria-label="The same frames rendered offline"></canvas><figcaption><b></b><span></span><em>Offline render of the same run</em></figcaption></figure>
           <div class="ap-tip" id="r3Tip" hidden></div>
-          <span class="ap-hint">Drag to look around; let go and the camera returns · click, then scroll to zoom</span>
+          <span class="ap-hint">Drag to look around</span>
         </div>
         <div class="ap-bar">
           <button type="button" class="ap-play" id="r3Play" aria-label="Pause"><i></i></button>
@@ -338,7 +332,6 @@
       <dl class="ap-stats" data-rv>
         <div><dt>107</dt><dd>objects in the scene</dd></div>
         <div><dt>73</dt><dd>of them interactive</dd></div>
-        <div><dt>1</dt><dd>physics run behind every clip here</dd></div>
       </dl>
     </article>
 
@@ -378,7 +371,27 @@
         <h3>An operator, and no robot.</h3>
         <p class="ap-p">An operator drives a simulated robot live inside the simulator scene. Every episode starts from the same captured state, so a reset is a reload.</p>
       </header>
-      <div class="ap-soon" data-rv><b>Demonstration to come</b><span>Operator motion → simulated robot, live, in the converted scene</span></div>
+      <div class="ap-tel" data-rv>
+        <figure class="ap-stage ap-tel-op">
+          <video id="apTelOp" src="data/tel/operator.mp4" poster="data/tel/operator.jpg" muted loop playsinline preload="metadata" aria-label="An operator in a VR headset with hand tracking drives the robot from a desk"></video>
+          <span class="ap-lab l">Operator</span>
+        </figure>
+        <div class="ap-tel-side">
+          <figure class="ap-stage">
+            <video id="apTelEgo" src="data/tel/ego.mp4" poster="data/tel/ego.jpg" muted loop playsinline preload="metadata" aria-label="The robot's head camera: its two hands reach for the kettle on the counter"></video>
+            <span class="ap-lab l">Robot head camera</span>
+          </figure>
+          <figure class="ap-stage">
+            <video id="apTelExo" src="data/tel/exo.mp4" poster="data/tel/exo.jpg" muted loop playsinline preload="metadata" aria-label="The same episode from beside the robot in the simulator scene"></video>
+            <span class="ap-lab l">Simulator scene</span>
+          </figure>
+        </div>
+      </div>
+      <div class="ap-bar ap-tel-bar" data-rv>
+        <button type="button" class="ap-play" id="apTelPlay" aria-label="Pause"><i></i></button>
+        <div class="ap-scrub" id="apTelScrub" role="slider" tabindex="0" aria-label="Time in the robot episode" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ap-segs"><i id="apTelFill"></i></div><i class="ap-headm" id="apTelHead"></i></div>
+        <span class="ap-tel-clock" id="apTelClock">0:00 / 0:07</span>
+      </div>
     </article>
 
     <!-- retargeting -->
@@ -414,15 +427,9 @@
 
       <header class="ap-dhead sub" data-rv>
         <h3>Eight homes, two robots.</h3>
-        <p class="ap-p">One recording from each of eight homes, retargeted to both robots: Robot A left of the divider, Robot B right of it. Open any of them in 3D to look around, switch bodies and drag the divider.</p>
+        <p class="ap-p">One recording from each of eight homes, on both robots. Open any of them in 3D.</p>
       </header>
       <div class="ap-wall" id="apWall" data-rv></div>
-      <dl class="ap-stats" data-rv>
-        <div><dt>8</dt><dd>homes</dd></div>
-        <div><dt>16</dt><dd>full recordings on Robot B</dd></div>
-        <div><dt>52.6<small>min</small></dt><dd>of robot motion</dd></div>
-        <div><dt>0</dt><dd>joint-limit violations</dd></div>
-      </dl>
     </article>
   </div>
 
@@ -459,7 +466,6 @@
   <header class="rl-head">
     <p class="eyebrow">Release</p>
     <h2>Get Xperience 2.</h2>
-    <p class="lead">The paper, the dataset and the code to work with it.</p>
   </header>
   <div class="rl-cards">
     <a class="rl-card soon" data-link="dataset" data-go="Open on Hugging Face" aria-disabled="true">

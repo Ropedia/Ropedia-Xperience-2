@@ -2,6 +2,20 @@
 
 This tool registers an already processed HOMIE recording to a KOSMO scan. It does not reconstruct scenes or estimate the original SLAM trajectory, stereo depth, or hand/body motion. Supply one recording and its corresponding scan per invocation.
 
+## Installation
+
+Use Python 3.10–3.12; validation uses Python 3.12 on Linux.
+
+```bash
+git clone https://github.com/Ropedia/Ropedia-Xperience-2.git
+cd Ropedia-Xperience-2
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
+The tool reads local data without storage credentials and requires no body-model weights. HOMIE sensor processing, hand/body estimation, and downstream simulation or retargeting pipelines are separate components.
+
 ## Inputs
 
 Download the required exports locally before running the tool:
@@ -141,3 +155,9 @@ python examples/fit_synthetic_trajectory.py --out results/synthetic
 ```
 
 Tests cover rigid/similarity fitting, stationary trajectories, held-out evaluation, coordinate transforms for motion exports, camera models, and missing-check verdicts.
+
+The synthetic example runs without downloading recordings:
+
+```bash
+python examples/fit_synthetic_trajectory.py --out results/synthetic
+```

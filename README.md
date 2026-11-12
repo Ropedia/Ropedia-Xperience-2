@@ -1,51 +1,57 @@
+<div align="center">
+
 # Ropedia Xperience 2
 
 ### A Gold Standard for Scaling Physical AI Environments and Behaviors
 
 **Ropedia Research Team**
 
-[Project Page](https://ropedia.com/xperience/2-research/) · [Dataset](https://huggingface.co/datasets/ropedia-ai/Ropedia-Xperience-2) · Paper: coming soon
+<p>
+  <a href="https://ropedia.com/xperience/2-research/"><img src="https://img.shields.io/badge/Project_Page-B5E853?style=for-the-badge&logo=googlechrome&logoColor=182015" alt="Project page"></a>
+  <a href="https://huggingface.co/datasets/ropedia-ai/Ropedia-Xperience-2"><img src="https://img.shields.io/badge/Dataset-FFD21E?style=for-the-badge&logo=huggingface&logoColor=182015" alt="Dataset on Hugging Face"></a>
+  <a href="https://pub-a5d54d8bd1a5427c92ce334fabec455e.r2.dev/github/v37-20261112/xperience-2-demo.mp4"><img src="https://img.shields.io/badge/%E2%96%B6_Demo_Video-5B8DEF?style=for-the-badge&logoColor=white" alt="Watch the full demo video"></a>
+  <a href="#scene-registration"><img src="https://img.shields.io/badge/Registration-24292F?style=for-the-badge&logo=python&logoColor=white" alt="Scene registration code"></a>
+  <img src="https://img.shields.io/badge/Paper-Coming_Soon-8B949E?style=for-the-badge&logo=arxiv&logoColor=white" alt="Paper: coming soon">
+</p>
 
-Ropedia Xperience 2 brings together metric 3D scans of real environments and egocentric recordings of human activity. A handheld KOSMO scanner captures the scene; a head-mounted HOMIE recorder captures tasks performed in it. Scene registration places a recording's camera trajectory and estimated hand and body motion in the scan's coordinate frame.
+**Metric 3D environments and human behaviors, connected in one scene.**
 
-The dataset comprises **1,500+ released scene scans** and a broader collection of **4,000+ egocentric recordings**, covering **74 tasks** and **131 hours**. Scenes include homes, workplaces, and outdoor environments. The recording and duration totals describe the collection inventory; they do not imply that every recording is processed or registered.
+</div>
 
-Available assets include posed images, meshes, 3D Gaussian splatting models, egocentric video, camera trajectories, estimated hand and body motion, and activity annotations. Asset availability varies by export. See the [project page](https://ropedia.com/xperience/2-research/) for examples and the [dataset page](https://huggingface.co/datasets/ropedia-ai/Ropedia-Xperience-2) for data access and release terms.
+[![Ropedia Xperience 2: scene scans, registered egocentric recordings, and downstream applications](assets/overview.jpg)](https://ropedia.com/xperience/2-research/)
+
+<p align="center">
+  <b>1,500+ scene scans · 4,000+ recordings · 74 tasks · 131 hours</b><br>
+  <sub>Scans: released set. Recordings, tasks and hours: collection inventory.</sub>
+</p>
+
+## Demo
+
+<a href="https://pub-a5d54d8bd1a5427c92ce334fabec455e.r2.dev/github/v37-20261112/xperience-2-demo.mp4">
+  <img src="assets/demo-preview.gif" alt="Demo preview: 3D environments, scene registration, simulation, virtual teleoperation, and human-to-robot motion" width="100%">
+</a>
+
+<p align="center">
+  <a href="https://pub-a5d54d8bd1a5427c92ce334fabec455e.r2.dev/github/v37-20261112/xperience-2-demo.mp4"><b>▶ Watch the full demo · 3:16</b></a>
+  &nbsp; · &nbsp;
+  <a href="https://ropedia.com/xperience/2-research/">Explore the interactive project page</a>
+</p>
 
 ## Scene registration
 
-The first code component is **HOMIE → KOSMO scene registration**: localize egocentric frames against a scan, fit a rigid or similarity transform, validate it with held-out frames, gravity, and depth, and export trajectories and motion in the scene frame.
+[![HOMIE recordings registered into KOSMO scenes: synchronized video, camera trajectories, body and hand motion, and activity annotations](assets/scene-registration.jpg)](docs/scene_registration.md)
 
-Install with Python 3.10–3.12 (Python 3.12 is used for validation):
+Align a processed **HOMIE recording → KOSMO scene** and export trajectories and estimated hand/body motion in the scene frame.
 
 ```bash
-git clone https://github.com/Ropedia/Ropedia-Xperience-2.git
-cd Ropedia-Xperience-2
-python -m venv .venv
-source .venv/bin/activate
 pip install -e .
+xperience-register --kosmo /path/to/scene --homie /path/to/recording --out results/take
 ```
 
-Run on locally downloaded exports:
+Python 3.10–3.12 · [Installation & inputs](docs/scene_registration.md#installation) · [Outputs & quality checks](docs/scene_registration.md#outputs-and-coordinates) · [Synthetic example](examples/fit_synthetic_trajectory.py)
 
-```bash
-xperience-register \
-  --kosmo /path/to/scene \
-  --homie /path/to/recording \
-  --out results/my-recording
-```
-
-The scene must include posed images, a COLMAP text model, and a triangle mesh. A 3DGS-only export is insufficient. The tool reads existing HOMIE trajectory, calibration, and video exports; motion and depth exports enable the corresponding outputs and checks. It needs no internal storage credentials or body-model weights.
-
-See [input formats and usage](docs/scene_registration.md) for the directory layout, coordinate conventions, output files, and PASS / WEAK / FAIL criteria. A [synthetic fitting example](examples/fit_synthetic_trajectory.py) runs without downloading recordings:
-
-```bash
-python examples/fit_synthetic_trajectory.py --out results/synthetic
-```
-
-The tool releases registration of already processed data. HOMIE sensor processing, hand/body estimation, and downstream simulation and retargeting pipelines are separate components.
-
-## Citation
+<details>
+<summary><b>Citation</b></summary>
 
 ```bibtex
 @misc{ropedia2026xperience2,
@@ -56,6 +62,6 @@ The tool releases registration of already processed data. HOMIE sensor processin
 }
 ```
 
-## License
+</details>
 
-Code is released under [Apache-2.0](LICENSE). Dataset access and usage terms are provided on the dataset page. Third-party dependencies and separately distributed assets retain their own terms.
+Code: [Apache-2.0](LICENSE) · Data: [access and usage terms](https://huggingface.co/datasets/ropedia-ai/Ropedia-Xperience-2)

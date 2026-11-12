@@ -4,9 +4,9 @@
 // A link left empty: the hero button says "soon" and the card "Coming soon" (neither clickable), Paper and Code stay out
 // of the bar, and "Get the data" goes to the Release section instead of Hugging Face.
 export const LINKS = {
-  dataset: '',   // the dataset page, https://huggingface.co/datasets/<org>/<name>
+  dataset: 'https://huggingface.co/datasets/ropedia-ai/Ropedia-Xperience-2',   // the dataset page, https://huggingface.co/datasets/<org>/<name>
   paper: '',     // the abstract page, https://arxiv.org/abs/<id>
-  code: '',      // the public repository, https://github.com/<org>/<repo>
+  code: 'https://github.com/Ropedia/Ropedia-Xperience-2',      // the public repository, https://github.com/<org>/<repo>
 };
 
 for (const el of document.querySelectorAll('[data-link]')) {

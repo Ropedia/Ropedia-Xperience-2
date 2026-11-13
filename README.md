@@ -21,7 +21,7 @@
 
 <p align="center">
   <b>1,500+ scene scans · 4,000+ recordings · 74 tasks · 131 hours</b><br>
-  <sub>Scans: released set. Recordings, tasks and hours: collection inventory.</sub>
+  <sub>Scans: released set. Recordings, tasks, and hours: collection inventory.</sub>
 </p>
 
 ## Demo

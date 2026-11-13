@@ -5,7 +5,7 @@
 // of the bar, and "Get the data" goes to the Release section instead of Hugging Face.
 export const LINKS = {
   dataset: 'https://huggingface.co/datasets/ropedia-ai/Ropedia-Xperience-2',   // the dataset page, https://huggingface.co/datasets/<org>/<name>
-  paper: '',     // the abstract page, https://arxiv.org/abs/<id>
+  paper: 'https://arxiv.org/abs/2611.17060',     // the abstract page, https://arxiv.org/abs/<id>
   code: 'https://github.com/Ropedia/Ropedia-Xperience-2',      // the public repository, https://github.com/<org>/<repo>
 };
 

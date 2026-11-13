@@ -207,6 +207,45 @@ button.ap-lab:focus-visible { outline: 2px solid var(--g); outline-offset: 2px; 
 .ap-int-play figcaption span { font: 500 12px/1 var(--mono); color: rgba(245, 245, 247, 0.72); }
 
 .ap-lh { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(280px, 1fr); gap: clamp(14px, 2.2vw, 28px); align-items: start; }
+/* the two runs behind tabs (office water dispenser, home hot drink) */
+.ap-tabs.ap-lh-pick { margin: 0 var(--edge) clamp(14px, 2.2vh, 20px); }
+.ap-lh-say { max-width: 780px; margin: 0 var(--edge) clamp(18px, 3vh, 28px); }
+.ap-lhd[hidden] { display: none; }
+/* the water-dispenser run: one camera on the stage (the video cropped to its half), the other in the corner */
+.ap-dp video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; object-position: 0% 50%; }
+.ap-dp-pip { all: unset; position: absolute; right: 14px; bottom: 14px; z-index: 4; width: 28%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; cursor: pointer; background: #000; box-shadow: 0 0 0 1.5px rgba(245, 245, 247, 0.55), 0 8px 24px rgba(0, 0, 0, 0.5); transition: box-shadow 0.2s; }
+.ap-dp-pip canvas { display: block; width: 100%; height: 100%; }
+.ap-dp-pip span { position: absolute; left: 8px; bottom: 8px; padding: 5px 8px; border-radius: 980px; background: rgba(0, 0, 0, 0.6); font: 600 10px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--w); }
+.ap-dp-pip span::after { content: '⇄'; margin-left: 6px; opacity: 0.7; letter-spacing: 0; }
+.ap-dp-pip:hover { box-shadow: 0 0 0 2px var(--w), 0 8px 24px rgba(0, 0, 0, 0.5); }
+.ap-dp-pip:focus-visible { outline: 2px solid var(--g); outline-offset: 2px; }
+.ap-flows { position: absolute; left: 0; right: 0; top: 8px; height: 3px; pointer-events: none; }
+.ap-flows i { position: absolute; top: 0; height: 100%; min-width: 3px; border-radius: 2px; background: #7fe7ff; }
+#apDpRate { flex: none; }
+.ap-plan.dp .path, .ap-plan.dp .ghost { vector-effect: non-scaling-stroke; }
+.ap-plan.dp .path { stroke-width: 2.4; }
+.ap-plan.dp .mk { font: 600 22px/1 var(--sans); fill: rgba(245, 245, 247, 0.72); paint-order: stroke; stroke: rgba(11, 11, 12, 0.8); stroke-width: 5px; }
+.ap-plan.dp .mug { stroke-width: 2.5; }
+.ap-plan.dp .bot path { stroke-width: 3; }
+.ap-water { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+.ap-water header { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.ap-water header b { font: 600 15px/1.2 var(--sans); }
+.ap-water header span { font: 500 12.5px/1.2 var(--mono); font-variant-numeric: tabular-nums; color: #7fe7ff; }
+.ap-wbar { position: relative; height: 8px; margin-bottom: 22px; border-radius: 4px; background: rgba(255, 255, 255, 0.08); }
+.ap-wbar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 4px; background: #7fe7ff; }
+.ap-wbar em { position: absolute; top: 0; height: 8px; border-left: 1px solid rgba(245, 245, 247, 0.5); padding-top: 13px; text-indent: -0.9em; font: 500 10.5px/1 var(--mono); font-style: normal; color: var(--gray2); }
+.ap-water p { margin: 0; font: 500 12.5px/1.4 var(--sans); color: var(--gray); text-wrap: pretty; }
+.ap-run li[role="button"] { cursor: pointer; border-radius: 6px; }
+.ap-run li[role="button"]:hover { color: var(--w); }
+.ap-run li[role="button"]:focus-visible { outline: 2px solid var(--g); outline-offset: 1px; }
+.ap-checks { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 0 0; min-height: 22px; }
+.ap-checks span { padding: 5px 8px 5px 7px; border-radius: 980px; background: rgba(111, 211, 154, 0.12); font: 500 11.5px/1 var(--sans); color: #a6e8c0; }
+.ap-checks span::before { content: '✓'; margin-right: 5px; font-weight: 700; }
+@media (max-width: 640px) {
+  .ap-dp-pip { width: 36%; right: 10px; bottom: 10px; border-radius: 9px; }
+  .ap-dp-pip span, .ap-dp .ap-lab.r { display: none; }
+  .ap-dp .ap-lab.l { max-width: calc(100% - 28px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
 .ap-scrub { position: relative; flex: 1 1 200px; height: 40px; cursor: pointer; touch-action: none; }
 .ap-scrub:focus-visible { outline: 2px solid var(--g); outline-offset: 2px; border-radius: 6px; }
 .ap-segs { position: absolute; left: 0; right: 0; top: 15px; height: 10px; display: flex; gap: 3px; }

@@ -84,7 +84,10 @@ benchmarks, all on the same 20 scenes (a sortable table of the depth and geometr
 3D object detection and spatial-intelligence tables, written out in `apps.js` as `DET` and `SQA_ROWS` from the
 paper, with an illustration of each task) and the demonstrations in the film's order:
 Real-to-Sim (`home/r2s3d.js`: the simulator scene in free-view 3D playing the film's physics run, see below),
-long-horizon trajectory generation (run 203 with the plan in step, the 30 held-out starts), virtual teleoperation
+long-horizon trajectory generation (two runs behind tabs: first the office water-dispenser run from `data/disp`, its
+two-camera recording with the base, cup and water in step, built by `home/tools/build_disp.py` on the Mac from
+`/mnt/local/lihao/xperience_website/sources/dispenser_rollout_07_replay`; then run 203 with the plan in step and the 30
+held-out starts), virtual teleoperation
 (a placeholder, no data yet) and retargeting (Human / Robot A / Robot B in 3D, drawn by `engine.js` in its `retarget`
 mode, with a divider and the fingertip error over the window; then the eight-home wall).
 

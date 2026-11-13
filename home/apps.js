@@ -3,6 +3,7 @@
 // build_apps.py): data/bench.json (the paper's geometry table; its detection and spatial-intelligence tables are written
 // out below as DET and SQA_ROWS), data/r2s (the Real-to-Sim camera path rendered as scan
 // and as simulator, seven interaction clips), data/apps/gap (the gap heat maps),
+// data/disp (the office water-dispenser run: its two-camera recording, plan, path and water),
 // data/traj (run 203 and the 30 held-out runs), the two retargeted robots of recording 7659f6d6 (drawn by engine.js
 // in its 'retarget' mode) and data/apps/wall (Robot A | Robot B in eight homes; each opens in 3D from data/<scene>/<take>).
 // Each part sets itself up when it comes near the screen, and plays only while it is on it.
@@ -278,6 +279,101 @@ async function bench() {
 }
 
 // ================================================================ long-horizon trajectory generation
+// Two runs behind tabs, one shown at a time: the office water-dispenser run first, the home hot-drink run second.
+// A hidden run's views are off screen, so it pauses on its own.
+function lhPick() {
+  const tabs = [...$('apLhPick').querySelectorAll('[role="tab"]')];
+  const set = (b, focus) => {
+    for (const t of tabs) { const on = t === b; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; $(t.getAttribute('aria-controls')).hidden = !on; }
+    if (focus) b.focus();
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => set(t));
+    t.addEventListener('keydown', (e) => { const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (d) { e.preventDefault(); set(tabs[(i + d + tabs.length) % tabs.length], true); } });
+  });
+}
+
+// The water-dispenser run (data/disp, from tools/build_disp.py): the run's two-camera recording (two 960 x 540 views
+// side by side, 15 fps) plays at 4x or 1x. The stage shows one camera (the video itself, cropped by object-position),
+// the corner the other (drawn from the same video), and a click on the corner swaps them. Beside it: the base and
+// cup on the office plan, the water in the cup, and the seven subtasks with their checks.
+async function dispenser() {
+  const D = await json('data/disp/disp.json');
+  const vid = $('apDpVid'), stage = $('apDpStage'), pip = $('apDpPip'), pcv = pip.querySelector('canvas'), pctx = pcv.getContext('2d');
+  const S = D.stages, F = D.frames - 1, fps = D.fps, P = D.plan, svg = $('apDpPlan');
+  svg.setAttribute('viewBox', `0 0 ${P.w} ${P.h}`);
+  $('apDpPlan').parentElement.style.aspectRatio = `${P.w} / ${P.h}`;
+  const el = (tag, attrs, parent = svg) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+  const pts = (a) => a.map((p) => `${p[0]},${p[1]}`).join(' ');
+  el('polyline', { class: 'ghost', points: pts(D.path) });
+  const pathEl = el('polyline', { class: 'path' });
+  for (const [k, name, dy] of [['dispenser', 'Water dispenser', -22], ['desk', 'Desk', 34]]) {
+    const [u, v] = D.marks[k]; el('text', { x: u, y: v + dy, class: 'mk', 'text-anchor': 'middle' }).textContent = name;
+  }
+  const bot = el('g', { class: 'bot' }), cup = el('circle', { r: 7, class: 'mug' });
+  const L = 0.62 / P.res, Wd = 0.56 / P.res;        // the base's footprint, metres
+  el('rect', { x: -L / 2, y: -Wd / 2, width: L, height: Wd, rx: 5 }, bot);
+  el('path', { d: `M${L / 2 - 11} -7 L${L / 2 - 3} 0 L${L / 2 - 11} 7` }, bot);
+
+  // the scrub bar: a segment per subtask, as wide as its time; a blue line over the two fills
+  const segs = $('apDpSegs');
+  segs.innerHTML = S.map((s) => `<i style="flex:${s.f1 - s.f0}" title="${s.name}"></i>`).join('');
+  segs.lastElementChild.style.flex = `${F - S[S.length - 1].f0}`;   // (the last second, held still, joins the last subtask)
+  $('apDpFlows').innerHTML = D.flows.map(([a, b]) => `<i style="left:${(100 * a / F).toFixed(2)}%;width:${(100 * (b - a) / F).toFixed(2)}%"></i>`).join('');
+  const total = mmss(F / fps);
+  const runEl = $('apDpRun');
+  runEl.innerHTML = `<header><b>Seven subtasks</b><span>${total}</span></header><ol>${S.map((s, j) => {
+    const d = (s.f1 - s.f0) / fps, max = Math.max(...S.map((x) => x.f1 - x.f0)) / fps;
+    return `<li data-j="${j}" tabindex="0" role="button" aria-label="Go to subtask ${j + 1}: ${s.name}"><em>${j + 1}</em><span>${s.name}</span><i style="--u:${(100 * d / max).toFixed(1)}%"></i><b>${Math.round(d)} s</b></li>`;
+  }).join('')}</ol><p class="ap-checks" id="apDpChecks"></p>`;
+  const lis = [...runEl.querySelectorAll('li')], checksEl = $('apDpChecks');
+  const seekTo = (t) => { vid.currentTime = clamp(t, 0, F / fps); paint(); };
+  const goStage = (li) => seekTo(S[Number(li.dataset.j)].f0 / fps + 0.02);
+  runEl.addEventListener('click', (e) => { const li = e.target.closest('li'); if (li) goStage(li); });
+  runEl.addEventListener('keydown', (e) => { const li = e.target.closest('li'); if (li && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); goStage(li); } });
+
+  const st = { on: false, playing: !reduced, held: false, view: 0, j: -1 };
+  function paint() {
+    const f = clamp(vid.currentTime * fps, 0, F), u = f / F;
+    let j = 0; while (j < S.length - 1 && f >= S[j + 1].f0) j++;
+    if (j !== st.j) {
+      st.j = j;
+      $('apDpNow').textContent = `${j + 1} / ${S.length} · ${S[j].name}`;
+      checksEl.innerHTML = S[j].checks.map((c) => `<span>${c}</span>`).join('');
+    }
+    $('apDpClock').textContent = `${mmss(f / fps)} / ${total}`;
+    $('apDpHead').style.left = `${u * 100}%`; $('apDpScrub').setAttribute('aria-valuenow', Math.round(u * 100));
+    [...segs.children].forEach((s, a) => { const f0 = S[a].f0, f1 = a === S.length - 1 ? F : S[a].f1; s.style.setProperty('--u', `${100 * clamp01((f - f0) / (f1 - f0))}%`); });
+    lis.forEach((li, a) => { li.classList.toggle('done', a < j || f >= F - 1); li.classList.toggle('now', a === j && f < F - 1); });
+    const n = clamp(Math.round(f / D.every), 0, D.path.length - 1), p = D.path[n];
+    pathEl.setAttribute('points', pts(D.path.slice(0, n + 1)));
+    // heading: world (cos yaw, sin yaw) is plan (-sin yaw, -cos yaw)
+    bot.setAttribute('transform', `translate(${p[0]},${p[1]}) rotate(${(Math.atan2(-Math.cos(p[2]), -Math.sin(p[2])) * 180 / Math.PI).toFixed(1)})`);
+    cup.setAttribute('cx', p[3]); cup.setAttribute('cy', p[4]);
+    const ml = D.ml[n];
+    $('apDpMl').textContent = `${ml.toFixed(0)} ml`;
+    $('apDpWFill').style.width = `${(100 * ml / D.capacity_ml).toFixed(2)}%`;
+    if (vid.readyState >= 2) pctx.drawImage(vid, st.view ? 0 : 960, 0, 960, 540, 0, 0, pcv.width, pcv.height);
+  }
+  const loop = () => { if (!st.on) return; requestAnimationFrame(loop); paint(); };
+  const apply = () => { if (st.playing && st.on && !st.held) vid.play().catch(() => {}); else vid.pause(); };
+  const play = $('apDpPlay'), setPlay = (p) => { st.playing = p; play.classList.toggle('paused', !p); play.setAttribute('aria-label', p ? 'Pause' : 'Play'); apply(); };
+  play.addEventListener('click', () => setPlay(!st.playing));
+  scrub($('apDpScrub'), (u, ph) => { st.held = ph !== 'end'; apply(); seekTo(u * F / fps); }, (d) => seekTo(vid.currentTime + d * 2));
+  const rates = [...$('apDpRate').querySelectorAll('button')];
+  const setRate = (r) => { vid.defaultPlaybackRate = vid.playbackRate = r; rates.forEach((b) => b.setAttribute('aria-pressed', Number(b.dataset.r) === r)); };
+  rates.forEach((b) => b.addEventListener('click', () => setRate(Number(b.dataset.r))));
+  vid.addEventListener('loadedmetadata', () => setRate(Number(rates.find((b) => b.getAttribute('aria-pressed') === 'true').dataset.r)));
+  pip.addEventListener('click', () => { st.view ^= 1; vid.style.objectPosition = st.view ? '100% 50%' : '0% 50%'; paint(); });
+  vid.addEventListener('seeked', () => { if (!st.on) paint(); });
+  vid.addEventListener('loadeddata', paint);
+  setRate(4); setPlay(st.playing); paint();
+  onScreen(stage, (on) => {
+    if (on && !st.on) { st.on = true; vid.preload = 'auto'; apply(); requestAnimationFrame(loop); }
+    else if (!on) { st.on = false; apply(); }
+  });
+}
+
 async function longHorizon() {
   const D = await json('data/traj/traj.json');
   const N = D.main_steps.length, seq = new Seq(D.main_steps.map((_, k) => `data/traj/chase/${pad(k, 5)}.jpg`));
@@ -567,6 +663,8 @@ async function wall() {
 overview();
 bench();
 // (Real-to-Sim is r2s3d.js: the simulator scene in free-view 3D)
+lhPick();
+near($('ap-lh'), dispenser);
 near($('ap-lh'), longHorizon);
 near($('ap-tel'), teleop);
 near($('ap-ret'), retarget);

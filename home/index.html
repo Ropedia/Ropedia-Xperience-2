@@ -234,7 +234,7 @@
      (a sortable table of the depth and geometry scores; the 3D object detection scores beside an illustration of the
      task; the spatial-intelligence scores under an example of each kind of question),
      then the demonstrations in the film's order: Real-to-Sim (reconstruction, then interaction), long-horizon
-     trajectory generation, virtual teleoperation (the operator beside the robot episode) and human-to-robot retargeting with the eight-home wall -->
+     trajectory generation (two runs: the office water dispenser, then the home hot drink), virtual teleoperation (the operator beside the robot episode) and human-to-robot retargeting with the eight-home wall -->
 <section class="ap" id="apps" aria-label="Applications">
   <header class="ap-intro" data-rv>
     <p class="eyebrow">Applications</p>
@@ -334,6 +334,47 @@
         <p class="ap-tag" style="--c:#F29A5E">Long-Horizon Trajectory Generation</p>
         <h3>New tasks, beyond the recordings.</h3>
       </header>
+      <!-- two runs, one at a time: the water-dispenser run in the office (dispenser() in apps.js, data/disp) first,
+           the hot-drink run in the home (longHorizon(), data/traj) second -->
+      <div class="ap-tabs ap-lh-pick" role="tablist" aria-label="Demonstration" id="apLhPick" data-rv>
+        <button type="button" role="tab" id="lhTab-disp" aria-selected="true" aria-controls="apLhD-disp">Office<span>Water dispenser</span></button><button type="button" role="tab" id="lhTab-mug" aria-selected="false" aria-controls="apLhD-mug" tabindex="-1">Home<span>Hot drink</span></button>
+      </div>
+
+      <div class="ap-lhd" id="apLhD-disp" role="tabpanel" aria-labelledby="lhTab-disp">
+      <p class="ap-p ap-lh-say" data-rv>Code as policy in a simulator scene built from an office scan. A mobile robot with two dexterous hands clears a cup from under the water dispenser, fills another at both taps and carries it to a desk: seven subtasks in one continuous run.</p>
+      <div class="ap-lh" data-rv>
+        <div class="ap-lh-main">
+          <div class="ap-stage ap-dp" id="apDpStage">
+            <video id="apDpVid" src="data/disp/rollout.mp4" muted loop playsinline preload="metadata" aria-label="The robot at the water dispenser and on its way to the desk, in the simulator scene"></video>
+            <span class="ap-lab l" id="apDpNow"></span><span class="ap-lab r" id="apDpClock"></span>
+            <button type="button" class="ap-dp-pip" id="apDpPip" aria-label="Swap the two cameras"><canvas width="480" height="270"></canvas><span>Swap view</span></button>
+          </div>
+          <div class="ap-bar">
+            <button type="button" class="ap-play" id="apDpPlay" aria-label="Pause"><i></i></button>
+            <div class="ap-scrub" id="apDpScrub" role="slider" tabindex="0" aria-label="Time in the trajectory" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ap-segs" id="apDpSegs"></div><div class="ap-flows" id="apDpFlows"></div><i class="ap-headm" id="apDpHead"></i></div>
+            <div class="ap-seg" id="apDpRate" role="group" aria-label="Playback speed"><button type="button" data-r="4" aria-pressed="true">4×</button><button type="button" data-r="1" aria-pressed="false">1×</button></div>
+          </div>
+        </div>
+        <aside class="ap-lh-side">
+          <div class="ap-plan dp"><img src="data/disp/plan.png" alt="Floor plan of the office simulator scene"><svg id="apDpPlan" aria-label="The path of the robot base and the cup, from the water dispenser to the desk"></svg></div>
+          <p class="ap-plan-key"><i class="k-path"></i>base path<i class="k-mug"></i>cup</p>
+          <div class="ap-water">
+            <header><b>Water in the cup</b><span id="apDpMl">0 ml</span></header>
+            <div class="ap-wbar"><i id="apDpWFill"></i><em style="left:10%">10%</em><em style="left:20%">20%</em></div>
+            <p>The fingers turn the taps. The water follows the tap angle by rule; it is not simulated as a fluid.</p>
+          </div>
+          <div class="ap-run" id="apDpRun" aria-live="polite"></div>
+        </aside>
+      </div>
+      <dl class="ap-stats" data-rv>
+        <div><dt>7<small> / 7</small></dt><dd>subtasks pass all 43 checks</dd></div>
+        <div><dt>2.9<small>min</small></dt><dd>one continuous trajectory</dd></div>
+        <div><dt>135<small>ml</small></dt><dd>poured at two taps, about 10% of the cup at each</dd></div>
+      </dl>
+      </div>
+
+      <div class="ap-lhd" id="apLhD-mug" role="tabpanel" aria-labelledby="lhTab-mug" hidden>
+      <p class="ap-p ap-lh-say" data-rv>Eight subtasks across a home: heat a drink in the microwave and take it to the bedroom, tested from 30 held-out start positions.</p>
       <div class="ap-lh" data-rv>
         <div class="ap-lh-main">
           <div class="ap-stage r85"><canvas id="apLhCv" width="1152" height="720" role="img" aria-label="The robot running the task in the simulator scene, time-lapsed"></canvas>
@@ -354,6 +395,7 @@
         <div><dt>2.2<small>min</small></dt><dd>average trajectory</dd></div>
         <div><dt>10–16<small>min</small></dt><dd>of compute per trajectory</dd></div>
       </dl>
+      </div>
     </article>
 
     <!-- virtual teleoperation -->
